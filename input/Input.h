@@ -27,7 +27,7 @@ public:
 	void Initialize();
 
 	/// <summary>
-	/// 毎フレーム処理
+	/// 毎フレーム更新処理
 	/// </summary>
 	void Update();
 
@@ -77,7 +77,7 @@ public:
 	/// <returns>ホイールスクロール量</returns>
 	int32_t GetWhieel() const;
 
-private:
+private: // 
 	Input() = default;
 	~Input();
 	Input(const Input&) = delete;
