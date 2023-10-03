@@ -37,14 +37,14 @@ public:
 	/// <param name="windowStyle">ウィンドウの初期スタイル</param>
 	/// <param name="clientWindth">ウィンドウのクライアント領域の初期幅</param>
 	/// <param name="clientHeight">ウィンドウのクライアント領域の初期高さ</param>
-	void CreateGameWindow(
+	void Initialize(
 		const wchar_t* title = L"ReyEngine", UINT windowStyle = WS_OVERLAPPEDWINDOW,
 		int32_t clientWindth = kWindowWidth, int32_t clientHeight = kWindowHeight);
 
 	/// <summary>
 	/// ゲームウィンドウの破棄
 	/// </summary>
-	void TerminateGameWindow();
+	void Finalize();
 
 
 	/// <summary>
@@ -63,7 +63,7 @@ public:
 	/// 
 	/// </summary>
 	/// <returns></returns>
-	HINSTANCE GetHInstance() const { return wndClass_.hInstance; }
+	HINSTANCE GetHInstance() const { return wndClassEx_.hInstance; }
 
 private: //メンバ関数
 	WinApp() = default;
@@ -73,6 +73,6 @@ private: //メンバ関数
 
 private://メンバ変数
 	HWND hwnd_ = nullptr;   // ウィンドウハンドル
-	WNDCLASS wndClass_{}; // ウィンドウクラス
+	WNDCLASSEX wndClassEx_{}; // ウィンドウクラス
 	UINT windowStyle_;
 };

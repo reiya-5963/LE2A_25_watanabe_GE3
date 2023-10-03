@@ -32,29 +32,39 @@ LRESULT CALLBACK WinApp::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM l
 }
 
 
-void WinApp::CreateGameWindow(
+void WinApp::Initialize(
 	const wchar_t* title, UINT windowStyle,
 	int32_t clientWindth, int32_t clientHeight) {
+	
+	// 引数を代入
+	windowStyle_ = windowStyle;
 
+	//
 	CoInitializeEx(nullptr, COINIT_MULTITHREADED);
 
 	// システムタイマーの分解能を上げる
 	timeBeginPeriod(1);
 
-	windowStyle_ = windowStyle;
+
 	//ウィンドウクラスの設定
-	wndClass_.lpfnWndProc = (WNDPROC)WindowProc;
-	wndClass_.lpszClassName = kWindowClassName;
-	wndClass_.hInstance = GetModuleHandle(nullptr);
-	wndClass_.hCursor = LoadCursor(NULL, IDC_ARROW);
+	wndClassEx_.cbSize = sizeof(WNDCLASSEX);			// このウィンドウクラスのサイズ
+	wndClassEx_.lpfnWndProc = (WNDPROC)WindowProc;		// ウィンドウプロシージャを設定
+	wndClassEx_.lpszClassName = kWindowClassName;		// ウィンドウクラス名
+	wndClassEx_.hInstance = GetModuleHandle(nullptr);	// ウィンドウハンドル
+	wndClassEx_.hCursor = LoadCursor(NULL, IDC_ARROW);	// カーソル設定
 
-	RegisterClass(&wndClass_);
+	// ウィンドウクラスをOSに登録する
+	RegisterClassEx(&wndClassEx_);
 
+	// ウィンドウサイズ = { x, y, 横幅, 縦幅 }
 	RECT wrc = { 0, 0, clientWindth, clientHeight };
+	
+	// 自動でサイズを補正する
 	AdjustWindowRect(&wrc, windowStyle_, false);
 
+	// ウィンドウオブジェクトの生成
 	hwnd_ = CreateWindow(
-		wndClass_.lpszClassName, // クラス名
+		wndClassEx_.lpszClassName, // クラス名
 		title,                   // タイトルバーの文字
 		windowStyle_,            // タイトルバーと境界線があるウィンドウ
 		CW_USEDEFAULT,           // 表示X座標（OSに任せる）
@@ -63,20 +73,17 @@ void WinApp::CreateGameWindow(
 		wrc.bottom - wrc.top,    // ウィンドウ縦幅
 		nullptr,                 // 親ウィンドウハンドル
 		nullptr,                 // メニューハンドル
-		wndClass_.hInstance,     // 呼び出しアプリケーションハンドル
+		wndClassEx_.hInstance,     // 呼び出しアプリケーションハンドル
 		nullptr);                // オプション
 
-	//
+	// ウィンドウを表示状態にする
 	ShowWindow(hwnd_, SW_SHOW);
 
 }
 
-void WinApp::TerminateGameWindow() {
-	//
-	//UnregisterClass(wndClass_.lpszClassName, wndClass_.hInstance);
-
-	CloseWindow(hwnd_);
-	//
+void WinApp::Finalize() {
+	// ウィンドウクラスの登録解除
+	UnregisterClass(wndClassEx_.lpszClassName, wndClassEx_.hInstance);
 
 	CoUninitialize();
 }

@@ -3,7 +3,7 @@
 void MyGame::Initialize() {	// WinAppのシングルトンの取得
 	winApp_ = WinApp::GetInstance();
 	// ウィンドウの作成
-	winApp_->CreateGameWindow(L"LE2A_22_ワタナベ");
+	winApp_->Initialize(L"LE2A_22_ワタナベ");
 
 	// dxCommonのシングルトンの取得
 	dxCommon_ = DirectXCommon::GetInstance();
@@ -47,7 +47,7 @@ void MyGame::Finalize() {
 	imGuiManager_->Finalize();
 
 	// ウィンドウの破棄の処理
-	winApp_->TerminateGameWindow();
+	winApp_->Finalize();
 }
 
 void MyGame::Update() {
