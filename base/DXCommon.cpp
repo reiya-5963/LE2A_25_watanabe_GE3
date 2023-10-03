@@ -108,7 +108,7 @@ void DirectXCommon::postDraw() {
 	//GPUとOSに画面の交換を行うよう通知させる
 	swapChain_->Present(1, 0);
 
-
+	// コマンドの実行完了を待つ
 	commandQueue_->Signal(fence_.Get(), ++fenceVal_);
 	if (fence_->GetCompletedValue() != fenceVal_) {
 		HANDLE event = CreateEvent(nullptr, false, false, nullptr);
@@ -117,7 +117,7 @@ void DirectXCommon::postDraw() {
 		CloseHandle(event);
 	}
 
-	//
+	// FPS固定の更新処理
 	UpdateFixFPS();
 
 	//次のフレーム用のコマンドリストを準備
