@@ -11,14 +11,31 @@ class Sprite;
 
 class SpriteCommon {
 public:
-	static SpriteCommon* GetInstance();
 
+	/// <summary>
+	/// シングルトンインスタンスの取得
+	/// </summary>
+	static SpriteCommon* GetInstance();
+	
+	/// <summary>
+	/// 初期化処理
+	/// </summary>
+	/// <param name="windowWidth">ウィンドウの横幅</param>
+	/// <param name="windowHeight">ウィンドウの縦幅</param>
+	/// <param name="directoryPath">リソースファイルのパス</param>
 	static void Initialize(
 		int windowWidth, int windowHeight,
 		const std::wstring& directoryPath = L"Resources/");
 
+	/// <summary>
+	/// 描画前処理
+	/// </summary>
+	/// <param name="commandList">描画コマンドリスト</param>
 	static void PreDraw(ID3D12GraphicsCommandList* commandList);
 
+	/// <summary>
+	/// 描画後処理
+	/// </summary>
 	static void PostDraw();
 
 	/// <summary>
@@ -32,8 +49,14 @@ public:
 		Vector4 color = { 1.0f, 1.0f, 1.0f, 1.0f }, Vector2 anchorpoint = { 0.0f, 0.0f }, bool isFlipX = false,
 		bool isFlipY = false);
 
+	/// <summary>
+	/// コマンドリストの取得
+	/// </summary>
 	static ID3D12GraphicsCommandList* GetsCommandList() { return sCommandList_; }
-	
+
+	/// <summary>
+	/// 正射影行列の取得
+	/// </summary>
 	static Matrix4x4 GetsMatProjection() { return sMatProjection_; }
 private:
 	SpriteCommon() = default;

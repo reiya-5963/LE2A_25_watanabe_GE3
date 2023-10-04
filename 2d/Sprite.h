@@ -6,18 +6,21 @@
 /// スプライト
 /// </summary>
 class Sprite {
-public:
+public: // サブクラス
+	/// <summary>
+	/// 頂点情報
+	/// </summary>
 	struct VertexPosUv {
-		Vector3 pos;
-		Vector2 uv;
+		Vector3 pos; //!< 座標
+		Vector2 uv; //!< テクスチャ座標
 	};
 
 	/// <summary>
 	/// 定数バッファ
 	/// </summary>
 	struct ConstBufferData {
-		Vector4 color; // 色
-		Matrix4x4 mat; // 行列
+		Vector4 color; //!< 色
+		Matrix4x4 mat; //!< 行列
 	};
 
 //public:// 静的メンバ関数
@@ -33,7 +36,7 @@ public:
 //		Vector4 color = {1.0f, 1.0f, 1.0f, 1.0f}, Vector2 anchorpoint = {0.0f, 0.0f}, bool isFlipX = false,
 //		bool isFlipY = false);
 	
-private:
+private: // 静的メンバ定数
 	//頂点数
 	static const int kVertexNum = 4;
 
@@ -89,9 +92,9 @@ public:
 
 
 	/// <summary>
-	/// 
+	/// テクスチャ
 	/// </summary>
-	/// <param name="textureHandle"></param>
+	/// <param name="textureHandle">テクスチャハンドル</param>
 	void SetTextureHandle(uint32_t textureHandle);
 	const uint32_t GetTextureHandle() { return textureHandle_; }
 

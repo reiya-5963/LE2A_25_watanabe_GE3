@@ -10,7 +10,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// ゲームループ
 	while (true) {
 		// もしウィンドウが破棄されたらループを抜ける
-		//if (win->ProcessMessage()) {	
 		if (myGame->IsEndRequest()) {
 			break;
 		}

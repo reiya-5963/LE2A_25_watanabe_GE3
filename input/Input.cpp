@@ -22,8 +22,6 @@ Input* Input::GetInstance() {
 	return &instance;
 }
 
-
-
 Input::~Input() {
 	if (deviceKeyboard_) {
 		deviceKeyboard_->Unacquire();
