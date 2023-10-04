@@ -1,11 +1,6 @@
 #pragma once
-#include "DXCommon.h"
-#include <dxcapi.h>
-#include <memory>
-#include <string>
+#include "SpriteCommon.h"
 
-#include "MyStruct.h"
-#include "MyLog.h"
 
 /// <summary>
 /// スプライト
@@ -21,56 +16,26 @@ public:
 	/// 定数バッファ
 	/// </summary>
 	struct ConstBufferData {
-		Vector4 color;//色
-		Matrix4x4 mat;//行列
+		Vector4 color; // 色
+		Matrix4x4 mat; // 行列
 	};
 
-public:// 静的メンバ関数
-
-	/// <summary>
-	/// 静的初期化
-	/// </summary>
-	/// <param name="device">デバイス</param>
-	/// <param name="directoryPath">shadersファイルまでのパス</param>
-	static void StaticInitialize(ID3D12Device* device, int windowWidth, int windowHeight, const std::wstring& directoryPath = L"Resources/");
-
-	/// <summary>
-	/// 描画前処理
-	/// </summary>
-	/// <param name="commandList">描画コマンドリスト</param>
-	static void PreDraw(ID3D12GraphicsCommandList* commandList);
-
-	/// <summary>
-	/// 描画後処理
-	/// </summary>
-	static void PostDraw();
-
-	/// <summary>
-	/// スプライト生成
-	/// </summary>
-	/// <param name="position">座標</param>
-	/// <param name="rotate">回転</param>
-	/// <param name="scale">大きさ</param>
-	/// <returns>生成されたスプライト</returns>
-	static Sprite* Create(uint32_t tectureHandle, Vector2 position, float rotate,
-		Vector4 color = {1.0f, 1.0f, 1.0f, 1.0f}, Vector2 anchorpoint = {0.0f, 0.0f}, bool isFlipX = false,
-		bool isFlipY = false);
+//public:// 静的メンバ関数
+//
+//	/// <summary>
+//	/// スプライト生成
+//	/// </summary>
+//	/// <param name="position">座標</param>
+//	/// <param name="rotate">回転</param>
+//	/// <param name="scale">大きさ</param>
+//	/// <returns>生成されたスプライト</returns>
+//	static Sprite* Create(uint32_t tectureHandle, Vector2 position, float rotate,
+//		Vector4 color = {1.0f, 1.0f, 1.0f, 1.0f}, Vector2 anchorpoint = {0.0f, 0.0f}, bool isFlipX = false,
+//		bool isFlipY = false);
 	
-
-
 private:
 	//頂点数
 	static const int kVertexNum = 4;
-	//デバイス
-	static ID3D12Device* sDevice_;
-	//コマンドリスト
-	static ID3D12GraphicsCommandList* sCommandList_;
-	//ルートシグネチャ
-	static Microsoft::WRL::ComPtr<ID3D12RootSignature> sRootSignature_;
-	//パイプラインステート
-	static Microsoft::WRL::ComPtr<ID3D12PipelineState> sPipelineState_;
-	//射影行列(消す予定)
-	static Matrix4x4 sMatProjection_;
 
 public:
 	/// <summary>
@@ -136,9 +101,6 @@ public:
 
 	const Vector2 GetTexSize() { return texSize_; }
 	const Vector2 GetTexBase() { return texBase_; }
-
-
-
 
 	/// <summary>
 	/// 描画

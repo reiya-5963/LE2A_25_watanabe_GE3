@@ -33,7 +33,7 @@ void GameScene::Initialize() {
 	viewProjectionMatrix = MyMath::Multiply(viewMatrix, projectionMatrix);
 
 	// Spriteの生成
-	Sprite* sprite = Sprite::Create(uvCheckTex_, { 500.0f, 500.0f}, 0.0f);
+	Sprite* sprite = SpriteCommon::Create(uvCheckTex_, { 500.0f, 500.0f}, 0.0f);
 	sprites_.push_back(sprite);
 
 	Triangle* triangle_ = Triangle::Create(whiteBaseTex_, { 3.0f, 1.25f, 2.0f });
@@ -144,14 +144,18 @@ ImGui::Begin("Debug", nullptr, ImGuiWindowFlags_MenuBar);
 void GameScene::Draw() {
 	ID3D12GraphicsCommandList* commandList = dxCommon_->GetCommandList();
 
-	Sprite::PreDraw(commandList);
+	SpriteCommon::PreDraw(commandList);
 	//この間に背景スプライトの描画を入れる
 	for (Sprite* sprite : sprites_) {
 		sprite->Draw();
 	}
-	Sprite::PostDraw();
+	SpriteCommon::PostDraw();
+
 
 	dxCommon_->ClearDepthBuffer();
+	
+	
+	
 	Model::PreDraw(commandList);
 
 	test_->Draw(worldTransform_, viewProjection_);
@@ -164,11 +168,13 @@ void GameScene::Draw() {
 		triangle->Draw(viewProjectionMatrix);
 	}
 	Triangle::PostDraw();
-	Sprite::PreDraw(commandList);
+
+
+	SpriteCommon::PreDraw(commandList);
 	//この間に背景スプライトの描画を入れる
 	for (Sprite* sprite : sprites_) {
 		sprite->Draw();
 	}
-	Sprite::PostDraw();
+	SpriteCommon::PostDraw();
 
 }
