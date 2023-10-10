@@ -106,8 +106,3 @@ private:
 
 };
 
-//// XAudio2エンジンのインスタンスを生成
-//result = XAudio2Create(&xAudio2, 0, XAUDIO2_DEFAULT_PROCESSOR);
-//
-//// マスターボイスを生成(xAuidoの開放で自動deleteされるので注意)
-//result = xAudio2->CreateMasteringVoice(&masterVoice);
