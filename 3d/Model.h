@@ -22,6 +22,16 @@ public: // 列挙子
 		kLight,				// ライト
 	};
 
+	enum class BlendMode {
+		kNone,
+		kNormal,
+		kAdd,
+		kSubtract,
+		kMultiply,
+		kScreen,
+		kCountBlendMode
+	};
+
 private: // 静的メンバ定数
 	// リソースデータが入ってるファイルのパス
 	static const std::string kBaseDirectory;
@@ -36,7 +46,7 @@ private: // 静的メンバ変数
 	// ルートシグネチャ
 	static Microsoft::WRL::ComPtr<ID3D12RootSignature> sRootSignature_;
 	// パイプラインステートオブジェクト
-	static Microsoft::WRL::ComPtr<ID3D12PipelineState> sPipelineState_;
+	static std::array<Microsoft::WRL::ComPtr<ID3D12PipelineState>, size_t(BlendMode::kCountBlendMode)> sPipelineStates_;
 	// ライト
 	static std::unique_ptr<LightGroup> lightGroup_;
 public: // 静的メンバ関数
@@ -68,7 +78,7 @@ public: // 静的メンバ関数
 	/// 描画前処理
 	/// </summary>
 	/// <param name="commandList">描画コマンドリスト</param>
-	static void PreDraw(ID3D12GraphicsCommandList* commandList);
+	static void PreDraw(ID3D12GraphicsCommandList* commandList, BlendMode blendMode);
 
 	/// <summary>
 	/// 描画後処理

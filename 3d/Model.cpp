@@ -14,7 +14,7 @@ const std::string Model::kDefaultModelName = "cube";
 UINT Model::sDescreptorHandleIncrementSize_ = 0;
 ID3D12GraphicsCommandList* Model::sCommandList_ = nullptr;
 Microsoft::WRL::ComPtr<ID3D12RootSignature> Model::sRootSignature_;
-Microsoft::WRL::ComPtr<ID3D12PipelineState> Model::sPipelineState_;
+std::array<Microsoft::WRL::ComPtr<ID3D12PipelineState>, size_t(Model::BlendMode::kCountBlendMode)> Model::sPipelineStates_;
 std::unique_ptr<LightGroup> Model::lightGroup_;
 ////
 
@@ -78,18 +78,10 @@ void Model::InitializeGraphicsPipeline() {
 
 	graphicsPipelineStateDesc.RasterizerState = rasterizerDesc;				//RsterizerState
 #pragma endregion
-#pragma region BlendStateの設定
 	graphicsPipelineStateDesc.DepthStencilState.DepthEnable = true;
 	graphicsPipelineStateDesc.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
 	graphicsPipelineStateDesc.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
 
-
-	//BlendStateの設定
-	D3D12_BLEND_DESC blendDesc{};
-	//全ての色要素を書き込む
-	blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
-	graphicsPipelineStateDesc.BlendState = blendDesc;						//BlendState
-#pragma endregion 
 	graphicsPipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 	//InputLayoutの設定
 	graphicsPipelineStateDesc.InputLayout.pInputElementDescs = inputElementDescs;
@@ -146,17 +138,80 @@ void Model::InitializeGraphicsPipeline() {
 		0, signatureBlob->GetBufferPointer(), signatureBlob->GetBufferSize(),
 		IID_PPV_ARGS(&sRootSignature_));
 	assert(SUCCEEDED(result));
+
+	graphicsPipelineStateDesc.pRootSignature = sRootSignature_.Get();		//RootSignature
 #pragma endregion
 
 
-#pragma region PSOの生成
-	graphicsPipelineStateDesc.pRootSignature = sRootSignature_.Get();		//RootSignature
+#pragma region BlendStateの設定
+#pragma region kNone
+	//BlendStateの設定
+	D3D12_BLEND_DESC blendDesc{};
+	//全ての色要素を書き込む
+	blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
+	blendDesc.RenderTarget[0].BlendEnable = false;
+	graphicsPipelineStateDesc.BlendState = blendDesc;						//BlendState
+	//実際に生成
+	result = DirectXCommon::GetInstance()->GetDevice()->CreateGraphicsPipelineState(&graphicsPipelineStateDesc,
+		IID_PPV_ARGS(&sPipelineStates_[size_t(BlendMode::kNone)]));
+	assert(SUCCEEDED(result));
+#pragma endregion
 
+#pragma region kNormal
+	blendDesc.RenderTarget[0].BlendEnable = true;
+	blendDesc.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
+	blendDesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
+	blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
+	blendDesc.RenderTarget[0].SrcBlendAlpha = D3D12_BLEND_ONE;
+	blendDesc.RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP_ADD;
+	blendDesc.RenderTarget[0].DestBlendAlpha = D3D12_BLEND_ZERO;
+	graphicsPipelineStateDesc.BlendState = blendDesc;
 
 	//実際に生成
 	result = DirectXCommon::GetInstance()->GetDevice()->CreateGraphicsPipelineState(&graphicsPipelineStateDesc,
-		IID_PPV_ARGS(&sPipelineState_));
+		IID_PPV_ARGS(&sPipelineStates_[size_t(BlendMode::kNormal)]));
 	assert(SUCCEEDED(result));
+#pragma endregion
+#pragma region kAdd
+
+	blendDesc.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
+	blendDesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
+	blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_ONE;
+	graphicsPipelineStateDesc.BlendState = blendDesc;
+
+	//実際に生成
+	result = DirectXCommon::GetInstance()->GetDevice()->CreateGraphicsPipelineState(&graphicsPipelineStateDesc,
+		IID_PPV_ARGS(&sPipelineStates_[size_t(BlendMode::kAdd)]));
+	assert(SUCCEEDED(result));
+#pragma endregion 
+
+#pragma region kSubtract
+
+	blendDesc.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
+	blendDesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_REV_SUBTRACT;
+	blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_ONE;
+	graphicsPipelineStateDesc.BlendState = blendDesc;
+
+	//実際に生成
+	result = DirectXCommon::GetInstance()->GetDevice()->CreateGraphicsPipelineState(&graphicsPipelineStateDesc,
+		IID_PPV_ARGS(&sPipelineStates_[size_t(BlendMode::kSubtract)]));
+	assert(SUCCEEDED(result));
+#pragma endregion 
+
+#pragma region kMultiply
+
+	blendDesc.RenderTarget[0].SrcBlend = D3D12_BLEND_ZERO;
+	blendDesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
+	blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_SRC_COLOR;
+	graphicsPipelineStateDesc.BlendState = blendDesc;
+
+	//実際に生成
+	result = DirectXCommon::GetInstance()->GetDevice()->CreateGraphicsPipelineState(&graphicsPipelineStateDesc,
+		IID_PPV_ARGS(&sPipelineStates_[size_t(BlendMode::kMultiply)]));
+	assert(SUCCEEDED(result));
+#pragma endregion 
+
+
 #pragma endregion
 }
 
@@ -176,7 +231,7 @@ Model* Model::CreateFlomObj(const std::string& modelname) {
 	return instance;
 }
 
-void Model::PreDraw(ID3D12GraphicsCommandList* commandList) {
+void Model::PreDraw(ID3D12GraphicsCommandList* commandList, BlendMode blendMode) {
 	// PreDrawとPostDrawが両方呼ばれていなければエラー
 	assert(Model::sCommandList_ == nullptr);
 
@@ -184,7 +239,7 @@ void Model::PreDraw(ID3D12GraphicsCommandList* commandList) {
 	sCommandList_ = commandList;
 
 	// パイプラインステートの設定
-	commandList->SetPipelineState(sPipelineState_.Get());
+	commandList->SetPipelineState(sPipelineStates_[size_t(blendMode)].Get());
 	// ルートシグネチャの設定
 	commandList->SetGraphicsRootSignature(sRootSignature_.Get());
 	// プリミティブ形状を設定

@@ -66,6 +66,8 @@ private:
 
 	Model* test_ = nullptr;
 
+
+
 	// テクスチャハンドル
 	uint32_t uvCheckTex_ = 0;
 	uint32_t whiteBaseTex_ = 0;

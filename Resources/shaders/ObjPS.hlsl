@@ -15,6 +15,12 @@ float4 main(VSOutput input) : SV_TARGET
 	
     float4 shadecolor = float4(ambientColor * ambient, m_alpha);
 	
+    if (texcolor.a <= 0.5)
+    {
+        discard;
+    }
+
+    
     for (int i = 0; i < DIRECTLIGHT_NUM; i++)
     {
         if (directLight[i].active)
@@ -31,6 +37,5 @@ float4 main(VSOutput input) : SV_TARGET
         }
     }
 	
-	
-        return shadecolor * texcolor;
+    return shadecolor * texcolor;
 }

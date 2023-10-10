@@ -33,7 +33,7 @@ void GameScene::Initialize() {
 	viewProjectionMatrix = MyMath::Multiply(viewMatrix, projectionMatrix);
 
 	// Spriteの生成
-	Sprite* sprite = SpriteCommon::Create(uvCheckTex_, { 500.0f, 500.0f}, 0.0f);
+	Sprite* sprite = Sprite::Create(uvCheckTex_, { 500.0f, 500.0f}, 0.0f);
 	sprites_.push_back(sprite);
 
 	Triangle* triangle_ = Triangle::Create(whiteBaseTex_, { 3.0f, 1.25f, 2.0f });
@@ -43,7 +43,7 @@ void GameScene::Initialize() {
 	triangles_.push_back(triangle_);
 	triangles_.push_back(texTriangle_);
 
-	test_ = Model::CreateFlomObj("plane");
+	test_ = Model::CreateFlomObj("fence");
 	worldTransform_.Initialize();
 	viewProjection_.Initialize();
 
@@ -53,6 +53,10 @@ void GameScene::Update() {
 	cameraMatrix = MyMath::MakeAffineMatrix(cScale, cRotate, cTranslate);
 	viewMatrix = MyMath::Inverse(cameraMatrix);
 	viewProjectionMatrix = MyMath::Multiply(viewMatrix, projectionMatrix);
+
+	ImGui::DragFloat3("3dModelScale", &worldTransform_.scale_.x, 1.0f);
+	ImGui::DragFloat3("3dModelRotate", &worldTransform_.rotation_.x, 1.0f);
+	ImGui::DragFloat3("3dModelTranslation", &worldTransform_.translation_.x, 1.0f);
 
 	worldTransform_.UpdateMatrix();
 	viewProjection_.UpdateMatrix();
@@ -138,30 +142,30 @@ ImGui::Begin("Debug", nullptr, ImGuiWindowFlags_MenuBar);
 		}
 
 	}
+
+
 	ImGui::End();
 }
 
 void GameScene::Draw() {
 	ID3D12GraphicsCommandList* commandList = dxCommon_->GetCommandList();
 
-	SpriteCommon::PreDraw(commandList);
-	//この間に背景スプライトの描画を入れる
-	for (Sprite* sprite : sprites_) {
-		sprite->Draw();
-	}
-	SpriteCommon::PostDraw();
+	//SpriteCommon::PreDraw(commandList, SpriteCommon::BlendMode::kAdd);
+	////この間に背景スプライトの描画を入れる
+	//for (Sprite* sprite : sprites_) {
+	//	sprite->Draw();
+	//}
+	//SpriteCommon::PostDraw();
 
 
 	dxCommon_->ClearDepthBuffer();
 	
 	
-	
-	Model::PreDraw(commandList);
+	Model::PreDraw(commandList, Model::BlendMode::kAdd);
 
 	test_->Draw(worldTransform_, viewProjection_);
 
 	Model::PostDraw();
-
 
 	Triangle::PreDraw(commandList);
 	for (Triangle* triangle : triangles_) {
@@ -169,12 +173,13 @@ void GameScene::Draw() {
 	}
 	Triangle::PostDraw();
 
-
-	SpriteCommon::PreDraw(commandList);
+	Sprite::PreDraw(commandList);
+	
 	//この間に背景スプライトの描画を入れる
 	for (Sprite* sprite : sprites_) {
-		sprite->Draw();
+		sprite->Draw(Sprite::BlendMode::kAdd);
 	}
-	SpriteCommon::PostDraw();
+
+	Sprite::PostDraw();
 
 }
