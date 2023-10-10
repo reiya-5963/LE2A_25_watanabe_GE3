@@ -11,6 +11,16 @@ class Sprite;
 
 class SpriteCommon {
 public:
+	enum class BlendMode{
+		kNone,
+		kAdd,
+		kSubtract,
+		kMultiply,
+		kScreen,
+		BlendModeCount
+	};
+
+public:
 
 	/// <summary>
 	/// シングルトンインスタンスの取得
@@ -63,7 +73,7 @@ private:
 	~SpriteCommon() = default;
 	SpriteCommon(const SpriteCommon&) = delete;
 	const SpriteCommon& operator = (const SpriteCommon&) = delete;
-
+	
 private:
 	//デバイス
 	static ID3D12Device* sDevice_;
@@ -71,8 +81,8 @@ private:
 	static ID3D12GraphicsCommandList* sCommandList_;
 	//ルートシグネチャ
 	static Microsoft::WRL::ComPtr<ID3D12RootSignature> sRootSignature_;
-	//パイプラインステート
-	static Microsoft::WRL::ComPtr<ID3D12PipelineState> sPipelineState_;
+	//パイプラインステート(ブレンドモードの数分)
+	static std::array<Microsoft::WRL::ComPtr<ID3D12PipelineState>, size_t(BlendMode::BlendModeCount)>sPipelineStates_;
 	//射影行列(消す予定)
 	static Matrix4x4 sMatProjection_;
 

@@ -42,10 +42,8 @@ void MyGame::Initialize() {
 	// 1x1の白画像を読み込む
 	TextureManager::Load("white1x1.png");
 
-	SpriteCommon* spCommon = SpriteCommon::GetInstance();
-
 	// スプライトの静的初期化
-	spCommon->Initialize(WinApp::kWindowWidth, WinApp::kWindowHeight);
+	Sprite::StaticInitialize(WinApp::kWindowWidth, WinApp::kWindowHeight);
 	Triangle::StaticInitialize(dxCommon_->GetDevice(), WinApp::kWindowWidth, WinApp::kWindowHeight);
 	Model::StaticInitialize();
 #pragma endregion
