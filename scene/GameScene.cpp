@@ -43,7 +43,7 @@ void GameScene::Initialize() {
 	triangles_.push_back(triangle_);
 	triangles_.push_back(texTriangle_);
 
-	test_ = Model::CreateFlomObj("skydome");
+	test_ = Model::CreateFlomObj("plane");
 	worldTransform_.Initialize();
 	viewProjection_.Initialize();
 

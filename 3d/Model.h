@@ -22,8 +22,10 @@ public: // 列挙子
 		kLight,				// ライト
 	};
 
-private: 
+private: // 静的メンバ定数
+	// リソースデータが入ってるファイルのパス
 	static const std::string kBaseDirectory;
+	// 基本はこのモデルを読み込む
 	static const std::string kDefaultModelName;
 
 private: // 静的メンバ変数
@@ -49,68 +51,68 @@ public: // 静的メンバ関数
 	static void InitializeGraphicsPipeline();
 
 	/// <summary>
-	/// 
+	/// モデルの生成
 	/// </summary>
-	/// <returns></returns>
+	/// <returns>モデル</returns>
 	static Model* Create();
 
 	/// <summary>
-	/// 
+	/// .objからモデルを生成
 	/// </summary>
-	/// <param name="modelname"></param>
-	/// <param name="smoothing"></param>
-	/// <returns></returns>
+	/// <param name="modelname">.obj, .mtlがあるファイルの名前(オブジェクト名)</param>
+	/// <param name="smoothing">現在無効</param>
+	/// <returns>モデル</returns>
 	static Model* CreateFlomObj(const std::string& modelname);
 
 	/// <summary>
-	/// 
+	/// 描画前処理
 	/// </summary>
-	/// <param name="commandList"></param>
+	/// <param name="commandList">描画コマンドリスト</param>
 	static void PreDraw(ID3D12GraphicsCommandList* commandList);
 
 	/// <summary>
-	/// 
+	/// 描画後処理
 	/// </summary>
 	static void PostDraw();
-public:
+public: // メンバ関数
 
 	/// <summary>
-	/// 
+	/// デストラクタ
 	/// </summary>
 	~Model();
 
 	/// <summary>
-	/// 
+	/// 初期化処理
 	/// </summary>
-	/// <param name="modelname"></param>
-	/// <param name="smoothing"></param>
+	/// <param name="modelname">.obj, .mtlがあるファイルの名前(オブジェクト名)</param>
+	/// <param name="smoothing">現在無効</param>
 	void Initialize(const std::string& modelname);
 	
 	/// <summary>
-	/// 
+	/// 描画処理
 	/// </summary>
-	/// <param name="worldTransform"></param>
-	/// <param name="viewProjection"></param>
+	/// <param name="worldTransform">ワールド変換データ</param>
+	/// <param name="viewProjection">ビュープロジェクション</param>
 	void Draw(
 		const WorldTransform& worldTransform, const ViewProjection& viewProjection);
 
 	/// <summary>
-	/// 
+	/// 描画処理(テクスチャ変更)
 	/// </summary>
-	/// <param name="worldTransform"></param>
-	/// <param name="viewProjection"></param>
-	/// <param name="textireHandle"></param>
+	/// <param name="worldTransform">ワールド変換データ</param>
+	/// <param name="viewProjection">ビュープロジェクション</param>
+	/// <param name="textireHandle">テクスチャハンドル</param>
 	void Draw(
 		const WorldTransform& worldTransform, const ViewProjection& viewProjection,
 		uint32_t textireHandle);
 
 	/// <summary>
-	/// 
+	/// メッシュのコンテナを取得
 	/// </summary>
 	/// <returns></returns>
 	inline const std::vector<Mesh*>& GetMeshes() { return meshes_; }
 
-private:
+private: // メンバ変数
 	// 名前
 	std::string name_;
 	// メッシュコンテナ
@@ -119,29 +121,29 @@ private:
 	std::unordered_map<std::string, Material*> materials_;
 	// デフォルトマテリアル
 	Material* defaultMaterial_ = nullptr;
-private:
+private: // 非公開メンバ関数
 	/// <summary>
-	/// 
+	/// モデルデータの読み込み
 	/// </summary>
-	/// <param name="modelname"></param>
-	/// <param name="smoothing"></param>
+	/// <param name="modelname">.obj, .mtlがあるファイルの名前(オブジェクト名)</param>
+	/// <param name="smoothing">現在無効</param>
 	void LoadModel(const std::string& modelname);
 
 	/// <summary>
-	/// 
+	/// マテリアルデータの読み込み
 	/// </summary>
-	/// <param name="directoryPath"></param>
-	/// <param name="filename"></param>
+	/// <param name="directoryPath">オブジェクトファイルがあるパス</param>
+	/// <param name="filename">.obj, .mtlがあるファイルの名前(オブジェクト名)</param>
 	void LoadMaterial(const std::string& directoryPath, const std::string& filename);
 
 	/// <summary>
-	/// 
+	/// マテリアルをコンテナに追加
 	/// </summary>
 	/// <param name="material"></param>
 	void AddMaterial(Material* material);
 
 	/// <summary>
-	/// 
+	/// テクスチャの読み込み
 	/// </summary>
 	void LoadTextures();
 };

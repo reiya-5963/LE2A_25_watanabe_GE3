@@ -8,7 +8,7 @@
 #include <sstream>
 
 
-///
+/// 静的な変数
 const std::string Model::kBaseDirectory = "Resources/";
 const std::string Model::kDefaultModelName = "cube";
 UINT Model::sDescreptorHandleIncrementSize_ = 0;
@@ -261,7 +261,6 @@ void Model::Draw(const WorldTransform& worldTransform, const ViewProjection& vie
 	}
 
 }
-
 
 void Model::Draw(const WorldTransform& worldTransform, const ViewProjection& viewProjection, uint32_t textireHandle) {
 
