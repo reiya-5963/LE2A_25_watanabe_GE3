@@ -5,9 +5,9 @@
 #include <d3d12.h>
 #include <wrl.h>
 
-
+// 定数バッファ用データ構造体
 struct ConstBufferDataWorldTransform {
-	Matrix4x4 matWorld;
+	Matrix4x4 matWorld;	// ローカル => ワールド変換行列
 };
 
 /// <summary>

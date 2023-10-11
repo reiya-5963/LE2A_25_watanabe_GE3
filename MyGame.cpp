@@ -49,6 +49,8 @@ void MyGame::Initialize() {
 #pragma endregion
 
 #pragma endregion
+	// グローバル変数の読み込み
+	GlobalVariables::GetInstance()->LoadFiles();
 
 	// ゲームシーンの初期化処理
 	gameScene_ = new GameScene();
@@ -72,6 +74,9 @@ void MyGame::Update() {
 
 	// ImGuiの前処理
 	imGuiManager_->Begin();
+
+	// グローバル変数の更新
+	GlobalVariables::GetInstance()->Update();
 
 	// ゲームシーンの更新処理
 	gameScene_->Update();

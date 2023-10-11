@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "DXCommon.h"
 #include "GameScene.h"
+#include "GlobalVariables.h"
 
 #include "ImGuiManager.h"
 #include "TextureManager.h"

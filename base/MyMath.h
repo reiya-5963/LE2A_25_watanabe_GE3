@@ -70,6 +70,7 @@ public:
 	/// <param name="matrix">行列</param>
 	/// <returns></returns>
 	static Vector3 TransformCoord(Vector3 vector, Matrix4x4 matrix);
+	static Vector3 TransformNormal(const Vector3& v, const Matrix4x4& m);
 
 	/// <summary>
 	/// 正射影ベクトル

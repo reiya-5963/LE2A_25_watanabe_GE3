@@ -52,7 +52,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <TreatWarningAsError>true</TreatWarningAsError>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>.\2d;.\3d;.\base;.\input;.\scene;.\externals\imgui;.\externals\DirectXTex;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)2d;$(ProjectDir)3d;$(ProjectDir)base;$(ProjectDir)input;$(ProjectDir)scene;$(ProjectDir)externals\imgui;$(ProjectDir)externals\DirectXTex;$(ProjectDir);$(ProjectDir)externals\nlohmann;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -76,7 +76,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <LanguageStandard>stdcpp20</LanguageStandard>
       <TreatWarningAsError>true</TreatWarningAsError>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>.\2d;.\3d;.\base;.\input;.\scene;.\externals\imgui;.\externals\DirectXTex;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)2d;$(ProjectDir)3d;$(ProjectDir)base;$(ProjectDir)input;$(ProjectDir)scene;$(ProjectDir)externals\imgui;$(ProjectDir)externals\DirectXTex;$(ProjectDir);$(ProjectDir)externals\nlohmann;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -93,7 +93,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="2d\Sprite.cpp" />
-    <ClCompile Include="2d\SpriteCommon.cpp" />
     <ClCompile Include="3d\DirectionalLight.cpp" />
     <ClCompile Include="3d\LightGroup.cpp" />
     <ClCompile Include="3d\Material.cpp" />
@@ -103,6 +102,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="3d\viewProjection.cpp" />
     <ClCompile Include="3d\WorldTransform.cpp" />
     <ClCompile Include="audio.cpp" />
+    <ClCompile Include="BaseCharacter.cpp" />
     <ClCompile Include="base\DXCManager.cpp" />
     <ClCompile Include="base\DXCommon.cpp" />
     <ClCompile Include="base\ImGuiManager.cpp" />
@@ -118,15 +118,18 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="externals\imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="externals\imgui\imgui_tables.cpp" />
     <ClCompile Include="externals\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="FollowCamera.cpp" />
     <ClCompile Include="Framework.cpp" />
+    <ClCompile Include="GlobalVariables.cpp" />
+    <ClCompile Include="Ground.cpp" />
     <ClCompile Include="input\Input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MyGame.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="scene\GameScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2d\Sprite.h" />
-    <ClInclude Include="2d\SpriteCommon.h" />
     <ClInclude Include="3d\DirectionalLight.h" />
     <ClInclude Include="3d\LightGroup.h" />
     <ClInclude Include="3d\Material.h" />
@@ -136,6 +139,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="3d\viewProjection.h" />
     <ClInclude Include="3d\WorldTransform.h" />
     <ClInclude Include="audio.h" />
+    <ClInclude Include="BaseCharacter.h" />
     <ClInclude Include="base\DXCManager.h" />
     <ClInclude Include="base\DXCommon.h" />
     <ClInclude Include="base\ImGuiManager.h" />
@@ -154,9 +158,13 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="externals\imgui\imstb_rectpack.h" />
     <ClInclude Include="externals\imgui\imstb_textedit.h" />
     <ClInclude Include="externals\imgui\imstb_truetype.h" />
+    <ClInclude Include="FollowCamera.h" />
     <ClInclude Include="Framework.h" />
+    <ClInclude Include="GlobalVariables.h" />
+    <ClInclude Include="Ground.h" />
     <ClInclude Include="input\Input.h" />
     <ClInclude Include="MyGame.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="scene\GameScene.h" />
   </ItemGroup>
   <ItemGroup>

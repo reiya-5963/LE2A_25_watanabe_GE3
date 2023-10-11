@@ -9,6 +9,11 @@
 #include "Triangle.h"
 
 
+#include <memory>
+#include "Ground.h"
+#include "Player.h"
+#include "FollowCamera.h"
+
 /// <summary>
 /// ゲームシーン
 /// </summary>
@@ -43,35 +48,18 @@ public:
 private:
 	// dxCommon
 	DirectXCommon* dxCommon_ = nullptr;
-	
-	// camera
-	Vector3 cScale{};
-	Vector3 cRotate{};
-	Vector3 cTranslate{};
-	Matrix4x4 cameraMatrix{};
-	Matrix4x4 viewMatrix{};
-	Matrix4x4 projectionMatrix{};
-	Matrix4x4 viewProjectionMatrix{};
-
-
-	// スプライト
-	std::vector<Sprite*> sprites_;
-	// 最大数
-	static const int kMaxSprite_ = 10;
-
-	// 三角形
-	std::vector<Triangle*> triangles_;
-	// 最大数
-	static const int kMaxTriangle_ = 10;
-
-	Model* test_ = nullptr;
-
-
+	Input* input_ = nullptr;	
 
 	// テクスチャハンドル
-	uint32_t uvCheckTex_ = 0;
-	uint32_t whiteBaseTex_ = 0;
-
-	WorldTransform worldTransform_;
+	uint32_t textureHandle_ = 0u;
+	// モデル
+	std::unique_ptr<Model> model_ = nullptr;
+	// ビュープロジェクション
 	ViewProjection viewProjection_;
+
+
+	// プレイヤー
+	std::unique_ptr<Player> player_ = nullptr;
+
+
 };

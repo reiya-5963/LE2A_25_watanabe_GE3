@@ -320,7 +320,7 @@ void Model::Draw(const WorldTransform& worldTransform, const ViewProjection& vie
 void Model::Draw(const WorldTransform& worldTransform, const ViewProjection& viewProjection, uint32_t textireHandle) {
 
 	// ライトの描画
-	//lightGroup_->Draw(sCommandList_, static_cast<UINT>(RootParameter::kLight));
+	lightGroup_->Draw(sCommandList_, static_cast<UINT>(RootParameter::kLight));
 
 
 	// CBVをセット (ワールド行列)

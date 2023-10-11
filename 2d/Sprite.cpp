@@ -125,8 +125,6 @@ void Sprite::StaticInitialize(int windowWidth, int windowHeight, const std::wstr
 
 #pragma endregion
 
-
-
 #pragma region BlendStateの設定
 
 #pragma region kNone
@@ -433,8 +431,6 @@ void Sprite::TransferVertices() {
 		vertices[RT].uv = { texRight, texTop };
 	}
 
-
-
 	//バッファに転送
 	memcpy(vertexMap_, vertices, sizeof(vertices));
 }
@@ -462,7 +458,6 @@ void Sprite::SetTextureRect(const Vector2& texBase, const Vector2 texSize) {
 	texBase_ = texBase;
 	texSize_ = texSize;
 	TransferVertices();
-
 }
 
 void Sprite::SetTextureHandle(uint32_t textureHandle) {
