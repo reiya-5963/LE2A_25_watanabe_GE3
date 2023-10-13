@@ -2,54 +2,63 @@
 #include "MyMath.h"
 #include "input/Input.h"
 
-void FollowCamera::Initialize() { 
+void FollowCamera::Initialize() {
 	//ビュープロジェクションの初期化
 	viewProjection_.Initialize();
-	
 }
 
 void FollowCamera::Update() {
-	
-	//XINPUT_STATE joyState;
-	//// もしコントローラーでのプレイなら
-	//if (Input::GetInstance()->GetJoystickState(0, joyState)) {
-	//	//
-	//	float speed = 0.2f;
 
-	//	viewProjection_.rotation_.y += (float)joyState.Gamepad.sThumbRX / SHRT_MAX * speed;
+	// 現在のマウス位置を取得
+	GetCursorPos(&mousePos_);
 
-	//}
-	//// そうでないならキーマウ
-	//else {
-		GetCursorPos(&mousePos_);
+	// 初期位置から動かした距離を求める
+	xMouseDistance = float(mousePos_.x) - float(WinApp::kWindowWidth / 2);
+	yMouseDistance = float(mousePos_.y) - float(WinApp::kWindowHeight / 2);
 
-		HWND hwnd = WinApp::GetInstance()->GetHwnd();
-		ScreenToClient(hwnd, &mousePos_);
+	// 左右に視点を動かすなら
+	if (xMouseDistance != 0.0f) {
+		viewProjection_.rotation_.y += xMouseDistance * move_mouseSpeed;
+	}
+	// 上下に視点を動かすなら
+	if (yMouseDistance != 0.0f) {
+		viewProjection_.rotation_.x += yMouseDistance * move_mouseSpeed;
+	}
 
-		float speed = 0.003f;
+	// カーソルを固定
+	//SetCursorPos(int(WinApp::kWindowWidth / 2), int(WinApp::kWindowHeight / 2));
 
-		float mouseDistance = float(mousePos_.x) - float(preMousePos_.x);
-
-		viewProjection_.rotation_.y += mouseDistance * speed;
-		preMousePos_ = mousePos_;
-	//}
+	// 視点を上、もしくは下に動かしたときの上限
+	if (viewProjection_.rotation_.x > 1.0f) {
+		viewProjection_.rotation_.x = 1.0f;
+	}
+	if (viewProjection_.rotation_.x < -1.0f) {
+		viewProjection_.rotation_.x = -1.0f;
+	}
 
 
 	// もし追従対象がいれば
 	if (target_) {
-		// 追従対象からカメラまでのオフセット
-		Vector3 offset = {0.0f, 100.0f, -100.0f};
+		// ターゲットとカメラの距離
+		if (isFps_) {
+			offset_ = fpsView_;
+		}
+		else if (!isFps_) {
+			offset_ = tpsView_;
+		}
 
+		// 回転行列の生成
 		Matrix4x4 rotateMat = MyMath::Multiply(
-		    MyMath::Multiply(
-		        MyMath::MakeRotateXMatrix(viewProjection_.rotation_.x),
-		        MyMath::MakeRotateYMatrix(viewProjection_.rotation_.y)),
-		    MyMath::MakeRotateZMatrix(viewProjection_.rotation_.z));
+			MyMath::Multiply(
+				MyMath::MakeRotateXMatrix(viewProjection_.rotation_.x),
+				MyMath::MakeRotateYMatrix(viewProjection_.rotation_.y)),
+			MyMath::MakeRotateZMatrix(viewProjection_.rotation_.z));
 
-		offset = MyMath::TransformNormal(offset, rotateMat);
+		// 回転行列でどの方向を見ても同じ距離になるよう調整
+		offset_ = MyMath::TransformNormal(offset_, rotateMat);
 
-		// 座標をコピーしてオフセット分ずらす
-		viewProjection_.translation_ = MyMath::Add(target_->translation_, offset);
+		// ターゲットから調整した距離分を加算
+		viewProjection_.translation_ = MyMath::Add(target_->translation_, offset_);
 	}
 
 	// ビュー行列の更新と転送

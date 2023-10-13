@@ -92,6 +92,13 @@ Vector3 MyMath::ClosestPoint(const Vector3& point, const Segment& segment) {
 }
 Vector3 MyMath::Normalize(const Vector3& v) {
 	Vector3 result{};
+	if (v.x == 0.0f && v.y == 0.0f && v.z == 0.0f) {
+		result.x = 0.0f;
+		result.y = 0.0f;
+		result.z = 0.0f;
+		return result;
+	}
+
 	result.x = v.x / Length(v);
 	result.y = v.y / Length(v);
 	result.z = v.z / Length(v);

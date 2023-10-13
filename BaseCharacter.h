@@ -4,11 +4,12 @@
 #include "Model.h"
 #include "WorldTransform.h"
 #include "ViewProjection.h"
+#include "Collider.h"
 
 /// <summary>
 /// ベースキャラクター
 /// </summary>
-class BaseCharacter {
+class BaseCharacter : public Collider {
 public:
 
 	/// <summary>

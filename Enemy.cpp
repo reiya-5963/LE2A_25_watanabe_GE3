@@ -8,6 +8,8 @@ void Enemy::Initialize(const std::vector<Model*>& models) {
 
 	//
 	BaseCharacter::Initialize(models);
+	SetCollisionAttribute(kCollisionAttributeEnemy);
+	SetCollisionMask(!kCollisionAttributeEnemy);
 
 	//
 	worldTransform_body_.Initialize();
@@ -47,4 +49,15 @@ void Enemy::Draw(const ViewProjection& viewProjection) {
 	models_[ModelIndexIceWeapon]->Draw(worldTransform_i_weapon_, viewProjection);
 
 
+}
+
+void Enemy::OnCollision() {
+}
+
+Vector3 Enemy::GetWorldPosition() {
+	Vector3 result{};
+	result.x = worldTrans_.matWorld_.m[3][0];
+	result.y = worldTrans_.matWorld_.m[3][1];
+	result.z = worldTrans_.matWorld_.m[3][2];
+	return result;
 }
