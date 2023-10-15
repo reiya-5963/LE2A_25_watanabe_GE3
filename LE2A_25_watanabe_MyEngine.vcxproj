@@ -43,6 +43,14 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)..\Generated\Outputs\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)..\Generated\Obj\$(ProjectName)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)..\Generated\Outputs\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)..\Generated\Obj\$(ProjectName)\$(Configuration)\</IntDir>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
@@ -52,7 +60,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <TreatWarningAsError>true</TreatWarningAsError>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>$(ProjectDir)2d;$(ProjectDir)3d;$(ProjectDir)base;$(ProjectDir)input;$(ProjectDir)scene;$(ProjectDir)externals\imgui;$(ProjectDir)externals\DirectXTex;$(ProjectDir);$(ProjectDir)externals\nlohmann;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)DirectXGame;$(ProjectDir)DirectXGame\RayEngine;$(ProjectDir)DirectXGame\RayEngine\2d;$(ProjectDir)DirectXGame\RayEngine\3d;$(ProjectDir)DirectXGame\RayEngine\Audio;$(ProjectDir)DirectXGame\RayEngine\Base;$(ProjectDir)DirectXGame\RayEngine\Collision;$(ProjectDir)DirectXGame\RayEngine\Framework;$(ProjectDir)DirectXGame\RayEngine\Input;$(ProjectDir)DirectXGame\RayEngine\Scene;$(ProjectDir)DirectXGame\Application;$(ProjectDir)DirectXGame\Application\Camera;$(ProjectDir)DirectXGame\Application\Character;$(ProjectDir)DirectXGame\Application\Scene;$(ProjectDir)DirectXGame\Application\World;$(ProjectDir)Externals\DirectXTex;$(ProjectDir)Externals\imgui;$(ProjectDir)Externals\nlohmann;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -76,7 +84,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <LanguageStandard>stdcpp20</LanguageStandard>
       <TreatWarningAsError>true</TreatWarningAsError>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>$(ProjectDir)2d;$(ProjectDir)3d;$(ProjectDir)base;$(ProjectDir)input;$(ProjectDir)scene;$(ProjectDir)externals\imgui;$(ProjectDir)externals\DirectXTex;$(ProjectDir);$(ProjectDir)externals\nlohmann;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)DirectXGame;$(ProjectDir)DirectXGame\RayEngine;$(ProjectDir)DirectXGame\RayEngine\2d;$(ProjectDir)DirectXGame\RayEngine\3d;$(ProjectDir)DirectXGame\RayEngine\Audio;$(ProjectDir)DirectXGame\RayEngine\Base;$(ProjectDir)DirectXGame\RayEngine\Collision;$(ProjectDir)DirectXGame\RayEngine\Framework;$(ProjectDir)DirectXGame\RayEngine\Input;$(ProjectDir)DirectXGame\RayEngine\Scene;$(ProjectDir)DirectXGame\Application;$(ProjectDir)DirectXGame\Application\Camera;$(ProjectDir)DirectXGame\Application\Character;$(ProjectDir)DirectXGame\Application\Scene;$(ProjectDir)DirectXGame\Application\World;$(ProjectDir)Externals\DirectXTex;$(ProjectDir)Externals\imgui;$(ProjectDir)Externals\nlohmann;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -92,89 +100,98 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="2d\Sprite.cpp" />
-    <ClCompile Include="3d\DirectionalLight.cpp" />
-    <ClCompile Include="3d\LightGroup.cpp" />
-    <ClCompile Include="3d\Material.cpp" />
-    <ClCompile Include="3d\Mesh.cpp" />
-    <ClCompile Include="3d\Model.cpp" />
-    <ClCompile Include="3d\Triangle.cpp" />
-    <ClCompile Include="3d\viewProjection.cpp" />
-    <ClCompile Include="3d\WorldTransform.cpp" />
-    <ClCompile Include="audio.cpp" />
-    <ClCompile Include="BaseCharacter.cpp" />
-    <ClCompile Include="base\DXCManager.cpp" />
-    <ClCompile Include="base\DXCommon.cpp" />
-    <ClCompile Include="base\ImGuiManager.cpp" />
-    <ClCompile Include="base\MyD3D12Create.cpp" />
-    <ClCompile Include="base\MyLog.cpp" />
-    <ClCompile Include="base\MyMath.cpp" />
-    <ClCompile Include="base\TextureManager.cpp" />
-    <ClCompile Include="base\WinApp.cpp" />
-    <ClCompile Include="Collider.cpp" />
-    <ClCompile Include="CollisionManager.cpp" />
-    <ClCompile Include="Enemy.cpp" />
-    <ClCompile Include="externals\imgui\imgui.cpp" />
-    <ClCompile Include="externals\imgui\imgui_demo.cpp" />
-    <ClCompile Include="externals\imgui\imgui_draw.cpp" />
-    <ClCompile Include="externals\imgui\imgui_impl_dx12.cpp" />
-    <ClCompile Include="externals\imgui\imgui_impl_win32.cpp" />
-    <ClCompile Include="externals\imgui\imgui_tables.cpp" />
-    <ClCompile Include="externals\imgui\imgui_widgets.cpp" />
-    <ClCompile Include="FollowCamera.cpp" />
-    <ClCompile Include="Framework.cpp" />
-    <ClCompile Include="GlobalVariables.cpp" />
-    <ClCompile Include="Ground.cpp" />
-    <ClCompile Include="input\Input.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="MyGame.cpp" />
-    <ClCompile Include="Player.cpp" />
-    <ClCompile Include="scene\GameScene.cpp" />
-    <ClCompile Include="skydome.cpp" />
+    <ClCompile Include="DIrectXGame\RayEngine\2d\Sprite.cpp" />
+    <ClCompile Include="DIrectXGame\RayEngine\3d\DirectionalLight.cpp" />
+    <ClCompile Include="DIrectXGame\RayEngine\3d\LightGroup.cpp" />
+    <ClCompile Include="DIrectXGame\RayEngine\3d\Material.cpp" />
+    <ClCompile Include="DIrectXGame\RayEngine\3d\Mesh.cpp" />
+    <ClCompile Include="DIrectXGame\RayEngine\3d\Model.cpp" />
+    <ClCompile Include="DIrectXGame\RayEngine\3d\Triangle.cpp" />
+    <ClCompile Include="DIrectXGame\RayEngine\3d\viewProjection.cpp" />
+    <ClCompile Include="DIrectXGame\RayEngine\3d\WorldTransform.cpp" />
+    <ClCompile Include="DIrectXGame\RayEngine\Audio\audio.cpp" />
+    <ClCompile Include="DIrectXGame\Application\Character\BaseCharacter.cpp" />
+    <ClCompile Include="DIrectXGame\RayEngine\Scene\BaseScene.cpp" />
+    <ClCompile Include="DIrectXGame\RayEngine\Base\DXCManager.cpp" />
+    <ClCompile Include="DIrectXGame\RayEngine\Base\DXCommon.cpp" />
+    <ClCompile Include="DIrectXGame\RayEngine\Base\ImGuiManager.cpp" />
+    <ClCompile Include="DIrectXGame\RayEngine\Base\MyD3D12Create.cpp" />
+    <ClCompile Include="DIrectXGame\RayEngine\Base\MyLog.cpp" />
+    <ClCompile Include="DIrectXGame\RayEngine\Base\MyMath.cpp" />
+    <ClCompile Include="DIrectXGame\RayEngine\Base\TextureManager.cpp" />
+    <ClCompile Include="DIrectXGame\RayEngine\Base\WinApp.cpp" />
+    <ClCompile Include="DIrectXGame\RayEngine\Collision\Collider.cpp" />
+    <ClCompile Include="DIrectXGame\RayEngine\Collision\CollisionManager.cpp" />
+    <ClCompile Include="DIrectXGame\Application\Character\Enemy.cpp" />
+    <ClCompile Include="Externals\imgui\imgui.cpp" />
+    <ClCompile Include="Externals\imgui\imgui_demo.cpp" />
+    <ClCompile Include="Externals\imgui\imgui_draw.cpp" />
+    <ClCompile Include="Externals\imgui\imgui_impl_dx12.cpp" />
+    <ClCompile Include="Externals\imgui\imgui_impl_win32.cpp" />
+    <ClCompile Include="Externals\imgui\imgui_tables.cpp" />
+    <ClCompile Include="Externals\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="DIrectXGame\Application\Camera\FollowCamera.cpp" />
+    <ClCompile Include="DIrectXGame\RayEngine\Framework\Framework.cpp" />
+    <ClCompile Include="DIrectXGame\RayEngine\GlobalVariables.cpp" />
+    <ClCompile Include="DIrectXGame\Application\World\Ground.cpp" />
+    <ClCompile Include="DIrectXGame\RayEngine\Input\Input.cpp" />
+    <ClCompile Include="DIrectXGame\main.cpp" />
+    <ClCompile Include="DIrectXGame\Application\MyGame.cpp" />
+    <ClCompile Include="DIrectXGame\Application\Character\Player.cpp" />
+    <ClCompile Include="DIrectXGame\RayEngine\Scene\SceneFactory.cpp" />
+    <ClCompile Include="DIrectXGame\RayEngine\Scene\SceneManager.cpp" />
+    <ClCompile Include="DIrectXGame\Application\Scene\GameScene.cpp" />
+    <ClCompile Include="DIrectXGame\Application\World\skydome.cpp" />
+    <ClCompile Include="DIrectXGame\Application\Scene\TitleScene.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="2d\Sprite.h" />
-    <ClInclude Include="3d\DirectionalLight.h" />
-    <ClInclude Include="3d\LightGroup.h" />
-    <ClInclude Include="3d\Material.h" />
-    <ClInclude Include="3d\Mesh.h" />
-    <ClInclude Include="3d\Model.h" />
-    <ClInclude Include="3d\Triangle.h" />
-    <ClInclude Include="3d\viewProjection.h" />
-    <ClInclude Include="3d\WorldTransform.h" />
-    <ClInclude Include="audio.h" />
-    <ClInclude Include="BaseCharacter.h" />
-    <ClInclude Include="base\DXCManager.h" />
-    <ClInclude Include="base\DXCommon.h" />
-    <ClInclude Include="base\ImGuiManager.h" />
-    <ClInclude Include="base\MyD3D12Create.h" />
-    <ClInclude Include="base\MyLog.h" />
-    <ClInclude Include="base\MyMath.h" />
-    <ClInclude Include="base\MyStruct.h" />
-    <ClInclude Include="base\SafeDelete.h" />
-    <ClInclude Include="base\TextureManager.h" />
-    <ClInclude Include="base\WinApp.h" />
-    <ClInclude Include="Collider.h" />
-    <ClInclude Include="CollisionConfig.h" />
-    <ClInclude Include="CollisionManager.h" />
-    <ClInclude Include="Enemy.h" />
-    <ClInclude Include="externals\imgui\imconfig.h" />
-    <ClInclude Include="externals\imgui\imgui.h" />
-    <ClInclude Include="externals\imgui\imgui_impl_dx12.h" />
-    <ClInclude Include="externals\imgui\imgui_impl_win32.h" />
-    <ClInclude Include="externals\imgui\imgui_internal.h" />
-    <ClInclude Include="externals\imgui\imstb_rectpack.h" />
-    <ClInclude Include="externals\imgui\imstb_textedit.h" />
-    <ClInclude Include="externals\imgui\imstb_truetype.h" />
-    <ClInclude Include="FollowCamera.h" />
-    <ClInclude Include="Framework.h" />
-    <ClInclude Include="GlobalVariables.h" />
-    <ClInclude Include="Ground.h" />
-    <ClInclude Include="input\Input.h" />
-    <ClInclude Include="MyGame.h" />
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="scene\GameScene.h" />
-    <ClInclude Include="skydome.h" />
+    <ClInclude Include="DIrectXGame\RayEngine\2d\Sprite.h" />
+    <ClInclude Include="DIrectXGame\RayEngine\3d\DirectionalLight.h" />
+    <ClInclude Include="DIrectXGame\RayEngine\3d\LightGroup.h" />
+    <ClInclude Include="DIrectXGame\RayEngine\3d\Material.h" />
+    <ClInclude Include="DIrectXGame\RayEngine\3d\Mesh.h" />
+    <ClInclude Include="DIrectXGame\RayEngine\3d\Model.h" />
+    <ClInclude Include="DIrectXGame\RayEngine\3d\Triangle.h" />
+    <ClInclude Include="DIrectXGame\RayEngine\3d\viewProjection.h" />
+    <ClInclude Include="DIrectXGame\RayEngine\3d\WorldTransform.h" />
+    <ClInclude Include="DIrectXGame\RayEngine\Scene\AbstractSceneFactory.h" />
+    <ClInclude Include="DIrectXGame\RayEngine\Audio\audio.h" />
+    <ClInclude Include="DIrectXGame\Application\Character\BaseCharacter.h" />
+    <ClInclude Include="DIrectXGame\RayEngine\Scene\BaseScene.h" />
+    <ClInclude Include="DIrectXGame\RayEngine\Base\DXCManager.h" />
+    <ClInclude Include="DIrectXGame\RayEngine\Base\DXCommon.h" />
+    <ClInclude Include="DIrectXGame\RayEngine\Base\ImGuiManager.h" />
+    <ClInclude Include="DIrectXGame\RayEngine\Base\MyD3D12Create.h" />
+    <ClInclude Include="DIrectXGame\RayEngine\Base\MyLog.h" />
+    <ClInclude Include="DIrectXGame\RayEngine\Base\MyMath.h" />
+    <ClInclude Include="DIrectXGame\RayEngine\Base\MyStruct.h" />
+    <ClInclude Include="DIrectXGame\RayEngine\Base\SafeDelete.h" />
+    <ClInclude Include="DIrectXGame\RayEngine\Base\TextureManager.h" />
+    <ClInclude Include="DIrectXGame\RayEngine\Base\WinApp.h" />
+    <ClInclude Include="DIrectXGame\RayEngine\Collision\Collider.h" />
+    <ClInclude Include="DIrectXGame\RayEngine\Collision\CollisionConfig.h" />
+    <ClInclude Include="DIrectXGame\RayEngine\Collision\CollisionManager.h" />
+    <ClInclude Include="DIrectXGame\Application\Character\Enemy.h" />
+    <ClInclude Include="Externals\imgui\imconfig.h" />
+    <ClInclude Include="Externals\imgui\imgui.h" />
+    <ClInclude Include="Externals\imgui\imgui_impl_dx12.h" />
+    <ClInclude Include="Externals\imgui\imgui_impl_win32.h" />
+    <ClInclude Include="Externals\imgui\imgui_internal.h" />
+    <ClInclude Include="Externals\imgui\imstb_rectpack.h" />
+    <ClInclude Include="Externals\imgui\imstb_textedit.h" />
+    <ClInclude Include="Externals\imgui\imstb_truetype.h" />
+    <ClInclude Include="DIrectXGame\Application\Camera\FollowCamera.h" />
+    <ClInclude Include="DIrectXGame\RayEngine\Framework\Framework.h" />
+    <ClInclude Include="DIrectXGame\RayEngine\GlobalVariables.h" />
+    <ClInclude Include="DIrectXGame\Application\World\Ground.h" />
+    <ClInclude Include="DIrectXGame\RayEngine\Input\Input.h" />
+    <ClInclude Include="DIrectXGame\Application\MyGame.h" />
+    <ClInclude Include="DIrectXGame\Application\Character\Player.h" />
+    <ClInclude Include="DIrectXGame\RayEngine\Scene\SceneFactory.h" />
+    <ClInclude Include="DIrectXGame\RayEngine\Scene\SceneManager.h" />
+    <ClInclude Include="DIrectXGame\Application\Scene\GameScene.h" />
+    <ClInclude Include="DIrectXGame\Application\World\skydome.h" />
+    <ClInclude Include="DIrectXGame\Application\Scene\TitleScene.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Obj.hlsli" />
@@ -199,7 +216,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="externals\imgui\LICENSE.txt" />
+    <Text Include="Externals\imgui\LICENSE.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\ReyEngine\RayEngine\externals\DirectXTex\DirectXTex_Desktop_2022_Win10.vcxproj">
