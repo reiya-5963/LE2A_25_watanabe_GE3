@@ -13,10 +13,18 @@ void Collider::Draw(Model* model, const ViewProjection& viewProjection) {
 	model->Draw(worldTransform_, viewProjection);
 }
 
-void Collider::SetRadius(const float radius) {
+void Collider::SetRadius(const Vector3 radius) {
 	radius_ = radius;
-	worldTransform_.scale_ = {radius_, radius_ , radius_ };
+	worldTransform_.scale_ = radius_;
 	worldTransform_.matWorld_ = MyMath::MakeAffineMatrix(worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
+}
+
+void Collider::SetMin(const Vector3 min){
+	min_ = min;
+}
+
+void Collider::SetMax(const Vector3 max) {
+	max_ = max;
 }
 
 uint32_t Collider::GetCollisionAttribute() {

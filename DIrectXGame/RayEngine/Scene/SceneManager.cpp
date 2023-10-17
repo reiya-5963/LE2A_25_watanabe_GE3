@@ -12,6 +12,7 @@ void SceneManager::Initialize() {
 	//BaseScene* scene = new GameScene();
 	sceneFactory_ = new SceneFactory();
 	scene_ = sceneFactory_->CreateScene("GAME");
+	scene_->Initialize();
 }
 
 void SceneManager::Finalize() {

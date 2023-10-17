@@ -1,9 +1,8 @@
 #pragma once
-#include "Model.h"
-#include "WorldTransform.h"
+#include "Collider.h"
 #include <cassert>
 
-class Ground {
+class Ground : public Collider {
 public:
 	/// <summary>
 	/// 初期化
@@ -23,9 +22,13 @@ public:
 	/// <param name="viewProjection">ビュープロジェクション</param>
 	void Draw(ViewProjection& viewProjection);
 
+	void OnCollision(); 
+	Vector3 GetWorldPosition();
 private:
 	// ワールド変換データ
-	WorldTransform worldTransform_;
+	//WorldTransform worldTrans_;
 	// モデル
 	Model* model_ = nullptr;
+
+	bool isMoveLeft_ = false;
 };

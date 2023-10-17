@@ -128,5 +128,6 @@ private: // メンバ変数
 	//
 	std::optional<Behavior> behaviorRequest_ = std::nullopt;
 
-	//radius_ = 32.0f;
+	bool isJump_ = false;
+	bool isOnGround_ = false;
 };

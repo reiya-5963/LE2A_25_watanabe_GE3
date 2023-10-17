@@ -38,6 +38,23 @@ private: // メンバ関数
 	/// <param name="colliderB">オブジェクトB</param>
 	void CheckCollisionPair(Collider* colliderA, Collider* colliderB);
 
+	bool IsCollision(Collider* colliderA, Collider* colliderB);
+
+	//bool IsCollision(const Collider* colliderA, const Collider* colliderB);/*{
+		/*Vector3 clossestPoint{
+			std::clamp(sphere.center.x, aabb.min.x, aabb.max.x),
+			std::clamp(sphere.center.y, aabb.min.y, aabb.max.y),
+			std::clamp(sphere.center.z, aabb.min.z, aabb.max.z)
+		};
+
+		float distance = Length(Subtract(clossestPoint, sphere.center));
+		if (distance <= sphere.radius) {
+			return true;
+		}
+
+		return false;
+
+	}*/
 private: // メンバ変数
 	// コライダーリスト
 	std::list<Collider*> colliders_;

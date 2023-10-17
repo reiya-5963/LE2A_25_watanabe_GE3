@@ -23,10 +23,17 @@ public: // メンバ関数
 	void Draw(Model* model, const ViewProjection& viewProjection);
 
 	// 半径の取得
-	float GetRadius() { return radius_; }
+	Vector3 GetRadius() { return radius_; }
 	
+	Vector3 GetMin() { return min_; }
+	Vector3 GetMax() { return max_; }
+
 	// 半径の設定
-	void SetRadius(const float radius);
+	void SetRadius(const Vector3 radius);
+
+	void SetMin(const Vector3 min);
+
+	void SetMax(const Vector3 max);
 
 	// 衝突属性 (自分)
 	uint32_t GetCollisionAttribute();
@@ -40,10 +47,25 @@ public: // メンバ関数
 	virtual void OnCollision() = 0;
 
 	virtual Vector3 GetWorldPosition() = 0;
-private: // メンバ変数　
-	// 衝突半径
-	float radius_ = 1.0f;
+	
+	WorldTransform* GetParent() { return parent_; }
+	void SetParent(WorldTransform* parent) {
+		parent_ = parent;
+	}
+	WorldTransform& GetWorldTransform() { return worldTrans_; }
+	void SetWorldTransform(WorldTransform worldTrans) {
+		worldTrans_ = worldTrans;
+	}
 
+protected: // メンバ変数　
+	// 衝突半径
+	Vector3 radius_ = {1.0f, 1.0f, 1.0f};
+
+	Vector3 min_;	//!< 最少点
+	Vector3 max_;	//!< 最大点
 	WorldTransform worldTransform_;
+	WorldTransform worldTrans_;
+
+	WorldTransform* parent_;
 };
 

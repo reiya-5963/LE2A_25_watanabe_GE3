@@ -100,6 +100,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CommandAllocator.cpp" />
+    <ClCompile Include="CommandLIst.cpp" />
+    <ClCompile Include="CommandListManager.cpp" />
     <ClCompile Include="DIrectXGame\RayEngine\2d\Sprite.cpp" />
     <ClCompile Include="DIrectXGame\RayEngine\3d\DirectionalLight.cpp" />
     <ClCompile Include="DIrectXGame\RayEngine\3d\LightGroup.cpp" />
@@ -143,8 +146,13 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DIrectXGame\Application\Scene\GameScene.cpp" />
     <ClCompile Include="DIrectXGame\Application\World\skydome.cpp" />
     <ClCompile Include="DIrectXGame\Application\Scene\TitleScene.cpp" />
+    <ClCompile Include="DIrectXGame\RayEngine\2d\Particle.cpp" />
+    <ClCompile Include="ParticleManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CommandAllocator.h" />
+    <ClInclude Include="CommandLIst.h" />
+    <ClInclude Include="CommandListManager.h" />
     <ClInclude Include="DIrectXGame\RayEngine\2d\Sprite.h" />
     <ClInclude Include="DIrectXGame\RayEngine\3d\DirectionalLight.h" />
     <ClInclude Include="DIrectXGame\RayEngine\3d\LightGroup.h" />
@@ -192,10 +200,13 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="DIrectXGame\Application\Scene\GameScene.h" />
     <ClInclude Include="DIrectXGame\Application\World\skydome.h" />
     <ClInclude Include="DIrectXGame\Application\Scene\TitleScene.h" />
+    <ClInclude Include="DIrectXGame\RayEngine\2d\Particle.h" />
+    <ClInclude Include="ParticleManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Obj.hlsli" />
     <None Include="Resources\shaders\Sprite.hlsli" />
+    <None Include="Resources\shaders\Particle.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shaders\ObjPS.hlsl">
@@ -211,6 +222,14 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </FxCompile>
     <FxCompile Include="Resources\shaders\SpriteVS.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\ParticlePS.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\ParticleVS.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </FxCompile>

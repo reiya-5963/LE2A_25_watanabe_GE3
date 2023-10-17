@@ -20,7 +20,7 @@ void GameScene::Initialize() {
 
 	// テクスチャの読み込み
 	//textureHandle_ = TextureManager::Load("sample.png");
-		// ビュープロジェクションの初期化
+	// ビュープロジェクションの初期化
 	viewProjection_.Initialize();
 
 	skydomeModel_.reset(Model::CreateFlomObj("skydome"));
@@ -30,7 +30,7 @@ void GameScene::Initialize() {
 	skydome_->Initialize(skydomeModel_.get(), { 0, 0, 0 });
 
 
-	groundModel_.reset(Model::CreateFlomObj("Ground"));
+	groundModel_.reset(Model::CreateFlomObj("Scaffold"));
 	// 地面の生成
 	ground_ = std::make_unique<Ground>();
 	// 地面の初期化
@@ -68,30 +68,34 @@ void GameScene::Initialize() {
 	player_->SetViewProjection(&followCamera_->GetViewProjection());
 
 
-	//E_model_body.reset(Model::CreateFlomObj("EnemyTest_Body"));
-	//E_model_F_Wepon.reset(Model::CreateFlomObj("EnemyTest_F_Wepon"));
-	//E_model_I_Wepon.reset(Model::CreateFlomObj("EnemyTest_I_Wepon"));
+	E_model_body.reset(Model::CreateFlomObj("EnemyTest_Body"));
+	E_model_F_Wepon.reset(Model::CreateFlomObj("EnemyTest_F_Wepon"));
+	E_model_I_Wepon.reset(Model::CreateFlomObj("EnemyTest_I_Wepon"));
 
-	//// 敵の生成
-	//enemy_ = std::make_unique<Enemy>();
-	//// 敵の初期化
-	//std::vector<Model*> enemyModels = {
-	//	E_model_body.get(),
-	//	E_model_F_Wepon.get(),
-	//	E_model_I_Wepon.get() };
-	//// 敵の初期化
-	//enemy_->Initialize(enemyModels);
-	//enemy_->SetVelocity({ 0, 0, 1 });
+	// 敵の生成
+	enemy_ = std::make_unique<Enemy>();
+	// 敵の初期化
+	std::vector<Model*> enemyModels = {
+		E_model_body.get(),
+		E_model_F_Wepon.get(),
+		E_model_I_Wepon.get() };
+	// 敵の初期化
+	enemy_->Initialize(enemyModels);
+	enemy_->SetVelocity({ 0, 0, 1 });
 
 	colliderManager_ = std::make_unique<CollisionManager>();
 	colliderManager_->Initialize();
 }
 
 void GameScene::Finalize() {
+	E_model_body.release();
+	E_model_F_Wepon.release();
+	E_model_I_Wepon.release();
+
 }
 
 void GameScene::Update() {
-	colliderManager_->ClearColliders();
+
 	// 地面の更新
 	ground_->Update();
 
@@ -102,15 +106,22 @@ void GameScene::Update() {
 
 	// プレイヤーの更新
 	player_->Update();
-	colliderManager_->AddColliders(player_.get());
 
 	viewProjection_.TransferMatrix();
 
-	//enemy_->Update();
-	//colliderManager_->AddColliders(enemy_.get());
+	enemy_->Update();
+
+	colliderManager_->ClearColliders();
+	colliderManager_->AddColliders(player_.get());
+	colliderManager_->AddColliders(enemy_.get());
+	colliderManager_->AddColliders(ground_.get());
 	colliderManager_->UpdateWorldTransform();
 
 	colliderManager_->CheckAllCollisions();
+
+
+
+
 }
 
 void GameScene::Draw() {
@@ -135,7 +146,7 @@ void GameScene::Draw() {
 
 	colliderManager_->Draw(viewProjection_);
 	// プレイヤーの描画
-	//enemy_->Draw(viewProjection_);
+	enemy_->Draw(viewProjection_);
 
 	Model::PostDraw();
 
@@ -143,5 +154,6 @@ void GameScene::Draw() {
 	//
 	Sprite::PostDraw();
 
+	//ParticleManager::Draw(commandList, ParticleManager::BlendMode::kAdd);
 }
 

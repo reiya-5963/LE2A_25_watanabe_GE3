@@ -64,14 +64,14 @@ private:
 	std::unique_ptr<Player> player_ = nullptr;
 
 
-	//// モデル
-	//std::unique_ptr<Model> E_model_body = nullptr;
-	//// モデル
-	//std::unique_ptr<Model> E_model_I_Wepon = nullptr;
-	//// モデル
-	//std::unique_ptr<Model> E_model_F_Wepon = nullptr;
-	//// 敵
-	//std::unique_ptr<Enemy> enemy_ = nullptr;
+	// モデル
+	std::unique_ptr<Model> E_model_body = nullptr;
+	// モデル
+	std::unique_ptr<Model> E_model_I_Wepon = nullptr;
+	// モデル
+	std::unique_ptr<Model> E_model_F_Wepon = nullptr;
+	// 敵
+	std::unique_ptr<Enemy> enemy_ = nullptr;
 
 
 	// モデル

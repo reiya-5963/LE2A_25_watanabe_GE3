@@ -34,7 +34,7 @@ public:
 	/// </summary>
 	/// <returns>ワールド変換データ</returns>
 	const WorldTransform& GetWorldTransform() { 
-		return worldTrans_;
+		return worldTransform_;
 	}
 
 	virtual Vector3 GetWorldPosition() override;
@@ -43,5 +43,5 @@ protected:
 	// モデルデータ配列
 	std::vector<Model*> models_;
 	// ワールド変換データ
-	WorldTransform worldTrans_;
+	//WorldTransform worldTrans_;
 };

@@ -1,25 +1,25 @@
 #include "MyGame.h"
 
 void MyGame::Initialize() {
+	// 基盤部分の初期化処理
 	Framework::Initialize();
-
-	// グローバル変数の読み込み
-	GlobalVariables::GetInstance()->LoadFiles();
-
-	
 }
 
 void MyGame::Finalize() {
-
+	// 基盤部分の終了処理
 	Framework::Finalize();
 }
 
 void MyGame::Update() {
+	// 基盤部分の毎フレーム更新前処理
 	Framework::PreUpdate();
 
-	// グローバル変数の更新
-	GlobalVariables::GetInstance()->Update();
+	// もしESCAPEキーを押したらゲーム終了
+	if (input_->TriggerKey(DIK_ESCAPE)) {
+		endRequest_ = true;
+	}
 
+	// 基盤部分の毎フレーム更新後処理
 	Framework::PostUpdate();
 }
 

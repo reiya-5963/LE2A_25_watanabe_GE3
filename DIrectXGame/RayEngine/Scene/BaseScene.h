@@ -5,6 +5,7 @@
 #include "Model.h"
 #include "SafeDelete.h"
 #include "Sprite.h"
+#include "ParticleManager.h"
 #include "viewProjection.h"
 #include "WorldTransform.h"
 #include "Triangle.h"

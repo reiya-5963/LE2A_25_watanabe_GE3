@@ -2,14 +2,13 @@
 #include "Framework.h"
 
 //#include "GameScene.h"
-#include "GlobalVariables.h"
 
 
 /// <summary>
 /// ゲームクラス
 /// </summary>
 class MyGame : public Framework {
-public:
+public: // メンバ関数
 	/// <summary>
 	/// 初期化処理
 	/// </summary>
@@ -30,5 +29,5 @@ public:
 	/// </summary>
 	void Draw()override;
 
-private:
+private: // メンバ変数
 };

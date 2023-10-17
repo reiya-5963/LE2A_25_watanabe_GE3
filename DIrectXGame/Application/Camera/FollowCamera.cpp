@@ -13,29 +13,40 @@ void FollowCamera::Update() {
 	GetCursorPos(&mousePos_);
 
 	// 初期位置から動かした距離を求める
-	xMouseDistance = float(mousePos_.x) - float(WinApp::kWindowWidth / 2);
-	yMouseDistance = float(mousePos_.y) - float(WinApp::kWindowHeight / 2);
+	//xMouseDistance = float(mousePos_.x) - float(WinApp::kWindowWidth / 2);
+	//yMouseDistance = float(mousePos_.y) - float(WinApp::kWindowHeight / 2);
 
 	// 左右に視点を動かすなら
-	if (xMouseDistance != 0.0f) {
-		viewProjection_.rotation_.y += xMouseDistance * move_mouseSpeed;
-	}
+	//if (xMouseDistance != 0.0f) {
+	//	viewProjection_.rotation_.y += xMouseDistance * move_mouseSpeed;
+	//}
 	// 上下に視点を動かすなら
-	if (yMouseDistance != 0.0f) {
-		viewProjection_.rotation_.x += yMouseDistance * move_mouseSpeed;
-	}
+	//if (yMouseDistance != 0.0f) {
+	//	viewProjection_.rotation_.x += yMouseDistance * move_mouseSpeed;
+	//}
 
 	// カーソルを固定
 	//SetCursorPos(int(WinApp::kWindowWidth / 2), int(WinApp::kWindowHeight / 2));
 
 	// 視点を上、もしくは下に動かしたときの上限
-	if (viewProjection_.rotation_.x > 1.0f) {
-		viewProjection_.rotation_.x = 1.0f;
-	}
-	if (viewProjection_.rotation_.x < -1.0f) {
-		viewProjection_.rotation_.x = -1.0f;
-	}
+	//if (viewProjection_.rotation_.x > 1.0f) {
+	//	viewProjection_.rotation_.x = 1.0f;
+	//}
+	//if (viewProjection_.rotation_.x < -1.0f) {
+	//	viewProjection_.rotation_.x = -1.0f;
+	//}
 
+	GetCursorPos(&mousePos_);
+
+	HWND hwnd = WinApp::GetInstance()->GetHwnd();
+	ScreenToClient(hwnd, &mousePos_);
+
+	float speed = 0.003f;
+
+	float mouseDistance = float(mousePos_.x) - float(preMousePos_.x);
+
+	viewProjection_.rotation_.y += mouseDistance * speed;
+	preMousePos_ = mousePos_;
 
 	// もし追従対象がいれば
 	if (target_) {

@@ -101,7 +101,6 @@ public:
 	/// <returns>できたかどうか</returns>
 	bool Initialize();
 
-
 	/// <summary>
 	/// 色の設定
 	/// </summary>

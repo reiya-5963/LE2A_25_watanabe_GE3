@@ -46,7 +46,7 @@ void Player::Initialize(const std::vector<Model*>& models) {
 	InitializeArmGimmick();
 	worldTrans_.rotation_.y = std::atan2(worldTrans_.rotation_.x, worldTrans_.rotation_.z);
 
-	SetRadius(5.0f);
+	SetRadius({ 1.0f, 3.0f, 1.0f });
 	SetCollisionAttribute(kCollisionAttributePlayer);
 	SetCollisionMask(!kCollisionAttributePlayer);
 
@@ -85,6 +85,7 @@ void Player::BehaviorAttackInitialize() {
 void Player::Update() {
 	ApplyGlobalVariavles();
 
+
 	if (behaviorRequest_) {
 		behavior_ = behaviorRequest_.value();
 		switch (behavior_) {
@@ -109,6 +110,20 @@ void Player::Update() {
 		BehaviorAttackUpdate();
 		break;
 	}
+	if (isOnGround_) {
+		if (parent_) {
+			worldTrans_.parent_ = parent_;
+		}
+		else {
+			worldTrans_.parent_ = nullptr;
+		}
+	}
+	else if (!isOnGround_) {
+		worldTrans_.parent_ = nullptr;
+
+		worldTrans_.translation_.y -= 1.0f;
+	}
+
 
 	// ベース部分の更新処理
 	BaseCharacter::Update();
@@ -119,6 +134,12 @@ void Player::Update() {
 	worldTransform_l_arm_.UpdateMatrix();
 	worldTransform_r_arm_.UpdateMatrix();
 	worldTransform_wepon_.UpdateMatrix();
+
+	SetMin(MyMath::Subtract(GetWorldPosition(), GetRadius()));
+	SetMax(MyMath::Add(GetWorldPosition(), GetRadius()));
+	
+	isOnGround_ = false;
+
 }
 
 /// <summary>
@@ -138,12 +159,15 @@ void Player::Draw(const ViewProjection& viewProjection) {
 }
 
 void Player::OnCollision() {
+	if (!isOnGround_) {
+		isOnGround_ = true;
+	}
 }
 
 Vector3 Player::GetWorldPosition() {
 	Vector3 result{};
 
-	Vector3 offset = { 0.0f, 1.5f, 0.0f };
+	Vector3 offset = { 0.0f, 3.0f, 0.0f };
 	//
 
 	result = MyMath::TransformCoord(offset, worldTrans_.matWorld_);
@@ -242,7 +266,7 @@ void Player::BehaviorRootUpdate() {
 	Matrix4x4 movetrans = MyMath::MakeTranslateMatrix(worldTrans_.translation_);
 	Vector3 move = { 0, 0, 0 };
 
-
+	
 	// 速さ
 	const float speed = 0.3f;
 
@@ -258,14 +282,20 @@ void Player::BehaviorRootUpdate() {
 	if (input_->PushKey(DIK_D)) {
 		move.x = 1.0f;
 	}
-	if (input_->PushKey(DIK_SPACE)) {
+	if (input_->IsTriggerMouse(0)) {
 		behaviorRequest_ = Behavior::kAttack;
 	}
-	
+	if (!isJump_ && input_->PushKey(DIK_SPACE)) {
+		isJump_ = true;
+	}
+	if (isJump_) {
+		move.y = 1.0f;
+		isJump_ = false;
+	}
 
 	move = MyMath::Normalize(move);
 	move.x *= speed;
-	move.y *= speed;
+	move.y *= 5.0f;
 	move.z *= speed;
 
 	Matrix4x4 moveMat = MyMath::MakeTranslateMatrix(move);

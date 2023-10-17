@@ -79,12 +79,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="external">
-      <UniqueIdentifier>{999a2788-80a3-46c8-bb0c-9cf63f48c6ec}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="external\imgui">
-      <UniqueIdentifier>{791f74d1-2754-46e6-bdd4-e00ed5abf622}</UniqueIdentifier>
-    </Filter>
     <Filter Include="RayEngine\Shaders">
       <UniqueIdentifier>{8ab41e74-aa47-4dca-bce1-27a14b1dd866}</UniqueIdentifier>
     </Filter>
@@ -118,31 +112,37 @@
     <Filter Include="RayEngine\Headder\Math">
       <UniqueIdentifier>{1bff4b8e-353f-44d2-8803-091468df74fc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="External">
+      <UniqueIdentifier>{999a2788-80a3-46c8-bb0c-9cf63f48c6ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External\imgui">
+      <UniqueIdentifier>{791f74d1-2754-46e6-bdd4-e00ed5abf622}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DIrectXGame\Application\MyGame.cpp">
       <Filter>Application\ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Externals\imgui\imgui.cpp">
-      <Filter>external\imgui</Filter>
+      <Filter>External\imgui</Filter>
     </ClCompile>
     <ClCompile Include="Externals\imgui\imgui_demo.cpp">
-      <Filter>external\imgui</Filter>
+      <Filter>External\imgui</Filter>
     </ClCompile>
     <ClCompile Include="Externals\imgui\imgui_draw.cpp">
-      <Filter>external\imgui</Filter>
+      <Filter>External\imgui</Filter>
     </ClCompile>
     <ClCompile Include="Externals\imgui\imgui_impl_dx12.cpp">
-      <Filter>external\imgui</Filter>
+      <Filter>External\imgui</Filter>
     </ClCompile>
     <ClCompile Include="Externals\imgui\imgui_impl_win32.cpp">
-      <Filter>external\imgui</Filter>
+      <Filter>External\imgui</Filter>
     </ClCompile>
     <ClCompile Include="Externals\imgui\imgui_tables.cpp">
-      <Filter>external\imgui</Filter>
+      <Filter>External\imgui</Filter>
     </ClCompile>
     <ClCompile Include="Externals\imgui\imgui_widgets.cpp">
-      <Filter>external\imgui</Filter>
+      <Filter>External\imgui</Filter>
     </ClCompile>
     <ClCompile Include="DIrectXGame\main.cpp">
       <Filter>Application\ソース ファイル</Filter>
@@ -249,34 +249,49 @@
     <ClCompile Include="DIrectXGame\RayEngine\Input\Input.cpp">
       <Filter>RayEngine\Source\Input</Filter>
     </ClCompile>
+    <ClCompile Include="DIrectXGame\RayEngine\2d\Particle.cpp">
+      <Filter>RayEngine\Source\2d</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleManager.cpp">
+      <Filter>Application\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandLIst.cpp">
+      <Filter>RayEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandListManager.cpp">
+      <Filter>Application\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandAllocator.cpp">
+      <Filter>Application\ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DIrectXGame\Application\MyGame.h">
       <Filter>Application\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Externals\imgui\imconfig.h">
-      <Filter>external\imgui</Filter>
+      <Filter>External\imgui</Filter>
     </ClInclude>
     <ClInclude Include="Externals\imgui\imgui.h">
-      <Filter>external\imgui</Filter>
+      <Filter>External\imgui</Filter>
     </ClInclude>
     <ClInclude Include="Externals\imgui\imgui_impl_dx12.h">
-      <Filter>external\imgui</Filter>
+      <Filter>External\imgui</Filter>
     </ClInclude>
     <ClInclude Include="Externals\imgui\imgui_impl_win32.h">
-      <Filter>external\imgui</Filter>
+      <Filter>External\imgui</Filter>
     </ClInclude>
     <ClInclude Include="Externals\imgui\imgui_internal.h">
-      <Filter>external\imgui</Filter>
+      <Filter>External\imgui</Filter>
     </ClInclude>
     <ClInclude Include="Externals\imgui\imstb_rectpack.h">
-      <Filter>external\imgui</Filter>
+      <Filter>External\imgui</Filter>
     </ClInclude>
     <ClInclude Include="Externals\imgui\imstb_textedit.h">
-      <Filter>external\imgui</Filter>
+      <Filter>External\imgui</Filter>
     </ClInclude>
     <ClInclude Include="Externals\imgui\imstb_truetype.h">
-      <Filter>external\imgui</Filter>
+      <Filter>External\imgui</Filter>
     </ClInclude>
     <ClInclude Include="DIrectXGame\RayEngine\2d\Sprite.h">
       <Filter>RayEngine\Headder\2d</Filter>
@@ -392,12 +407,30 @@
     <ClInclude Include="DIrectXGame\RayEngine\Framework\Framework.h">
       <Filter>RayEngine\Headder\Framework</Filter>
     </ClInclude>
+    <ClInclude Include="DIrectXGame\RayEngine\2d\Particle.h">
+      <Filter>RayEngine\Headder\2d</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleManager.h">
+      <Filter>Application\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="CommandLIst.h">
+      <Filter>RayEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="CommandListManager.h">
+      <Filter>Application\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="CommandAllocator.h">
+      <Filter>Application\ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Obj.hlsli">
       <Filter>RayEngine\Shaders</Filter>
     </None>
     <None Include="Resources\shaders\Sprite.hlsli">
+      <Filter>RayEngine\Shaders</Filter>
+    </None>
+    <None Include="Resources\shaders\Particle.hlsli">
       <Filter>RayEngine\Shaders</Filter>
     </None>
   </ItemGroup>
@@ -414,10 +447,16 @@
     <FxCompile Include="Resources\shaders\SpriteVS.hlsl">
       <Filter>RayEngine\Shaders</Filter>
     </FxCompile>
+    <FxCompile Include="Resources\shaders\ParticlePS.hlsl">
+      <Filter>RayEngine\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\ParticleVS.hlsl">
+      <Filter>RayEngine\Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Externals\imgui\LICENSE.txt">
-      <Filter>external\imgui</Filter>
+      <Filter>External\imgui</Filter>
     </Text>
   </ItemGroup>
 </Project>
