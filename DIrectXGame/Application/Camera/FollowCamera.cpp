@@ -44,8 +44,10 @@ void FollowCamera::Update() {
 	float speed = 0.003f;
 
 	float mouseDistance = float(mousePos_.x) - float(preMousePos_.x);
+	//float mouseDistancey = float(mousePos_.y) - float(preMousePos_.y);
 
 	viewProjection_.rotation_.y += mouseDistance * speed;
+	//viewProjection_.rotation_.x += mouseDistancey * speed;
 	preMousePos_ = mousePos_;
 
 	// もし追従対象がいれば

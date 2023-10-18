@@ -84,6 +84,8 @@ private:
 	// 地面
 	std::unique_ptr<Ground> ground_ = nullptr;
 
+	std::unique_ptr<Ground> moveGround_ = nullptr;
+
 	// 追従カメラ
 	std::unique_ptr<FollowCamera> followCamera_ = nullptr;
 

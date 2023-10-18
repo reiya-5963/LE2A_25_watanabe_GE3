@@ -66,6 +66,7 @@ protected: // メンバ変数　
 	WorldTransform worldTransform_;
 	WorldTransform worldTrans_;
 
+	// 地面
 	WorldTransform* parent_;
 };
 

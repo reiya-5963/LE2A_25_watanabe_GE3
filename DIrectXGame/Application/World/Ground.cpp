@@ -14,7 +14,7 @@ void Ground::Initialize(Model* model, const Vector3& position) {
 	worldTrans_.translation_ = position;
 
 	Collider::Initialize();
-	SetRadius({ 20.0f, 1.0f, 20.0f });
+	SetRadius({ 15.0f, 1.0f, 15.0f });
 	SetCollisionAttribute(kCollisionAttributeWorld);
 	SetCollisionMask(!kCollisionAttributeWorld);
 
@@ -25,26 +25,28 @@ void Ground::Initialize(Model* model, const Vector3& position) {
 /// </summary>
 void Ground::Update() {
 	Matrix4x4 movetrans = MyMath::MakeTranslateMatrix(worldTrans_.translation_);
-	const float speed = 1.0f;
+	const float speed = 0.7f;
 	Vector3 move = { 0.0f, 0.0f, 0.0f };
-	if (isMoveLeft_) {
-		move.x = -1.0f;
-	}
-	else if (!isMoveLeft_) {
-		move.x = 1.0f;
+	if (isMove_) {
+		if (isMoveLeft_) {
+			move.x = -1.0f;
+		}
+		else if (!isMoveLeft_) {
+			move.x = 1.0f;
+		}
 	}
 	move = MyMath::Normalize(move);
 	move.x *= speed;
 	move.y *= speed;
 	move.z *= speed;
-	
+
 	worldTrans_.translation_ = MyMath::TransformCoord(move, movetrans);
 
 	worldTrans_.UpdateMatrix();
 
 	SetMin(MyMath::Subtract(GetWorldPosition(), GetRadius()));
 	SetMax(MyMath::Add(GetWorldPosition(), GetRadius()));
-	
+
 	if (worldTrans_.matWorld_.m[3][0] >= 30.0f) {
 		isMoveLeft_ = true;
 	}
@@ -60,6 +62,10 @@ void Ground::Update() {
 /// <param name="viewProjection"></param>
 void Ground::Draw(ViewProjection& viewProjection) {
 	model_->Draw(worldTransform_, viewProjection);
+}
+
+void Ground::SetIsMove(bool isMove) {
+	isMove_ = isMove;
 }
 
 void Ground::OnCollision()

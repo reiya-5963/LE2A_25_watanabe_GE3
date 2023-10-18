@@ -83,7 +83,20 @@ void Player::BehaviorAttackInitialize() {
 /// 更新
 /// </summary>
 void Player::Update() {
+	
 	ApplyGlobalVariavles();
+
+	// もしのっかっていたら
+	if (isOnGround_) {
+		if (parent_) {
+			worldTrans_.parent_ = parent_;
+		}
+	}
+	else if (!isOnGround_) {
+		worldTrans_.parent_ = nullptr;
+
+		worldTrans_.translation_.y -= 1.0f;
+	}
 
 
 	if (behaviorRequest_) {
@@ -101,6 +114,7 @@ void Player::Update() {
 
 		behaviorRequest_ = std::nullopt;
 	}
+
 	switch (behavior_) {
 	case Behavior::kRoot:
 	default:
@@ -109,19 +123,6 @@ void Player::Update() {
 	case Behavior::kAttack:
 		BehaviorAttackUpdate();
 		break;
-	}
-	if (isOnGround_) {
-		if (parent_) {
-			worldTrans_.parent_ = parent_;
-		}
-		else {
-			worldTrans_.parent_ = nullptr;
-		}
-	}
-	else if (!isOnGround_) {
-		worldTrans_.parent_ = nullptr;
-
-		worldTrans_.translation_.y -= 1.0f;
 	}
 
 

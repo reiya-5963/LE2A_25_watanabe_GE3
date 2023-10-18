@@ -22,6 +22,7 @@ public:
 	/// <param name="viewProjection">ビュープロジェクション</param>
 	void Draw(ViewProjection& viewProjection);
 
+	void SetIsMove(bool isMove);
 	void OnCollision(); 
 	Vector3 GetWorldPosition();
 private:
@@ -31,4 +32,5 @@ private:
 	Model* model_ = nullptr;
 
 	bool isMoveLeft_ = false;
+	bool isMove_ = false;
 };
