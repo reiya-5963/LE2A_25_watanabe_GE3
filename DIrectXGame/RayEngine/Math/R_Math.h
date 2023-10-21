@@ -1,11 +1,18 @@
 #pragma once
 
-#include "MyStruct.h"
+#include "Vector2.h"
+#include "Vector3.h"
+#include "Vector4.h"
+
+#include "Matrix3x3.h"
+#include "Matrix4x4.h"
+
+#include "Transform.h"
 
 /// <summary>
 /// 数学の関数系
 /// </summary>
-class MyMath {
+class R_Math {
 public:
 	/// <summary>
 	/// ベクトル同士の内積
@@ -85,7 +92,7 @@ public:
 	/// <param name="point"></param>
 	/// <param name="segment"></param>
 	/// <returns></returns>
-	static Vector3 ClosestPoint(const Vector3& point, const Segment& segment);
+	//static Vector3 ClosestPoint(const Vector3& point, const Segment& segment);
 
 	/// <summary>
 	/// 正規化
@@ -207,52 +214,42 @@ public:
 	/// <returns></returns>
 	static Matrix4x4 MakeIdentity4x4();
 
-	///// <summary>
-	///// 球と球の当たり判定
-	///// </summary>
-	///// <param name="s1">球1</param>
-	///// <param name="s2">球2</param>
-	///// <returns></returns>
-	//static bool IsCollision(const Sphere& s1, const Sphere& s2);
+#pragma region lerp
+	static float lerp(float t, float start, float end);
 
-	///// <summary>
-	///// 球と平面の当たり判定
-	///// </summary>
-	///// <param name="s1">球</param>
-	///// <param name="plane">平面</param>
-	///// <returns></returns>
-	//static bool IsCollision(const Sphere& s1, const Plane& plane);
+	static Vector2 lerp(float t, Vector2 start, Vector2 end);
 
-	///// <summary>
-	///// 線分と平面の当たり判定
-	///// </summary>
-	///// <param name="line">線分</param>
-	///// <param name="plane">平面</param>
-	///// <returns></returns>
-	//static bool IsCollision(const Segment& line, const Plane& plane);
+	static Vector3 lerp(float t, Vector3 start, Vector3 end);
 
-	///// <summary>
-	///// 半直線と平面の当たり判定
-	///// </summary>
-	///// <param name="line">半直線</param>
-	///// <param name="plane">平面</param>
-	///// <returns></returns>
-	//static bool IsCollision(const Ray& line, const Plane& plane);
 
-	///// <summary>
-	///// 直線と平面の当たり判定
-	///// </summary>
-	///// <param name="line">直線</param>
-	///// <param name="plane">平面</param>
-	///// <returns></returns>
-	//static bool IsCollision(const Line& line, const Plane& plane);
+#pragma endregion
 
-	///// <summary>
-	///// 三角形と線分の当たり判定
-	///// </summary>
-	///// <param name="triangle">三角形</param>
-	///// <param name="segment">線分</param>
-	///// <returns></returns>
-	//static bool IsCollision(const Triangle& triangle, const Segment& segment);
+#pragma region float Easing
+	static float EaseInQuadF(float t, float start, float end);
+
+	static float EaseOutQuadF(float t, float start, float end);
+
+	static float EaseInOutQuadF(float t, float start, float end);
+
+	static float EaseInCubicF(float t, float start, float end);
+
+	static float EaseOutCubicF(float t, float start, float end);
+
+	static float EaseInOutCubicF(float t, float start, float end);
+#pragma endregion
+
+#pragma region Vector2 Easing
+	static Vector2 EaseInQuadF(float t, Vector2 start, Vector2 end);
+
+	static Vector2 EaseOutQuadF(float t, Vector2 start, Vector2 end);
+
+	static Vector2 EaseInOutQuadF(float t, Vector2 start, Vector2 end);
+
+	static Vector2 EaseInCubicF(float t, Vector2 start, Vector2 end);
+
+	static Vector2 EaseOutCubicF(float t, Vector2 start, Vector2 end);
+
+	static Vector2 EaseInOutCubicF(float t, Vector2 start, Vector2 end);
+#pragma endregion
 
 };

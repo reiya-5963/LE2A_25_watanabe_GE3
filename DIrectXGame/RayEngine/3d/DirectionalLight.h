@@ -1,6 +1,6 @@
 #pragma once
 
-#include "MyMath.h"
+#include "R_Math.h"
 
 /// <summary>
 /// 
@@ -20,7 +20,7 @@ public: //
 	/// </summary>
 	/// <param name="lightdir">ライト方向</param>
 	void SetLightDir(const Vector3& lightdir) {
-		this->lightDir_ = MyMath::Normalize(lightdir);
+		this->lightDir_ = R_Math::Normalize(lightdir);
 	}
 
 	/// <summary>

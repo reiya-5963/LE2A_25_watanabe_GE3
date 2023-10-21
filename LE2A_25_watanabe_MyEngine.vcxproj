@@ -60,7 +60,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <TreatWarningAsError>true</TreatWarningAsError>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)DirectXGame;$(ProjectDir)DirectXGame\RayEngine;$(ProjectDir)DirectXGame\RayEngine\2d;$(ProjectDir)DirectXGame\RayEngine\3d;$(ProjectDir)DirectXGame\RayEngine\Audio;$(ProjectDir)DirectXGame\RayEngine\Base;$(ProjectDir)DirectXGame\RayEngine\Collision;$(ProjectDir)DirectXGame\RayEngine\Framework;$(ProjectDir)DirectXGame\RayEngine\Input;$(ProjectDir)DirectXGame\RayEngine\Scene;$(ProjectDir)DirectXGame\Application;$(ProjectDir)DirectXGame\Application\Camera;$(ProjectDir)DirectXGame\Application\Character;$(ProjectDir)DirectXGame\Application\Scene;$(ProjectDir)DirectXGame\Application\World;$(ProjectDir)Externals\DirectXTex;$(ProjectDir)Externals\imgui;$(ProjectDir)Externals\nlohmann;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)DirectXGame;$(ProjectDir)DirectXGame\RayEngine;$(ProjectDir)DirectXGame\RayEngine\2d;$(ProjectDir)DirectXGame\RayEngine\3d;$(ProjectDir)DirectXGame\RayEngine\Audio;$(ProjectDir)DirectXGame\RayEngine\Base;$(ProjectDir)DirectXGame\RayEngine\Collision;$(ProjectDir)DirectXGame\RayEngine\Framework;$(ProjectDir)DirectXGame\RayEngine\Input;$(ProjectDir)DirectXGame\RayEngine\Math;$(ProjectDir)DirectXGame\RayEngine\Scene;$(ProjectDir)DirectXGame\Application;$(ProjectDir)DirectXGame\Application\Camera;$(ProjectDir)DirectXGame\Application\Character;$(ProjectDir)DirectXGame\Application\Scene;$(ProjectDir)DirectXGame\Application\World;$(ProjectDir)Externals\DirectXTex;$(ProjectDir)Externals\imgui;$(ProjectDir)Externals\nlohmann;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -84,7 +84,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <LanguageStandard>stdcpp20</LanguageStandard>
       <TreatWarningAsError>true</TreatWarningAsError>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)DirectXGame;$(ProjectDir)DirectXGame\RayEngine;$(ProjectDir)DirectXGame\RayEngine\2d;$(ProjectDir)DirectXGame\RayEngine\3d;$(ProjectDir)DirectXGame\RayEngine\Audio;$(ProjectDir)DirectXGame\RayEngine\Base;$(ProjectDir)DirectXGame\RayEngine\Collision;$(ProjectDir)DirectXGame\RayEngine\Framework;$(ProjectDir)DirectXGame\RayEngine\Input;$(ProjectDir)DirectXGame\RayEngine\Scene;$(ProjectDir)DirectXGame\Application;$(ProjectDir)DirectXGame\Application\Camera;$(ProjectDir)DirectXGame\Application\Character;$(ProjectDir)DirectXGame\Application\Scene;$(ProjectDir)DirectXGame\Application\World;$(ProjectDir)Externals\DirectXTex;$(ProjectDir)Externals\imgui;$(ProjectDir)Externals\nlohmann;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)DirectXGame;$(ProjectDir)DirectXGame\RayEngine;$(ProjectDir)DirectXGame\RayEngine\2d;$(ProjectDir)DirectXGame\RayEngine\3d;$(ProjectDir)DirectXGame\RayEngine\Audio;$(ProjectDir)DirectXGame\RayEngine\Base;$(ProjectDir)DirectXGame\RayEngine\Collision;$(ProjectDir)DirectXGame\RayEngine\Framework;$(ProjectDir)DirectXGame\RayEngine\Input;$(ProjectDir)DirectXGame\RayEngine\Math;$(ProjectDir)DirectXGame\RayEngine\Scene;$(ProjectDir)DirectXGame\Application;$(ProjectDir)DirectXGame\Application\Camera;$(ProjectDir)DirectXGame\Application\Character;$(ProjectDir)DirectXGame\Application\Scene;$(ProjectDir)DirectXGame\Application\World;$(ProjectDir)Externals\DirectXTex;$(ProjectDir)Externals\imgui;$(ProjectDir)Externals\nlohmann;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -100,9 +100,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CommandAllocator.cpp" />
-    <ClCompile Include="CommandLIst.cpp" />
-    <ClCompile Include="CommandListManager.cpp" />
+    <ClCompile Include="gomi\CommandAllocator.cpp" />
+    <ClCompile Include="gomi\CommandLIst.cpp" />
+    <ClCompile Include="gomi\CommandListManager.cpp" />
     <ClCompile Include="DIrectXGame\RayEngine\2d\Sprite.cpp" />
     <ClCompile Include="DIrectXGame\RayEngine\3d\DirectionalLight.cpp" />
     <ClCompile Include="DIrectXGame\RayEngine\3d\LightGroup.cpp" />
@@ -120,7 +120,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DIrectXGame\RayEngine\Base\ImGuiManager.cpp" />
     <ClCompile Include="DIrectXGame\RayEngine\Base\MyD3D12Create.cpp" />
     <ClCompile Include="DIrectXGame\RayEngine\Base\MyLog.cpp" />
-    <ClCompile Include="DIrectXGame\RayEngine\Base\MyMath.cpp" />
+    <ClCompile Include="DIrectXGame\RayEngine\Math\R_Math.cpp" />
     <ClCompile Include="DIrectXGame\RayEngine\Base\TextureManager.cpp" />
     <ClCompile Include="DIrectXGame\RayEngine\Base\WinApp.cpp" />
     <ClCompile Include="DIrectXGame\RayEngine\Collision\Collider.cpp" />
@@ -147,12 +147,18 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DIrectXGame\Application\World\skydome.cpp" />
     <ClCompile Include="DIrectXGame\Application\Scene\TitleScene.cpp" />
     <ClCompile Include="DIrectXGame\RayEngine\2d\Particle.cpp" />
-    <ClCompile Include="ParticleManager.cpp" />
+    <ClCompile Include="DIrectXGame\ParticleManager.cpp" />
+    <ClCompile Include="DIrectXGame\RayEngine\Math\Vector3.cpp" />
+    <ClCompile Include="DIrectXGame\RayEngine\Math\Vector2.cpp" />
+    <ClCompile Include="DIrectXGame\RayEngine\Math\Matrix3x3.cpp" />
+    <ClCompile Include="DIrectXGame\RayEngine\Math\Matrix4x4.cpp" />
+    <ClCompile Include="DIrectXGame\RayEngine\Math\Vector4.cpp" />
+    <ClCompile Include="Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CommandAllocator.h" />
-    <ClInclude Include="CommandLIst.h" />
-    <ClInclude Include="CommandListManager.h" />
+    <ClInclude Include="gomi\CommandAllocator.h" />
+    <ClInclude Include="gomi\CommandLIst.h" />
+    <ClInclude Include="gomi\CommandListManager.h" />
     <ClInclude Include="DIrectXGame\RayEngine\2d\Sprite.h" />
     <ClInclude Include="DIrectXGame\RayEngine\3d\DirectionalLight.h" />
     <ClInclude Include="DIrectXGame\RayEngine\3d\LightGroup.h" />
@@ -171,7 +177,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="DIrectXGame\RayEngine\Base\ImGuiManager.h" />
     <ClInclude Include="DIrectXGame\RayEngine\Base\MyD3D12Create.h" />
     <ClInclude Include="DIrectXGame\RayEngine\Base\MyLog.h" />
-    <ClInclude Include="DIrectXGame\RayEngine\Base\MyMath.h" />
+    <ClInclude Include="DIrectXGame\RayEngine\Math\R_Math.h" />
     <ClInclude Include="DIrectXGame\RayEngine\Base\MyStruct.h" />
     <ClInclude Include="DIrectXGame\RayEngine\Base\SafeDelete.h" />
     <ClInclude Include="DIrectXGame\RayEngine\Base\TextureManager.h" />
@@ -201,7 +207,13 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="DIrectXGame\Application\World\skydome.h" />
     <ClInclude Include="DIrectXGame\Application\Scene\TitleScene.h" />
     <ClInclude Include="DIrectXGame\RayEngine\2d\Particle.h" />
-    <ClInclude Include="ParticleManager.h" />
+    <ClInclude Include="DIrectXGame\ParticleManager.h" />
+    <ClInclude Include="DIrectXGame\RayEngine\Math\Vector3.h" />
+    <ClInclude Include="DIrectXGame\RayEngine\Math\Vector2.h" />
+    <ClInclude Include="DIrectXGame\RayEngine\Math\Matrix3x3.h" />
+    <ClInclude Include="DIrectXGame\RayEngine\Math\Matrix4x4.h" />
+    <ClInclude Include="DIrectXGame\RayEngine\Math\Vector4.h" />
+    <ClInclude Include="Transform.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Obj.hlsli" />

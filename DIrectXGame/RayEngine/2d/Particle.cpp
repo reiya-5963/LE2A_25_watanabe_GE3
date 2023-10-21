@@ -1,5 +1,5 @@
 //#include "Particle.h"
-//#include "MyMath.h"
+//#include "R_Math.h"
 //#include <cassert>
 //#include "TextureManager.h"
 //#include "MyD3D12Create.h"
@@ -24,7 +24,7 @@
 //	rotation_ = rotate;
 //	size_ = size;
 //	anchorPoint_ = anchorPoint;
-//	matWorld_ = MyMath::MakeIdentity4x4();
+//	matWorld_ = R_Math::MakeIdentity4x4();
 //	color_ = color;
 //	textureHandle_ = textureHandle;
 //	isFlipX_ = isFlipX;
@@ -86,18 +86,18 @@
 ///// <param name="viewProMat">ViewProjectionMatrix</param>
 //void Particle::Draw(ID3D12GraphicsCommandList* commandList) {
 //	//ワールド行列の計算
-////Matrix4x4 TransWorld = MyMath::MakeAffineMatrix(worldTrans_.scale, worldTrans_.rotate, worldTrans_.translate);
-//	matWorld_ = MyMath::MakeIdentity4x4();
-//	matWorld_ = MyMath::Multiply(matWorld_, MyMath::MakeRotateZMatrix(rotation_));
-//	matWorld_ = MyMath::Multiply(matWorld_, MyMath::MakeTranslateMatrix({ position_.x, position_.y, 0.0f }));
+////Matrix4x4 TransWorld = R_Math::MakeAffineMatrix(worldTrans_.scale, worldTrans_.rotate, worldTrans_.translate);
+//	matWorld_ = R_Math::MakeIdentity4x4();
+//	matWorld_ = R_Math::Multiply(matWorld_, R_Math::MakeRotateZMatrix(rotation_));
+//	matWorld_ = R_Math::Multiply(matWorld_, R_Math::MakeTranslateMatrix({ position_.x, position_.y, 0.0f }));
 //
 //
 //	//ワールド行列とビュープロジェクション行列の合成
-//	//matWorld_ = MyMath::Multiply(matWorld_, viewProMat);
+//	//matWorld_ = R_Math::Multiply(matWorld_, viewProMat);
 //
 //	//それぞれ定数バッファに代入
 //	constMap_->color = color_;
-//	constMap_->mat = MyMath::Multiply(matWorld_, ParticleManager::GetMatProjection());
+//	constMap_->mat = R_Math::Multiply(matWorld_, ParticleManager::GetMatProjection());
 //
 //	//頂点バッファの設定
 //	commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);

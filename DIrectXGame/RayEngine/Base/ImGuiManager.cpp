@@ -33,7 +33,11 @@ void ImGuiManager::Initialize(WinApp* winApp, DirectXCommon* dxCommon) {
 		srvHeap_->GetCPUDescriptorHandleForHeapStart(),
 		srvHeap_->GetGPUDescriptorHandleForHeapStart());
 	
-	//ImGuiIO& io = ImGui::
+	ImGui::CreateContext();
+	auto& io = ImGui::GetIO();
+
+	// 
+	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
 }
 

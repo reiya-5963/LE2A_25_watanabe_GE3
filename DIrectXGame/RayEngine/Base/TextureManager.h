@@ -3,7 +3,7 @@
 #include <array>
 #include "d3dx12.h"
 #include "MyLog.h"
-#include "MyStruct.h"
+#include "R_Math.h"
 #include <wrl.h>
 
 /// <summary>

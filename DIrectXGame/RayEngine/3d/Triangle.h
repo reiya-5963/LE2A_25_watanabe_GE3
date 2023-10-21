@@ -4,7 +4,7 @@
 #include <memory>
 #include <string>
 
-#include "MyStruct.h"
+#include "R_Math.h"
 #include "MyLog.h"
 
 /// <summary>
@@ -183,7 +183,7 @@ private://メンバ変数
 	//頂点バッファビュー
 	D3D12_VERTEX_BUFFER_VIEW vertexBufferView_{};
 	//SRT構造体
-	SRT worldTrans_{};
+	Transform worldTrans_{};
 
 	//テクスチャ番号
 	UINT textureHandle_ = 0;

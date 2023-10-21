@@ -36,7 +36,7 @@ void Mesh::AddIndex(unsigned short index) {
 //			normal.y += vertices_[index].normal.y;
 //			normal.z += vertices_[index].normal.z;
 //		}
-//		normal = MyMath::Normalize({normal.x / (float)v.size(), normal.y / (float)v.size(), normal.z / (float)v.size() });
+//		normal = R_Math::Normalize({normal.x / (float)v.size(), normal.y / (float)v.size(), normal.z / (float)v.size() });
 //		
 //		for (unsigned short index : v) {
 //			vertices_[index].normal = { normal.x, normal.y, normal.z };

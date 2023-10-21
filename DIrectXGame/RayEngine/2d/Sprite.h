@@ -4,7 +4,7 @@
 #include <memory>
 #include <string>
 
-#include "MyStruct.h"
+#include "R_Math.h"
 #include "MyLog.h"
 
 /// <summary>

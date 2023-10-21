@@ -40,10 +40,10 @@ void WorldTransform::TransferMatrix() {
 }
 
 void WorldTransform::UpdateMatrix() {
-	matWorld_ = MyMath::MakeAffineMatrix(scale_, rotation_, translation_);
+	matWorld_ = R_Math::MakeAffineMatrix(scale_, rotation_, translation_);
 
 	if (parent_) {
-		matWorld_ = MyMath::Multiply(matWorld_, parent_->matWorld_);
+		matWorld_ = R_Math::Multiply(matWorld_, parent_->matWorld_);
 	}
 	TransferMatrix();
 }

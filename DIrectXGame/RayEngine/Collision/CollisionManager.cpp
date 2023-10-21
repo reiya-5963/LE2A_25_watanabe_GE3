@@ -1,7 +1,7 @@
 #include "CollisionManager.h"
 #include <iterator>
 
-#include "MyMath.h"
+#include "R_Math.h"
 
 void CollisionManager::Initialize() {
 	model_.reset(Model::CreateFlomObj("BaseElipse"));

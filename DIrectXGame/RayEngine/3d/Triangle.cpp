@@ -1,5 +1,4 @@
 #include "Triangle.h"
-#include "MyMath.h"
 #include <cassert>
 #include "TextureManager.h"
 #include "MyD3D12Create.h"
@@ -227,7 +226,7 @@ void Triangle::StaticInitialize(ID3D12Device* device, int windowWidth, int windo
 		IID_PPV_ARGS(&sPipelineState_));
 	assert(SUCCEEDED(result));
 #pragma endregion
-	sMatProjection_ = MyMath::MakeOrthographicMatrix(0.0f, 0.0f, (float)windowWidth, (float)windowHeight, 0.0f, 100.0f);
+	sMatProjection_ = R_Math::MakeOrthographicMatrix(0.0f, 0.0f, (float)windowWidth, (float)windowHeight, 0.0f, 100.0f);
 }
 
 /// <summary>
@@ -308,7 +307,7 @@ Triangle::Triangle(uint32_t textureHandle, Vector3 position, Vector2 size,
 	worldTrans_.scale.y = size.y;
 	worldTrans_.translate = position;
 	anchorPoint_ = anchorPoint;
-	matWorld_ = MyMath::MakeIdentity4x4();
+	matWorld_ = R_Math::MakeIdentity4x4();
 	color_ = color;
 	textureHandle_ = textureHandle;
 	texSize_ = size;
@@ -369,8 +368,8 @@ bool Triangle::Initialize() {
 /// <param name="viewProMat">ViewProjectionMatrix</param>
 void Triangle::Draw(Matrix4x4 viewProMatrix) {
 	//ワールド行列の計算
-	Matrix4x4 worldMatrix = MyMath::MakeAffineMatrix(worldTrans_.scale, worldTrans_.rotate, worldTrans_.translate);
-	matWorld_ = MyMath::Multiply(worldMatrix, viewProMatrix);
+	Matrix4x4 worldMatrix = R_Math::MakeAffineMatrix(worldTrans_.scale, worldTrans_.rotate, worldTrans_.translate);
+	matWorld_ = R_Math::Multiply(worldMatrix, viewProMatrix);
 
 	//それぞれ定数バッファに代入
 	constMap_->color = color_;

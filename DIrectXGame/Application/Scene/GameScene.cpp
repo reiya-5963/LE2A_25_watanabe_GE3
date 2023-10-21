@@ -1,6 +1,6 @@
 #include "GameScene.h"
 #include <cassert>
-#include "MyMath.h"
+#include "R_Math.h"
 #include "TextureManager.h"
 #include "ImGuiManager.h"
 
@@ -117,6 +117,19 @@ void GameScene::Finalize() {
 }
 
 void GameScene::Update() {
+	// コライダーリストの初期化
+	colliderManager_->ClearColliders();
+
+	// それぞれ当たり判定があるものをリストに追加
+	colliderManager_->AddColliders(player_.get());
+	colliderManager_->AddColliders(enemy_.get());
+	colliderManager_->AddColliders(ground_.get());
+	//colliderManager_->AddColliders(moveGround_.get());
+
+	colliderManager_->UpdateWorldTransform();
+
+	// 当たり判定チェック
+	colliderManager_->CheckAllCollisions();
 
 	// 地面の更新
 	ground_->Update();
@@ -134,20 +147,6 @@ void GameScene::Update() {
 
 	// 敵の更新
 	enemy_->Update();
-
-	// コライダーリストの初期化
-	colliderManager_->ClearColliders();
-
-	// それぞれ当たり判定があるものをリストに追加
-	colliderManager_->AddColliders(player_.get());
-	colliderManager_->AddColliders(enemy_.get());
-	colliderManager_->AddColliders(ground_.get());
-	//colliderManager_->AddColliders(moveGround_.get());
-
-	colliderManager_->UpdateWorldTransform();
-
-	// 当たり判定チェック
-	colliderManager_->CheckAllCollisions();
 }
 
 void GameScene::Draw() {

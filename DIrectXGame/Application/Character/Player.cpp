@@ -1,6 +1,6 @@
 #include "Player.h"
 #include "ImGuiManager.h"
-#include "MyMath.h"
+#include "R_Math.h"
 #include "GlobalVariables.h"
 #include <cassert>
 
@@ -136,8 +136,8 @@ void Player::Update() {
 	worldTransform_r_arm_.UpdateMatrix();
 	worldTransform_wepon_.UpdateMatrix();
 
-	SetMin(MyMath::Subtract(GetWorldPosition(), GetRadius()));
-	SetMax(MyMath::Add(GetWorldPosition(), GetRadius()));
+	SetMin(R_Math::Subtract(GetWorldPosition(), GetRadius()));
+	SetMax(R_Math::Add(GetWorldPosition(), GetRadius()));
 	
 	isOnGround_ = false;
 
@@ -171,7 +171,7 @@ Vector3 Player::GetWorldPosition() {
 	Vector3 offset = { 0.0f, 3.0f, 0.0f };
 	//
 
-	result = MyMath::TransformCoord(offset, worldTrans_.matWorld_);
+	result = R_Math::TransformCoord(offset, worldTrans_.matWorld_);
 	return result;
 }
 
@@ -264,7 +264,7 @@ void Player::UpdateAttackWeponGimmick() {
 }
 
 void Player::BehaviorRootUpdate() {
-	Matrix4x4 movetrans = MyMath::MakeTranslateMatrix(worldTrans_.translation_);
+	Matrix4x4 movetrans = R_Math::MakeTranslateMatrix(worldTrans_.translation_);
 	Vector3 move = { 0, 0, 0 };
 
 	
@@ -294,19 +294,19 @@ void Player::BehaviorRootUpdate() {
 		isJump_ = false;
 	}
 
-	move = MyMath::Normalize(move);
+	move = R_Math::Normalize(move);
 	move.x *= speed;
 	move.y *= 5.0f;
 	move.z *= speed;
 
-	Matrix4x4 moveMat = MyMath::MakeTranslateMatrix(move);
-	Matrix4x4 rotateMat = MyMath::Multiply(
-		MyMath::Multiply(
-			MyMath::MakeRotateXMatrix(viewProjection_->rotation_.x),
-			MyMath::MakeRotateYMatrix(viewProjection_->rotation_.y)),
-		MyMath::MakeRotateZMatrix(viewProjection_->rotation_.z));
+	Matrix4x4 moveMat = R_Math::MakeTranslateMatrix(move);
+	Matrix4x4 rotateMat = R_Math::Multiply(
+		R_Math::Multiply(
+			R_Math::MakeRotateXMatrix(viewProjection_->rotation_.x),
+			R_Math::MakeRotateYMatrix(viewProjection_->rotation_.y)),
+		R_Math::MakeRotateZMatrix(viewProjection_->rotation_.z));
 
-	moveMat = MyMath::Multiply(moveMat, rotateMat);
+	moveMat = R_Math::Multiply(moveMat, rotateMat);
 	move.x = moveMat.m[3][0];
 	move.y;
 	move.z = moveMat.m[3][2];
@@ -314,7 +314,7 @@ void Player::BehaviorRootUpdate() {
 	worldTrans_.rotation_.y = std::atan2(move.x, move.z);
 
 	// 位置の移動
-	worldTrans_.translation_ = MyMath::TransformCoord(move, movetrans);
+	worldTrans_.translation_ = R_Math::TransformCoord(move, movetrans);
 
 	// 各ギミックの更新処理
 	UpdateFloatingGimmick();

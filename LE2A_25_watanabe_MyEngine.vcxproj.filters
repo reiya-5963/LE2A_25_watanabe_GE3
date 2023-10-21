@@ -243,7 +243,7 @@
     <ClCompile Include="DIrectXGame\RayEngine\Collision\CollisionManager.cpp">
       <Filter>RayEngine\Source\Collision</Filter>
     </ClCompile>
-    <ClCompile Include="DIrectXGame\RayEngine\Base\MyMath.cpp">
+    <ClCompile Include="DIrectXGame\RayEngine\Math\R_Math.cpp">
       <Filter>RayEngine\Source\Math</Filter>
     </ClCompile>
     <ClCompile Include="DIrectXGame\RayEngine\Input\Input.cpp">
@@ -252,16 +252,34 @@
     <ClCompile Include="DIrectXGame\RayEngine\2d\Particle.cpp">
       <Filter>RayEngine\Source\2d</Filter>
     </ClCompile>
-    <ClCompile Include="ParticleManager.cpp">
+    <ClCompile Include="DIrectXGame\ParticleManager.cpp">
       <Filter>Application\ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="CommandLIst.cpp">
+    <ClCompile Include="gomi\CommandLIst.cpp">
       <Filter>RayEngine</Filter>
     </ClCompile>
-    <ClCompile Include="CommandListManager.cpp">
+    <ClCompile Include="gomi\CommandListManager.cpp">
       <Filter>Application\ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="CommandAllocator.cpp">
+    <ClCompile Include="gomi\CommandAllocator.cpp">
+      <Filter>Application\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="DIrectXGame\RayEngine\Math\Vector3.cpp">
+      <Filter>RayEngine\Source\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="DIrectXGame\RayEngine\Math\Vector2.cpp">
+      <Filter>Application\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="DIrectXGame\RayEngine\Math\Vector4.cpp">
+      <Filter>Application\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="DIrectXGame\RayEngine\Math\Matrix4x4.cpp">
+      <Filter>Application\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="DIrectXGame\RayEngine\Math\Matrix3x3.cpp">
+      <Filter>Application\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Transform.cpp">
       <Filter>Application\ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -347,7 +365,7 @@
     <ClInclude Include="DIrectXGame\RayEngine\Input\Input.h">
       <Filter>RayEngine\Headder\Input</Filter>
     </ClInclude>
-    <ClInclude Include="DIrectXGame\RayEngine\Base\MyMath.h">
+    <ClInclude Include="DIrectXGame\RayEngine\Math\R_Math.h">
       <Filter>RayEngine\Headder\Math</Filter>
     </ClInclude>
     <ClInclude Include="DIrectXGame\RayEngine\Collision\Collider.h">
@@ -410,16 +428,34 @@
     <ClInclude Include="DIrectXGame\RayEngine\2d\Particle.h">
       <Filter>RayEngine\Headder\2d</Filter>
     </ClInclude>
-    <ClInclude Include="ParticleManager.h">
+    <ClInclude Include="DIrectXGame\ParticleManager.h">
       <Filter>Application\ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="CommandLIst.h">
+    <ClInclude Include="gomi\CommandLIst.h">
       <Filter>RayEngine</Filter>
     </ClInclude>
-    <ClInclude Include="CommandListManager.h">
+    <ClInclude Include="gomi\CommandListManager.h">
       <Filter>Application\ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="CommandAllocator.h">
+    <ClInclude Include="gomi\CommandAllocator.h">
+      <Filter>Application\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\RayEngine\Math\Vector3.h">
+      <Filter>RayEngine\Headder\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\RayEngine\Math\Vector2.h">
+      <Filter>Application\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\RayEngine\Math\Vector4.h">
+      <Filter>Application\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\RayEngine\Math\Matrix4x4.h">
+      <Filter>Application\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\RayEngine\Math\Matrix3x3.h">
+      <Filter>Application\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform.h">
       <Filter>Application\ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

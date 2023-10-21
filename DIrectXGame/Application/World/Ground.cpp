@@ -1,6 +1,6 @@
-#include "MyMath.h"
+#include "Math.h"
 #include "Ground.h"
-
+#include "ImGuiManager.h"
 /// <summary>
 ///
 /// </summary>
@@ -24,9 +24,13 @@ void Ground::Initialize(Model* model, const Vector3& position) {
 ///
 /// </summary>
 void Ground::Update() {
-	Matrix4x4 movetrans = MyMath::MakeTranslateMatrix(worldTrans_.translation_);
+	Matrix4x4 movetrans = R_Math::MakeTranslateMatrix(worldTrans_.translation_);
 	const float speed = 0.7f;
 	Vector3 move = { 0.0f, 0.0f, 0.0f };
+	ImGui::Begin("Debug");
+	
+	ImGui::End();
+
 	if (isMove_) {
 		if (isMoveLeft_) {
 			move.x = -1.0f;
@@ -35,17 +39,17 @@ void Ground::Update() {
 			move.x = 1.0f;
 		}
 	}
-	move = MyMath::Normalize(move);
+	move = R_Math::Normalize(move);
 	move.x *= speed;
 	move.y *= speed;
 	move.z *= speed;
 
-	worldTrans_.translation_ = MyMath::TransformCoord(move, movetrans);
+	worldTrans_.translation_ = R_Math::TransformCoord(move, movetrans);
 
 	worldTrans_.UpdateMatrix();
 
-	SetMin(MyMath::Subtract(GetWorldPosition(), GetRadius()));
-	SetMax(MyMath::Add(GetWorldPosition(), GetRadius()));
+	SetMin(R_Math::Subtract(GetWorldPosition(), GetRadius()));
+	SetMax(R_Math::Add(GetWorldPosition(), GetRadius()));
 
 	if (worldTrans_.matWorld_.m[3][0] >= 30.0f) {
 		isMoveLeft_ = true;

@@ -1,5 +1,4 @@
 #include "Sprite.h"
-#include "MyMath.h"
 #include <cassert>
 #include "TextureManager.h"
 #include "MyD3D12Create.h"
@@ -211,7 +210,7 @@ void Sprite::StaticInitialize(int windowWidth, int windowHeight, const std::wstr
 
 #pragma endregion 
 
-	sMatProjection_ = MyMath::MakeOrthographicMatrix(0.0f, 0.0f, (float)windowWidth, (float)windowHeight, 0.0f, 100.0f);
+	sMatProjection_ = R_Math::MakeOrthographicMatrix(0.0f, 0.0f, (float)windowWidth, (float)windowHeight, 0.0f, 100.0f);
 }
 
 /// <summary>
@@ -296,7 +295,7 @@ Sprite::Sprite(uint32_t textureHandle, Vector2 position, float rotate, Vector2 s
 	rotation_ = rotate;
 	size_ = size;
 	anchorPoint_ = anchorPoint;
-	matWorld_ = MyMath::MakeIdentity4x4();
+	matWorld_ = R_Math::MakeIdentity4x4();
 	color_ = color;
 	textureHandle_ = textureHandle;
 	isFlipX_ = isFlipX;
@@ -363,19 +362,19 @@ void Sprite::Draw(BlendMode blendMode) {
 
 
 	//ワールド行列の計算
-	//Matrix4x4 TransWorld = MyMath::MakeAffineMatrix(worldTrans_.scale, worldTrans_.rotate, worldTrans_.translate);
-	matWorld_ = MyMath::MakeIdentity4x4();
-	matWorld_ = MyMath::Multiply(matWorld_, MyMath::MakeRotateZMatrix(rotation_));
-	matWorld_ = MyMath::Multiply(matWorld_, MyMath::MakeTranslateMatrix({ position_.x, position_.y, 0.0f }));
+	//Matrix4x4 TransWorld = R_Math::MakeAffineMatrix(worldTrans_.scale, worldTrans_.rotate, worldTrans_.translate);
+	matWorld_ = R_Math::MakeIdentity4x4();
+	matWorld_ = R_Math::Multiply(matWorld_, R_Math::MakeRotateZMatrix(rotation_));
+	matWorld_ = R_Math::Multiply(matWorld_, R_Math::MakeTranslateMatrix({ position_.x, position_.y, 0.0f }));
 
 
 	//ワールド行列とビュープロジェクション行列の合成
-	//matWorld_ = MyMath::Multiply(matWorld_, viewProMat);
+	//matWorld_ = R_Math::Multiply(matWorld_, viewProMat);
 
 
 	//それぞれ定数バッファに代入
 	constMap_->color = color_;
-	constMap_->mat = MyMath::Multiply(matWorld_, sMatProjection_);
+	constMap_->mat = R_Math::Multiply(matWorld_, sMatProjection_);
 
 	//頂点バッファの設定
 	sCommandList_->IASetVertexBuffers(0, 1, &vertexBufferView_);

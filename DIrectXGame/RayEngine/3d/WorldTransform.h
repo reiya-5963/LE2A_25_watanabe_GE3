@@ -1,7 +1,7 @@
 #pragma once
 
 #include "MyStruct.h"
-#include "MyMath.h"
+#include "R_Math.h"
 #include <d3d12.h>
 #include <wrl.h>
 

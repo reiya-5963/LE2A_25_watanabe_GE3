@@ -1,6 +1,6 @@
 //#include "ParticleManager.h"
 //#include "Particle.h"
-//#include "MyMath.h"
+//#include "R_Math.h"
 //#include <cassert>
 //#include "TextureManager.h"
 //#include "MyD3D12Create.h"
@@ -223,7 +223,7 @@
 //
 //#pragma endregion 
 //
-//	sMatProjection_ = MyMath::MakeOrthographicMatrix(0.0f, 0.0f, (float)windowWidth, (float)windowHeight, 0.0f, 100.0f);
+//	sMatProjection_ = R_Math::MakeOrthographicMatrix(0.0f, 0.0f, (float)windowWidth, (float)windowHeight, 0.0f, 100.0f);
 //
 //
 //}

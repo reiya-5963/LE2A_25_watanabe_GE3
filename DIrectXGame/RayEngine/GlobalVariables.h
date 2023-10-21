@@ -4,7 +4,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
-#include "MyMath.h"
+#include "R_Math.h"
 #include <json.hpp>
 #include <json_fwd.hpp>
 

@@ -1,5 +1,5 @@
 #include "FollowCamera.h"
-#include "MyMath.h"
+#include "R_Math.h"
 #include "input/Input.h"
 
 void FollowCamera::Initialize() {
@@ -61,17 +61,17 @@ void FollowCamera::Update() {
 		}
 
 		// 回転行列の生成
-		Matrix4x4 rotateMat = MyMath::Multiply(
-			MyMath::Multiply(
-				MyMath::MakeRotateXMatrix(viewProjection_.rotation_.x),
-				MyMath::MakeRotateYMatrix(viewProjection_.rotation_.y)),
-			MyMath::MakeRotateZMatrix(viewProjection_.rotation_.z));
+		Matrix4x4 rotateMat = R_Math::Multiply(
+			R_Math::Multiply(
+				R_Math::MakeRotateXMatrix(viewProjection_.rotation_.x),
+				R_Math::MakeRotateYMatrix(viewProjection_.rotation_.y)),
+			R_Math::MakeRotateZMatrix(viewProjection_.rotation_.z));
 
 		// 回転行列でどの方向を見ても同じ距離になるよう調整
-		offset_ = MyMath::TransformNormal(offset_, rotateMat);
+		offset_ = R_Math::TransformNormal(offset_, rotateMat);
 
 		// ターゲットから調整した距離分を加算
-		viewProjection_.translation_ = MyMath::Add(target_->translation_, offset_);
+		viewProjection_.translation_ = R_Math::Add(target_->translation_, offset_);
 	}
 
 	// ビュー行列の更新と転送

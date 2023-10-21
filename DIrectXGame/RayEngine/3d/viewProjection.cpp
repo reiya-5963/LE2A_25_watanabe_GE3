@@ -45,7 +45,7 @@ void ViewProjection::TransferMatrix() {
 	constMap->view = matView;
 	constMap->projection = matProjection;
 	
-	Matrix4x4 matTranslate = MyMath::MakeTranslateMatrix(translation_);
+	Matrix4x4 matTranslate = R_Math::MakeTranslateMatrix(translation_);
 	
 	constMap->cameraPos.x = matTranslate.m[3][0];
 	constMap->cameraPos.y = matTranslate.m[3][1];
@@ -54,10 +54,10 @@ void ViewProjection::TransferMatrix() {
 
 void ViewProjection::UpdateViewMatrix() {
 	// ビュー行列の生成
-	matView = MyMath::Inverse(MyMath::MakeAffineMatrix(scale_, rotation_, translation_));
+	matView = R_Math::Inverse(R_Math::MakeAffineMatrix(scale_, rotation_, translation_));
 }
 
 void ViewProjection::UpdateProjectionMatrix() {
 	// 透視投影による射影行列の生成
-	matProjection = MyMath::MakePerspectiveFovMatrix(fovAngleY, aspectRatio, nearZ, farZ);
+	matProjection = R_Math::MakePerspectiveFovMatrix(fovAngleY, aspectRatio, nearZ, farZ);
 }

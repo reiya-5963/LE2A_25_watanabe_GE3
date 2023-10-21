@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Material.h"
-#include "MyMath.h"
+#include "R_Math.h"
 #include <Windows.h>
 #include <d3d12.h>
 #include <unordered_map>
