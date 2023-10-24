@@ -279,7 +279,7 @@
     <ClCompile Include="DIrectXGame\RayEngine\Math\Matrix3x3.cpp">
       <Filter>Application\ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Transform.cpp">
+    <ClCompile Include="DIrectXGame\RayEngine\Math\Transform.cpp">
       <Filter>Application\ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -455,7 +455,7 @@
     <ClInclude Include="DIrectXGame\RayEngine\Math\Matrix3x3.h">
       <Filter>Application\ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Transform.h">
+    <ClInclude Include="DIrectXGame\RayEngine\Math\Transform.h">
       <Filter>Application\ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

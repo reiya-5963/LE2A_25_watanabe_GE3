@@ -153,7 +153,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DIrectXGame\RayEngine\Math\Matrix3x3.cpp" />
     <ClCompile Include="DIrectXGame\RayEngine\Math\Matrix4x4.cpp" />
     <ClCompile Include="DIrectXGame\RayEngine\Math\Vector4.cpp" />
-    <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="DIrectXGame\RayEngine\Math\Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gomi\CommandAllocator.h" />
@@ -213,7 +213,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="DIrectXGame\RayEngine\Math\Matrix3x3.h" />
     <ClInclude Include="DIrectXGame\RayEngine\Math\Matrix4x4.h" />
     <ClInclude Include="DIrectXGame\RayEngine\Math\Vector4.h" />
-    <ClInclude Include="Transform.h" />
+    <ClInclude Include="DIrectXGame\RayEngine\Math\Transform.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Obj.hlsli" />
