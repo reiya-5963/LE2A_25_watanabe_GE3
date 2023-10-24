@@ -15,6 +15,31 @@
 /// </summary>
 class Input {
 public:
+	struct MouseMove {
+		LONG lX;
+		LONG lY;
+		LONG lZ;
+	};
+public:
+	enum class PadType {
+		DirectInput,
+		XInput,
+	};
+
+	union State {
+		XINPUT_STATE xInput_;
+		DIJOYSTATE2 directInput_;
+	};
+
+	struct JoyStick {
+		Microsoft::WRL::ComPtr < IDirectInputDevice8> device_;
+		int32_t deadZoneL_;
+		int32_t deadZoneR_;
+		PadType type_;
+		State state_;
+		State preState_;
+	};
+public:
 	/// <summary>
 	/// シングルトンインスタンスの取得
 	/// </summary>
@@ -77,17 +102,31 @@ public:
 	/// <returns>ホイールスクロール量</returns>
 	int32_t GetWhieel() const;
 
+
+	bool GetJoyStickState(int32_t stickNo, DIJOYSTATE2& out) const;
+	bool GetJoyStickStatePrevious(int32_t stickNo, DIJOYSTATE2& out) const;
+
+	bool GetJoyStickState(int32_t stickNo, XINPUT_STATE& out) const;
+	bool GetJoyStickStatePrevious(int32_t stickNo, XINPUT_STATE& out) const;
+
+	void SetJoyStickDeadZone(int32_t stickNo, int32_t deadZoneL, int32_t deadZoneR);
+
+	size_t GetNumberOfJoySticks();
+
+
 private: // 
+	static BOOL CALLBACK
+		EnumJoySticksCallback(const DIDEVICEINSTANCE* pdidInstance, VOID* pcontext) noexcept;
 	Input() = default;
 	~Input();
 	Input(const Input&) = delete;
 	const Input& operator=(const Input&) = delete;
-
+	void SetupJoySticks();
 private: // メンバ関数
 	Microsoft::WRL::ComPtr<IDirectInput8> directinput_;
 	Microsoft::WRL::ComPtr<IDirectInputDevice8> deviceKeyboard_;
 	Microsoft::WRL::ComPtr<IDirectInputDevice8> deviceMouse_;
-
+	std::vector<JoyStick> devJoySticks_;
 	std::array<BYTE, 256> key_;
 	std::array<BYTE, 256> preKey_;
 

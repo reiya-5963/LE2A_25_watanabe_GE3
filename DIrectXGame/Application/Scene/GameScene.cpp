@@ -36,14 +36,13 @@ void GameScene::Initialize() {
 	// 地面の生成
 	ground_ = std::make_unique<Ground>();
 	// 地面の初期化
-	ground_->Initialize(groundModel_.get(), { 0, 0, 0 });
-	ground_->SetIsMove(true);
+	ground_->Initialize(groundModel_.get(), { 0.0f, 0.0f, 0.0f });
 
 	// 地面の生成
-	//moveGround_= std::make_unique<Ground>();
+	moveGround_= std::make_unique<Scaffold>();
 	// 地面の初期化
-	//moveGround_->Initialize(groundModel_.get(), { 100.0f, 0.0f, 100.0f });
-	//moveGround_->SetIsMove(true);
+	moveGround_->Initialize(groundModel_.get(), { 0.0f, 0.0f, 30.0f });
+	moveGround_->SetIsMove(true);
 
 #pragma endregion
 
@@ -124,19 +123,19 @@ void GameScene::Update() {
 	colliderManager_->AddColliders(player_.get());
 	colliderManager_->AddColliders(enemy_.get());
 	colliderManager_->AddColliders(ground_.get());
-	//colliderManager_->AddColliders(moveGround_.get());
+	colliderManager_->AddColliders(moveGround_.get());
 
 	colliderManager_->UpdateWorldTransform();
 
 	// 当たり判定チェック
 	colliderManager_->CheckAllCollisions();
+	// プレイヤーの更新
+	player_->Update();
 
 	// 地面の更新
 	ground_->Update();
-	//moveGround_->Update();
+	moveGround_->Update();
 
-	// プレイヤーの更新
-	player_->Update();
 
 	// 追従カメラの更新
 	followCamera_->Update();
@@ -165,7 +164,7 @@ void GameScene::Draw() {
 	skydome_->Draw(viewProjection_);
 	// 地面の描画
 	ground_->Draw(viewProjection_);
-	//moveGround_->Draw(viewProjection_);
+	moveGround_->Draw(viewProjection_);
 
 	// プレイヤーの描画
 	player_->Draw(viewProjection_);

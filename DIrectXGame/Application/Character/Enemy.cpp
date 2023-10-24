@@ -9,7 +9,7 @@ void Enemy::Initialize(const std::vector<Model*>& models) {
 	//
 	BaseCharacter::Initialize(models);
 	SetCollisionAttribute(kCollisionAttributeEnemy);
-	SetCollisionMask(!kCollisionAttributeEnemy);
+	SetCollisionMask(~kCollisionAttributeEnemy);
 
 	//
 	worldTransform_body_.Initialize();
@@ -51,8 +51,12 @@ void Enemy::Draw(const ViewProjection& viewProjection) {
 
 }
 
-void Enemy::OnCollision() {
+void Enemy::OnCollisionEnter() {
 }
+
+//void Enemy::OnCollisionExit()
+//{
+//}
 
 Vector3 Enemy::GetWorldPosition() {
 	Vector3 result{};

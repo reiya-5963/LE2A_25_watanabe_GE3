@@ -26,7 +26,9 @@ public: // メンバ関数
 	/// <param name="viewProjection">ビュープロジェクション</param>
 	void Draw(const ViewProjection& viewProjection) override;
 
-	void OnCollision() override;
+	void OnCollisionEnter() override;	
+	//void OnCollisionExit() override;
+
 	Vector3 GetWorldPosition() override;
 
 	void SetVelocity(Vector3 velo) { velocity_ = velo; }

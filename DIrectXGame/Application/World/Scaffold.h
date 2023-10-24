@@ -1,8 +1,8 @@
-﻿#pragma once
+#pragma once
 #include "Collider.h"
 #include <cassert>
 
-class Ground : public Collider {
+class Scaffold : public Collider {
 public:
 	/// <summary>
 	/// 初期化
@@ -22,13 +22,16 @@ public:
 	/// <param name="viewProjection">ビュープロジェクション</param>
 	void Draw(ViewProjection& viewProjection);
 
+	void SetIsMove(bool isMove);
 	void OnCollisionEnter();
-	//void OnCollisionExit();
-
+	void OnCollisionExit();
 	Vector3 GetWorldPosition();
 private:
 	// ワールド変換データ
 	//WorldTransform worldTrans_;
 	// モデル
 	Model* model_ = nullptr;
+
+	bool isMoveLeft_ = false;
+	bool isMove_ = false;
 };

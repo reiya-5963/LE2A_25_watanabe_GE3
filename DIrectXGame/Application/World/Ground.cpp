@@ -1,11 +1,5 @@
-#include "Math.h"
 #include "Ground.h"
-#include "ImGuiManager.h"
-/// <summary>
-///
-/// </summary>
-/// <param name="model"></param>
-/// <param name="position"></param>
+
 void Ground::Initialize(Model* model, const Vector3& position) {
 	assert(model);
 	model_ = model;
@@ -14,73 +8,36 @@ void Ground::Initialize(Model* model, const Vector3& position) {
 	worldTrans_.translation_ = position;
 
 	Collider::Initialize();
-	SetRadius({ 15.0f, 1.0f, 15.0f });
+	SetRadius({ 15.0f, 5.0f, 15.0f });
+	worldTrans_.scale_ = { 15.0f ,5.0f, 15.0f };
 	SetCollisionAttribute(kCollisionAttributeWorld);
-	SetCollisionMask(!kCollisionAttributeWorld);
-
+	SetCollisionMask(~kCollisionAttributeWorld);
 }
 
-/// <summary>
-///
-/// </summary>
 void Ground::Update() {
-	Matrix4x4 movetrans = R_Math::MakeTranslateMatrix(worldTrans_.translation_);
-	const float speed = 0.7f;
-	Vector3 move = { 0.0f, 0.0f, 0.0f };
-	ImGui::Begin("Debug");
-	
-	ImGui::End();
-
-	if (isMove_) {
-		if (isMoveLeft_) {
-			move.x = -1.0f;
-		}
-		else if (!isMoveLeft_) {
-			move.x = 1.0f;
-		}
-	}
-	move = R_Math::Normalize(move);
-	move.x *= speed;
-	move.y *= speed;
-	move.z *= speed;
-
-	worldTrans_.translation_ = R_Math::TransformCoord(move, movetrans);
-
 	worldTrans_.UpdateMatrix();
-
 	SetMin(R_Math::Subtract(GetWorldPosition(), GetRadius()));
 	SetMax(R_Math::Add(GetWorldPosition(), GetRadius()));
 
-	if (worldTrans_.matWorld_.m[3][0] >= 30.0f) {
-		isMoveLeft_ = true;
-	}
-	else if (worldTrans_.matWorld_.m[3][0] <= -30.0f) {
-		isMoveLeft_ = false;
-	}
 
 }
 
-/// <summary>
-///
-/// </summary>
-/// <param name="viewProjection"></param>
 void Ground::Draw(ViewProjection& viewProjection) {
-	model_->Draw(worldTransform_, viewProjection);
+	model_->Draw(worldTrans_, viewProjection);
 }
 
-void Ground::SetIsMove(bool isMove) {
-	isMove_ = isMove;
+void Ground::OnCollisionEnter() {
 }
 
-void Ground::OnCollision()
-{
-}
+//void Ground::OnCollisionExit()
+//{
+//}
 
 Vector3 Ground::GetWorldPosition() {
 	Vector3 result{};
 
 	result.x = worldTrans_.matWorld_.m[3][0];
-	result.x = worldTrans_.matWorld_.m[3][0];
-	result.x = worldTrans_.matWorld_.m[3][0];
+	result.y = worldTrans_.matWorld_.m[3][1];
+	result.z = worldTrans_.matWorld_.m[3][2];
 	return result;
 }

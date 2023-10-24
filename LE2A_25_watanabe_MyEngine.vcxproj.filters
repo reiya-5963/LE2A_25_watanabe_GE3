@@ -165,7 +165,7 @@
     <ClCompile Include="DIrectXGame\Application\Camera\FollowCamera.cpp">
       <Filter>Application\ソース ファイル\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="DIrectXGame\Application\World\Ground.cpp">
+    <ClCompile Include="DIrectXGame\Application\World\Scaffold.cpp">
       <Filter>Application\ソース ファイル\World</Filter>
     </ClCompile>
     <ClCompile Include="DIrectXGame\Application\World\skydome.cpp">
@@ -252,7 +252,7 @@
     <ClCompile Include="DIrectXGame\RayEngine\2d\Particle.cpp">
       <Filter>RayEngine\Source\2d</Filter>
     </ClCompile>
-    <ClCompile Include="DIrectXGame\ParticleManager.cpp">
+    <ClCompile Include="DIrectXGame\RayEngine\ParticleManager.cpp">
       <Filter>Application\ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="gomi\CommandLIst.cpp">
@@ -279,7 +279,10 @@
     <ClCompile Include="DIrectXGame\RayEngine\Math\Matrix3x3.cpp">
       <Filter>Application\ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Transform.cpp">
+    <ClCompile Include="DIrectXGame\RayEngine\Math\Transform.cpp">
+      <Filter>Application\ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="DIrectXGame\Application\World\Ground.cpp">
       <Filter>Application\ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -401,7 +404,7 @@
     <ClInclude Include="DIrectXGame\Application\World\skydome.h">
       <Filter>Application\ヘッダー ファイル\World</Filter>
     </ClInclude>
-    <ClInclude Include="DIrectXGame\Application\World\Ground.h">
+    <ClInclude Include="DIrectXGame\Application\World\Scaffold.h">
       <Filter>Application\ヘッダー ファイル\World</Filter>
     </ClInclude>
     <ClInclude Include="DIrectXGame\RayEngine\Scene\AbstractSceneFactory.h">
@@ -428,7 +431,7 @@
     <ClInclude Include="DIrectXGame\RayEngine\2d\Particle.h">
       <Filter>RayEngine\Headder\2d</Filter>
     </ClInclude>
-    <ClInclude Include="DIrectXGame\ParticleManager.h">
+    <ClInclude Include="DIrectXGame\RayEngine\ParticleManager.h">
       <Filter>Application\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="gomi\CommandLIst.h">
@@ -455,7 +458,10 @@
     <ClInclude Include="DIrectXGame\RayEngine\Math\Matrix3x3.h">
       <Filter>Application\ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Transform.h">
+    <ClInclude Include="DIrectXGame\RayEngine\Math\Transform.h">
+      <Filter>Application\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\Application\World\Ground.h">
       <Filter>Application\ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

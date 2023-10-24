@@ -2,6 +2,7 @@
 #include "BaseScene.h"
 
 #include <memory>
+#include "Scaffold.h"
 #include "Ground.h"
 #include "Enemy.h"
 #include "skydome.h"
@@ -84,7 +85,7 @@ private:
 	// 地面
 	std::unique_ptr<Ground> ground_ = nullptr;
 
-	std::unique_ptr<Ground> moveGround_ = nullptr;
+	std::unique_ptr<Scaffold> moveGround_ = nullptr;
 
 	// 追従カメラ
 	std::unique_ptr<FollowCamera> followCamera_ = nullptr;

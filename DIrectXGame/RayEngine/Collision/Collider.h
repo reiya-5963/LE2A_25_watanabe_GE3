@@ -44,7 +44,8 @@ public: // メンバ関数
 	void SetCollisionMask(uint32_t collisionMask);
 
 	// 衝突時に呼ばれる関数
-	virtual void OnCollision() = 0;
+	virtual void OnCollisionEnter() = 0;
+	//virtual void OnCollisionExit() = 0;
 
 	virtual Vector3 GetWorldPosition() = 0;
 	
@@ -57,6 +58,12 @@ public: // メンバ関数
 		worldTrans_ = worldTrans;
 	}
 
+	bool GetIsCollision() { return isCollision_; }
+	void SetIsCollision(bool isColision) { isCollision_ = isColision; }
+	bool GetPreIsCollision() { return preIsCollision_; }
+	void SetPreIsCollision(bool isColision) { preIsCollision_ = isColision; }
+
+
 protected: // メンバ変数　
 	// 衝突半径
 	Vector3 radius_ = {1.0f, 1.0f, 1.0f};
@@ -68,5 +75,8 @@ protected: // メンバ変数　
 
 	// 地面
 	WorldTransform* parent_;
+
+	bool isCollision_ = false;
+	bool preIsCollision_ = false;;
 };
 

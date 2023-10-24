@@ -54,13 +54,11 @@ void CollisionManager::ClearColliders() {
 }
 
 void CollisionManager::CheckCollisionPair(Collider* colliderA, Collider* colliderB) {
-	colliderA->SetParent(nullptr);
-	colliderB->SetParent(nullptr);
 
 	// 衝突フィルタリング (もし同じ属性なら判定しない)
 	if (
-		(colliderA->GetCollisionAttribute() != colliderB->GetCollisionMask()) ||
-		(colliderB->GetCollisionAttribute() != colliderA->GetCollisionMask())) {
+		((colliderA->GetCollisionAttribute() & colliderB->GetCollisionMask()) == 0u) ||
+		((colliderB->GetCollisionAttribute() & colliderA->GetCollisionMask()) == 0u)) {
 		return;
 	}
 
@@ -80,12 +78,61 @@ void CollisionManager::CheckCollisionPair(Collider* colliderA, Collider* collide
 	// もし当たってたら
 	//if (distance <= (radiusA + radiusB) * (radiusA + radiusB)) {
 	if (IsCollision(colliderA, colliderB)) {
-		colliderA->OnCollision();
-		colliderA->SetParent(&colliderB->GetWorldTransform());
-		colliderB->OnCollision();
-		colliderB->SetParent(&colliderA->GetWorldTransform());
-	}
+		colliderA->OnCollisionEnter();
+		colliderB->OnCollisionEnter();
 
+		if ((colliderA->GetCollisionAttribute() == kCollisionAttributeWorld)) {
+			colliderB->SetParent(&colliderA->GetWorldTransform());
+		}
+		else if ((colliderB->GetCollisionAttribute() == kCollisionAttributeWorld)) {
+			colliderA->SetParent(&colliderB->GetWorldTransform());
+		}
+
+		/*if (!colliderA->GetIsCollision()) {
+			colliderA->SetIsCollision(true);
+		}
+		if (!colliderB->GetIsCollision()) {
+			colliderB->SetIsCollision(true);
+		}*/
+	}
+	else {
+		colliderA->SetParent(nullptr);
+		colliderB->SetParent(nullptr);
+
+	}
+	//else {
+	//	if (colliderA->GetIsCollision()) {
+	//		colliderA->SetIsCollision(false);
+	//	}
+	//	if (colliderB->GetIsCollision()) {
+	//		colliderB->SetIsCollision(false);
+	//	}
+	//}
+
+
+	//if (colliderA->GetIsCollision() && !colliderA->GetPreIsCollision()) {
+	//	colliderA->OnCollisionEnter();
+	//	colliderA->SetParent(&colliderB->GetWorldTransform());
+	//}
+	//if (colliderB->GetIsCollision() && !colliderB->GetPreIsCollision()) {
+	//	colliderB->OnCollisionEnter();
+	//	colliderB->SetParent(&colliderA->GetWorldTransform());
+	//}
+
+
+	//if (!colliderA->GetIsCollision() && colliderA->GetPreIsCollision()) {
+	//	colliderA->OnCollisionExit();
+	//	colliderA->SetParent(&colliderB->GetWorldTransform());
+	//}
+	//if (!colliderB->GetIsCollision() && colliderB->GetPreIsCollision()) {
+	//	colliderB->OnCollisionExit();
+	//	colliderB->SetParent(&colliderA->GetWorldTransform());
+	//}
+
+
+
+	//colliderA->SetPreIsCollision(colliderA->GetIsCollision());
+	//colliderB->SetPreIsCollision(colliderB->GetIsCollision());
 }
 
 bool CollisionManager::IsCollision(Collider* colliderA, Collider* colliderB)

@@ -28,7 +28,7 @@ void Collider::SetMax(const Vector3 max) {
 }
 
 uint32_t Collider::GetCollisionAttribute() {
-	return 0;
+	return collisionAttribute_;
 }
 
 void Collider::SetCollisionAttribute(uint32_t collisionAttribute) {
@@ -36,7 +36,7 @@ void Collider::SetCollisionAttribute(uint32_t collisionAttribute) {
 }
 
 uint32_t Collider::GetCollisionMask() {
-	return 0;
+	return CollisionMask_;
 }
 
 void Collider::SetCollisionMask(uint32_t collisionMask) {

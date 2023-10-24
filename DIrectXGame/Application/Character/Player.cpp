@@ -18,6 +18,7 @@ void Player::Initialize(const std::vector<Model*>& models) {
 
 	// ベース部分の初期化
 	BaseCharacter::Initialize(models);
+	worldTrans_.translation_.y = 50.0f;
 
 	// 各部位のワールドトランスフォーム初期化
 	worldTransform_body_.Initialize();
@@ -48,7 +49,7 @@ void Player::Initialize(const std::vector<Model*>& models) {
 
 	SetRadius({ 1.0f, 3.0f, 1.0f });
 	SetCollisionAttribute(kCollisionAttributePlayer);
-	SetCollisionMask(!kCollisionAttributePlayer);
+	SetCollisionMask(~kCollisionAttributePlayer);
 
 	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
 	globalVariables;
@@ -86,18 +87,22 @@ void Player::Update() {
 	
 	ApplyGlobalVariavles();
 
+	if (parent_) {
+		ImGui::Text("%f, %f, %f", parent_->translation_.x, parent_->translation_.y, parent_->translation_.z);
+	}
+	else {
+		ImGui::Text("not parent");
+	}
 	// もしのっかっていたら
 	if (isOnGround_) {
-		if (parent_) {
-			worldTrans_.parent_ = parent_;
-		}
+		worldTrans_.parent_ = parent_;
 	}
 	else if (!isOnGround_) {
-		worldTrans_.parent_ = nullptr;
-
+		//parent_ = nullptr;
 		worldTrans_.translation_.y -= 1.0f;
 	}
 
+	worldTrans_.parent_ = parent_;
 
 	if (behaviorRequest_) {
 		behavior_ = behaviorRequest_.value();
@@ -159,11 +164,16 @@ void Player::Draw(const ViewProjection& viewProjection) {
 	}
 }
 
-void Player::OnCollision() {
-	if (!isOnGround_) {
+void Player::OnCollisionEnter() {
 		isOnGround_ = true;
-	}
 }
+
+//void Player::OnCollisionExit(){
+//	if (isOnGround_) {
+//		isOnGround_ = false;
+//	}
+//	worldTransform_.parent_ = nullptr;
+//}
 
 Vector3 Player::GetWorldPosition() {
 	Vector3 result{};

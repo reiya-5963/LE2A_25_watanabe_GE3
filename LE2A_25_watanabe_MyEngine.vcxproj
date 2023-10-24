@@ -136,7 +136,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DIrectXGame\Application\Camera\FollowCamera.cpp" />
     <ClCompile Include="DIrectXGame\RayEngine\Framework\Framework.cpp" />
     <ClCompile Include="DIrectXGame\RayEngine\GlobalVariables.cpp" />
-    <ClCompile Include="DIrectXGame\Application\World\Ground.cpp" />
+    <ClCompile Include="DIrectXGame\Application\World\Scaffold.cpp" />
     <ClCompile Include="DIrectXGame\RayEngine\Input\Input.cpp" />
     <ClCompile Include="DIrectXGame\main.cpp" />
     <ClCompile Include="DIrectXGame\Application\MyGame.cpp" />
@@ -147,13 +147,14 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DIrectXGame\Application\World\skydome.cpp" />
     <ClCompile Include="DIrectXGame\Application\Scene\TitleScene.cpp" />
     <ClCompile Include="DIrectXGame\RayEngine\2d\Particle.cpp" />
-    <ClCompile Include="DIrectXGame\ParticleManager.cpp" />
+    <ClCompile Include="DIrectXGame\RayEngine\ParticleManager.cpp" />
     <ClCompile Include="DIrectXGame\RayEngine\Math\Vector3.cpp" />
     <ClCompile Include="DIrectXGame\RayEngine\Math\Vector2.cpp" />
     <ClCompile Include="DIrectXGame\RayEngine\Math\Matrix3x3.cpp" />
     <ClCompile Include="DIrectXGame\RayEngine\Math\Matrix4x4.cpp" />
     <ClCompile Include="DIrectXGame\RayEngine\Math\Vector4.cpp" />
-    <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="DIrectXGame\Application\World\Ground.cpp" />
+    <ClCompile Include="DIrectXGame\RayEngine\Math\Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gomi\CommandAllocator.h" />
@@ -197,7 +198,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="DIrectXGame\Application\Camera\FollowCamera.h" />
     <ClInclude Include="DIrectXGame\RayEngine\Framework\Framework.h" />
     <ClInclude Include="DIrectXGame\RayEngine\GlobalVariables.h" />
-    <ClInclude Include="DIrectXGame\Application\World\Ground.h" />
+    <ClInclude Include="DIrectXGame\Application\World\Scaffold.h" />
     <ClInclude Include="DIrectXGame\RayEngine\Input\Input.h" />
     <ClInclude Include="DIrectXGame\Application\MyGame.h" />
     <ClInclude Include="DIrectXGame\Application\Character\Player.h" />
@@ -207,13 +208,14 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="DIrectXGame\Application\World\skydome.h" />
     <ClInclude Include="DIrectXGame\Application\Scene\TitleScene.h" />
     <ClInclude Include="DIrectXGame\RayEngine\2d\Particle.h" />
-    <ClInclude Include="DIrectXGame\ParticleManager.h" />
+    <ClInclude Include="DIrectXGame\RayEngine\ParticleManager.h" />
     <ClInclude Include="DIrectXGame\RayEngine\Math\Vector3.h" />
     <ClInclude Include="DIrectXGame\RayEngine\Math\Vector2.h" />
     <ClInclude Include="DIrectXGame\RayEngine\Math\Matrix3x3.h" />
     <ClInclude Include="DIrectXGame\RayEngine\Math\Matrix4x4.h" />
     <ClInclude Include="DIrectXGame\RayEngine\Math\Vector4.h" />
-    <ClInclude Include="Transform.h" />
+    <ClInclude Include="DIrectXGame\Application\World\Ground.h" />
+    <ClInclude Include="DIrectXGame\RayEngine\Math\Transform.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Obj.hlsli" />
