@@ -36,23 +36,29 @@ void GameScene::Initialize() {
 	// 地面の生成
 	ground1_ = std::make_unique<Ground>();
 	// 地面の初期化
-	ground1_->Initialize(groundModel_.get(), { 0.0f, 0.0f, -260.0f });
+	ground1_->Initialize(groundModel_.get(), { 0.0f, 0.0f, 0.0f });
 
 	// 地面の生成
 	ground2_ = std::make_unique<Ground>();
 	// 地面の初期化
-	ground2_->Initialize(groundModel_.get(), { 0.0f, 0.0f, 0.0f });
+	ground2_->Initialize(groundModel_.get(), { 0.0f, 0.0f, 260.0f });
 
 	// 地面の生成
 	ground3_ = std::make_unique<Ground>();
 	// 地面の初期化
-	ground3_->Initialize(groundModel_.get(), { 260.0f, 0.0f, 0.0f });
+	ground3_->Initialize(groundModel_.get(), { 0.0f, 0.0f, 260.0f * 2.0f });
 
 	// 地面の生成
-	moveGround_= std::make_unique<Scaffold>();
+	moveGround1_ = std::make_unique<Scaffold>();
 	// 地面の初期化
-	moveGround_->Initialize(groundModel_.get(), { 0.0f, 0.0f, -130.0f });
-	moveGround_->SetIsMove(true);
+	moveGround1_->Initialize(groundModel_.get(), { 0.0f, 0.0f, 130.0f });
+	moveGround1_->SetIsMove(true);
+
+	// 地面の生成
+	moveGround2_ = std::make_unique<Scaffold>();
+	// 地面の初期化
+	moveGround2_->Initialize(groundModel_.get(), { 0.0f, 0.0f, 260.0f + 130.0f });
+	moveGround2_->SetIsMove(true);
 
 #pragma endregion
 
@@ -131,14 +137,14 @@ void GameScene::Update() {
 	colliderManager_->ClearColliders();
 
 	// それぞれ当たり判定があるものをリストに追加	
+	colliderManager_->AddColliders(moveGround1_.get());
+	colliderManager_->AddColliders(ground1_.get());
 	colliderManager_->AddColliders(player_.get());
-	colliderManager_->AddColliders(moveGround_.get());
+	colliderManager_->AddColliders(ground2_.get());
+	colliderManager_->AddColliders(ground3_.get());	
+	colliderManager_->AddColliders(moveGround2_.get());
 
-	//colliderManager_->AddColliders(ground1_.get());
-	//colliderManager_->AddColliders(ground2_.get());
-	//colliderManager_->AddColliders(ground3_.get());	
-
-	//colliderManager_->AddColliders(enemy_.get());
+	colliderManager_->AddColliders(enemy_.get());
 
 
 	// 当たり判定チェック
@@ -147,19 +153,20 @@ void GameScene::Update() {
 
 	// プレイヤーの更新
 	player_->Update();
-
-	// 地面の更新
-	ground1_->Update();
-	ground2_->Update();
-	ground3_->Update();
-	moveGround_->Update();
-
-
 	// 追従カメラの更新
 	followCamera_->Update();
 	viewProjection_.matView = followCamera_->GetViewProjection().matView;
 	viewProjection_.matProjection = followCamera_->GetViewProjection().matProjection;
 	viewProjection_.TransferMatrix();
+
+	// 地面の更新
+	ground1_->Update();
+	ground2_->Update();
+	ground3_->Update();
+	moveGround1_->Update();
+	moveGround2_->Update();
+
+
 
 
 	// 敵の更新
@@ -184,7 +191,8 @@ void GameScene::Draw() {
 	ground1_->Draw(viewProjection_);
 	ground2_->Draw(viewProjection_);
 	ground3_->Draw(viewProjection_);
-	moveGround_->Draw(viewProjection_);
+	moveGround1_->Draw(viewProjection_);
+	moveGround2_->Draw(viewProjection_);
 
 	// プレイヤーの描画
 	player_->Draw(viewProjection_);

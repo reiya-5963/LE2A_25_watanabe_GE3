@@ -5,18 +5,23 @@
 void Enemy::Initialize(const std::vector<Model*>& models) {
 	//
 	assert(models[ModelIndexIceWeapon]);
+	objectName_ = int(ObjName::ENEMY);
 
 	//
 	BaseCharacter::Initialize(models);
+	SetRadius({ 3.0f, 3.0f, 3.0f });
 	SetCollisionAttribute(kCollisionAttributeEnemy);
 	SetCollisionMask(~kCollisionAttributeEnemy);
+	objectWorldTrans_.translation_.x = -30.0f;
+	objectWorldTrans_.translation_.y = 6.0f;
+	objectWorldTrans_.translation_.z = 260.0f;
 
 	//
 	worldTransform_body_.Initialize();
 	worldTransform_f_weapon_.Initialize();
 	worldTransform_i_weapon_.Initialize();
 
-	worldTransform_body_.parent_ = &worldTrans_;
+	worldTransform_body_.parent_ = &objectWorldTrans_;
 	worldTransform_f_weapon_.parent_ = &worldTransform_body_;
 	worldTransform_f_weapon_.translation_.y += 1.5f;
 	worldTransform_f_weapon_.translation_.x -= 1.5f;
@@ -26,14 +31,14 @@ void Enemy::Initialize(const std::vector<Model*>& models) {
 }
 
 void Enemy::Update() { 
-	worldTrans_.rotation_.y += 0.01f;
+	objectWorldTrans_.rotation_.y += 0.08f;
 	Vector3 tmpVelocity{0.0f, 0.0f, kMoveSpeed};
 
-	velocity_ = R_Math::TransformNormal(tmpVelocity, worldTrans_.matWorld_);
+	velocity_ = R_Math::TransformNormal(tmpVelocity, objectWorldTrans_.matWorld_);
 
-	worldTrans_.translation_.x += velocity_.x;
-	worldTrans_.translation_.y += velocity_.y;
-	worldTrans_.translation_.z += velocity_.z;
+	objectWorldTrans_.translation_.x += velocity_.x;
+	objectWorldTrans_.translation_.y += velocity_.y;
+	objectWorldTrans_.translation_.z += velocity_.z;
 
 
 
@@ -41,6 +46,10 @@ void Enemy::Update() {
 	worldTransform_body_.UpdateMatrix();
 	worldTransform_f_weapon_.UpdateMatrix();
 	worldTransform_i_weapon_.UpdateMatrix();
+
+	SetMin(R_Math::Subtract(GetWorldPosition(), GetRadius()));
+	SetMax(R_Math::Add(GetWorldPosition(), GetRadius()));
+
 }
 
 void Enemy::Draw(const ViewProjection& viewProjection) { 
@@ -51,7 +60,7 @@ void Enemy::Draw(const ViewProjection& viewProjection) {
 
 }
 
-void Enemy::OnCollisionEnter() {
+void Enemy::OnCollisionEnter(int) {
 }
 
 //void Enemy::OnCollisionExit()
@@ -60,8 +69,8 @@ void Enemy::OnCollisionEnter() {
 
 Vector3 Enemy::GetWorldPosition() {
 	Vector3 result{};
-	result.x = worldTrans_.matWorld_.m[3][0];
-	result.y = worldTrans_.matWorld_.m[3][1];
-	result.z = worldTrans_.matWorld_.m[3][2];
+	result.x = objectWorldTrans_.matWorld_.m[3][0];
+	result.y = objectWorldTrans_.matWorld_.m[3][1];
+	result.z = objectWorldTrans_.matWorld_.m[3][2];
 	return result;
 }

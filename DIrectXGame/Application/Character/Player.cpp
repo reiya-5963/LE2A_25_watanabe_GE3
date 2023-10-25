@@ -12,13 +12,15 @@
 void Player::Initialize(const std::vector<Model*>& models) {
 	// NULLチェック
 	assert(models[ModelIndexR_Arm]);
-
+	objectName_ = int(ObjName::PLAYER);
 	// インプット系の初期化
 	input_ = Input::GetInstance();
 
 	// ベース部分の初期化
 	BaseCharacter::Initialize(models);
-	worldTrans_.translation_.y = 50.0f;
+	objectWorldTrans_.translation_.x = 0.0f;
+	objectWorldTrans_.translation_.y = 50.0f;
+	objectWorldTrans_.translation_.z = 0.0f;
 
 	// 各部位のワールドトランスフォーム初期化
 	worldTransform_body_.Initialize();
@@ -28,7 +30,7 @@ void Player::Initialize(const std::vector<Model*>& models) {
 	worldTransform_wepon_.Initialize();
 
 	// 各部位の位置初期化 //
-	worldTransform_body_.parent_ = &worldTrans_;
+	worldTransform_body_.parent_ = &objectWorldTrans_;
 	worldTransform_head_.parent_ = &worldTransform_body_;
 	worldTransform_head_.translation_.y += 4.3f;
 
@@ -45,7 +47,7 @@ void Player::Initialize(const std::vector<Model*>& models) {
 	// 各ギミックの初期化
 	InitializeFloatingGimmick();
 	InitializeArmGimmick();
-	worldTrans_.rotation_.y = std::atan2(worldTrans_.rotation_.x, worldTrans_.rotation_.z);
+	objectWorldTrans_.rotation_.y = std::atan2(objectWorldTrans_.rotation_.x, objectWorldTrans_.rotation_.z);
 
 	SetRadius({ 1.0f, 3.0f, 1.0f });
 	SetCollisionAttribute(kCollisionAttributePlayer);
@@ -68,7 +70,7 @@ void Player::BehaviorRootInitialize() {
 	// 各ギミックの初期化
 	InitializeFloatingGimmick();
 	InitializeArmGimmick();
-	worldTrans_.rotation_.y = std::atan2(worldTrans_.rotation_.x, worldTrans_.rotation_.z);
+	objectWorldTrans_.rotation_.y = std::atan2(objectWorldTrans_.rotation_.x, objectWorldTrans_.rotation_.z);
 }
 
 void Player::BehaviorAttackInitialize() {
@@ -92,20 +94,6 @@ void Player::Update() {
 	}
 	else {
 		ImGui::Text("not parent");
-	}
-	worldTrans_.parent_ = nullptr;
-
-	// もしのっかっていたら
-	if (isOnGround_) {
-		if (parent_ != nullptr) {
-			worldTrans_.parent_ = parent_;
-		}
-	}
-	else if(!isOnGround_) {
-		parent_ = nullptr;
-		worldTrans_.parent_ = nullptr;
-
-		worldTrans_.translation_.y -= 1.0f;
 	}
 
 	if (behaviorRequest_) {
@@ -132,6 +120,30 @@ void Player::Update() {
 	case Behavior::kAttack:
 		BehaviorAttackUpdate();
 		break;
+	}
+
+	//のっていないとき
+	if (!isOnGround_) {
+		objectWorldTrans_.translation_.y -= 1.0f;
+		parent_ = nullptr;
+		objectWorldTrans_.parent_ = nullptr;
+	}
+	else {
+		if (parent_ != nullptr) {
+			WorldTransform tmp;
+			tmp.Initialize();
+			tmp.scale_ = { 1.0f, 1.0f, 1.0f };
+
+			tmp.translation_.x = parent_->translation_.x;
+			tmp.translation_.y = parent_->translation_.y;
+
+			tmp.rotation_.x = -parent_->rotation_.x;
+			tmp.rotation_.y = -parent_->rotation_.y;
+			tmp.rotation_.z = -parent_->rotation_.z;
+
+			tmp.UpdateMatrix();
+			objectWorldTrans_.parent_ = &tmp;
+		}
 	}
 
 
@@ -168,10 +180,21 @@ void Player::Draw(const ViewProjection& viewProjection) {
 	}
 }
 
-void Player::OnCollisionEnter() {
-	if (!isOnGround_) {
-		isOnGround_ = true;
+void Player::OnCollisionEnter(int object) {
+	if (object == int(ObjName::WORLD)) {
+		if (!isOnGround_) {
+			objectWorldTrans_.translation_.y = parent_->translation_.y + 5.0f;
+			isOnGround_ = true;
+		}
 	}
+	else if (object == int(ObjName::ENEMY)) {
+		objectWorldTrans_.translation_.x = 0.0f;
+		objectWorldTrans_.translation_.y = 50.0f;
+		objectWorldTrans_.translation_.z = 0.0f;
+		objectWorldTrans_.UpdateMatrix();
+
+	}
+
 }
 
 //void Player::OnCollisionExit(){
@@ -187,7 +210,7 @@ Vector3 Player::GetWorldPosition() {
 	Vector3 offset = { 0.0f, 3.0f, 0.0f };
 	//
 
-	result = R_Math::TransformCoord(offset, worldTrans_.matWorld_);
+	result = R_Math::TransformCoord(offset, objectWorldTrans_.matWorld_);
 	return result;
 }
 
@@ -280,7 +303,7 @@ void Player::UpdateAttackWeponGimmick() {
 }
 
 void Player::BehaviorRootUpdate() {
-	Matrix4x4 movetrans = R_Math::MakeTranslateMatrix(worldTrans_.translation_);
+	Matrix4x4 movetrans = R_Math::MakeTranslateMatrix(objectWorldTrans_.translation_);
 	Vector3 move = { 0, 0, 0 };
 
 	
@@ -327,10 +350,10 @@ void Player::BehaviorRootUpdate() {
 	move.y;
 	move.z = moveMat.m[3][2];
 
-	worldTrans_.rotation_.y = std::atan2(move.x, move.z);
+	objectWorldTrans_.rotation_.y = std::atan2(move.x, move.z);
 
 	// 位置の移動
-	worldTrans_.translation_ = R_Math::TransformCoord(move, movetrans);
+	objectWorldTrans_.translation_ = R_Math::TransformCoord(move, movetrans);
 
 	// 各ギミックの更新処理
 	UpdateFloatingGimmick();

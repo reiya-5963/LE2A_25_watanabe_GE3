@@ -87,7 +87,8 @@ private:
 	std::unique_ptr<Ground> ground2_ = nullptr;
 	std::unique_ptr<Ground> ground3_ = nullptr;
 
-	std::unique_ptr<Scaffold> moveGround_ = nullptr;
+	std::unique_ptr<Scaffold> moveGround1_ = nullptr;
+	std::unique_ptr<Scaffold> moveGround2_ = nullptr;
 
 	// 追従カメラ
 	std::unique_ptr<FollowCamera> followCamera_ = nullptr;

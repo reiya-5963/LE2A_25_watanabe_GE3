@@ -22,7 +22,7 @@ public:
 	/// <param name="viewProjection">ビュープロジェクション</param>
 	void Draw(ViewProjection& viewProjection);
 
-	void OnCollisionEnter();
+	void OnCollisionEnter(int object);
 	//void OnCollisionExit();
 
 	Vector3 GetWorldPosition();

@@ -112,10 +112,10 @@
     <Filter Include="RayEngine\Headder\Math">
       <UniqueIdentifier>{1bff4b8e-353f-44d2-8803-091468df74fc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="External">
+    <Filter Include="RayEngine\External">
       <UniqueIdentifier>{999a2788-80a3-46c8-bb0c-9cf63f48c6ec}</UniqueIdentifier>
     </Filter>
-    <Filter Include="External\imgui">
+    <Filter Include="RayEngine\External\imgui">
       <UniqueIdentifier>{791f74d1-2754-46e6-bdd4-e00ed5abf622}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -124,25 +124,25 @@
       <Filter>Application\ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Externals\imgui\imgui.cpp">
-      <Filter>External\imgui</Filter>
+      <Filter>RayEngine\External\imgui</Filter>
     </ClCompile>
     <ClCompile Include="Externals\imgui\imgui_demo.cpp">
-      <Filter>External\imgui</Filter>
+      <Filter>RayEngine\External\imgui</Filter>
     </ClCompile>
     <ClCompile Include="Externals\imgui\imgui_draw.cpp">
-      <Filter>External\imgui</Filter>
+      <Filter>RayEngine\External\imgui</Filter>
     </ClCompile>
     <ClCompile Include="Externals\imgui\imgui_impl_dx12.cpp">
-      <Filter>External\imgui</Filter>
+      <Filter>RayEngine\External\imgui</Filter>
     </ClCompile>
     <ClCompile Include="Externals\imgui\imgui_impl_win32.cpp">
-      <Filter>External\imgui</Filter>
+      <Filter>RayEngine\External\imgui</Filter>
     </ClCompile>
     <ClCompile Include="Externals\imgui\imgui_tables.cpp">
-      <Filter>External\imgui</Filter>
+      <Filter>RayEngine\External\imgui</Filter>
     </ClCompile>
     <ClCompile Include="Externals\imgui\imgui_widgets.cpp">
-      <Filter>External\imgui</Filter>
+      <Filter>RayEngine\External\imgui</Filter>
     </ClCompile>
     <ClCompile Include="DIrectXGame\main.cpp">
       <Filter>Application\ソース ファイル</Filter>
@@ -291,28 +291,28 @@
       <Filter>Application\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Externals\imgui\imconfig.h">
-      <Filter>External\imgui</Filter>
+      <Filter>RayEngine\External\imgui</Filter>
     </ClInclude>
     <ClInclude Include="Externals\imgui\imgui.h">
-      <Filter>External\imgui</Filter>
+      <Filter>RayEngine\External\imgui</Filter>
     </ClInclude>
     <ClInclude Include="Externals\imgui\imgui_impl_dx12.h">
-      <Filter>External\imgui</Filter>
+      <Filter>RayEngine\External\imgui</Filter>
     </ClInclude>
     <ClInclude Include="Externals\imgui\imgui_impl_win32.h">
-      <Filter>External\imgui</Filter>
+      <Filter>RayEngine\External\imgui</Filter>
     </ClInclude>
     <ClInclude Include="Externals\imgui\imgui_internal.h">
-      <Filter>External\imgui</Filter>
+      <Filter>RayEngine\External\imgui</Filter>
     </ClInclude>
     <ClInclude Include="Externals\imgui\imstb_rectpack.h">
-      <Filter>External\imgui</Filter>
+      <Filter>RayEngine\External\imgui</Filter>
     </ClInclude>
     <ClInclude Include="Externals\imgui\imstb_textedit.h">
-      <Filter>External\imgui</Filter>
+      <Filter>RayEngine\External\imgui</Filter>
     </ClInclude>
     <ClInclude Include="Externals\imgui\imstb_truetype.h">
-      <Filter>External\imgui</Filter>
+      <Filter>RayEngine\External\imgui</Filter>
     </ClInclude>
     <ClInclude Include="DIrectXGame\RayEngine\2d\Sprite.h">
       <Filter>RayEngine\Headder\2d</Filter>
@@ -498,7 +498,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="Externals\imgui\LICENSE.txt">
-      <Filter>External\imgui</Filter>
+      <Filter>RayEngine\External\imgui</Filter>
     </Text>
   </ItemGroup>
 </Project>

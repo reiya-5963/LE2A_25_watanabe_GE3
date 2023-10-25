@@ -34,7 +34,7 @@ public:
 	/// </summary>
 	/// <returns>ワールド変換データ</returns>
 	const WorldTransform& GetWorldTransform() { 
-		return worldTransform_;
+		return colliderWorldTransform_;
 	}
 
 	virtual Vector3 GetWorldPosition() override;

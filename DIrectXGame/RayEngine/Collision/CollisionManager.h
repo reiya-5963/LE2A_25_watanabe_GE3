@@ -55,6 +55,7 @@ private: // メンバ関数
 		return false;
 
 	}*/
+
 private: // メンバ変数
 	// コライダーリスト
 	std::list<Collider*> colliders_;

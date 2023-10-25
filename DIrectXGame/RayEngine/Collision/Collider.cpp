@@ -1,22 +1,22 @@
 #include "Collider.h"
 
 void Collider::Initialize() {
-	worldTransform_.Initialize();
+	colliderWorldTransform_.Initialize();
 }
 
 void Collider::UpdateWorldTransform() {
-	worldTransform_.translation_ = GetWorldPosition();
-	worldTransform_.UpdateMatrix();
+	colliderWorldTransform_.translation_ = GetWorldPosition();
+	colliderWorldTransform_.UpdateMatrix();
 }
 
 void Collider::Draw(Model* model, const ViewProjection& viewProjection) {
-	model->Draw(worldTransform_, viewProjection);
+	model->Draw(colliderWorldTransform_, viewProjection);
 }
 
 void Collider::SetRadius(const Vector3 radius) {
 	radius_ = radius;
-	worldTransform_.scale_ = radius_;
-	worldTransform_.matWorld_ = R_Math::MakeAffineMatrix(worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
+	colliderWorldTransform_.scale_ = radius_;
+	colliderWorldTransform_.matWorld_ = R_Math::MakeAffineMatrix(colliderWorldTransform_.scale_, colliderWorldTransform_.rotation_, colliderWorldTransform_.translation_);
 }
 
 void Collider::SetMin(const Vector3 min){

@@ -14,15 +14,19 @@ void CollisionManager::UpdateWorldTransform() {
 	}
 }
 
-void CollisionManager::Draw(const ViewProjection& viewProjection) {
-	for (Collider* collider : colliders_) {
-		collider->Draw(model_.get(), viewProjection);
-	}
+void CollisionManager::Draw(const ViewProjection&) {
+	//for (Collider* collider : colliders_) {
+		//collider->Draw(model_.get(), viewProjection);
+//	}
 }
 
 void CollisionManager::CheckAllCollisions() {
 	// リスト内のペアを総当たり
 	std::list<Collider*>::iterator itrA = colliders_.begin();
+	
+	for (Collider* coll : colliders_) {
+		coll->SetParent(nullptr);
+	}
 	for (; itrA != colliders_.end(); ++itrA) {
 		// イテレータAからコライダーAを取得する
 		Collider* colA = *itrA;
@@ -61,16 +65,28 @@ void CollisionManager::CheckCollisionPair(Collider* colliderA, Collider* collide
 		((colliderB->GetCollisionAttribute() & colliderA->GetCollisionMask()) == 0u)) {
 		return;
 	}	
-	colliderA->SetParent(nullptr);
-	colliderB->SetParent(nullptr);
 
 
 	// もし当たってたら
 	if (IsCollision(colliderA, colliderB)) {
-		colliderA->OnCollisionEnter();
-		colliderA->SetParent(&colliderB->GetWorldTransform());
-		colliderB->OnCollisionEnter();
-		colliderB->SetParent(&colliderA->GetWorldTransform());
+		if (colliderA->GetCollisionAttribute() == kCollisionAttributeWorld) {
+			//WorldTransform tmpA = colliderA->GetWorldTransform();
+			//Matrix4x4 scaleMat = R_Math::MakeScaleMatrix(tmpA.scale_);
+			//scaleMat = R_Math::Inverse(scaleMat);
+			//tmpA.matWorld_ = R_Math::Multiply(tmpA.matWorld_, scaleMat);
+			colliderB->SetParent(&colliderA->GetWorldTransform());
+		}
+		else if (colliderB->GetCollisionAttribute() == kCollisionAttributeWorld) {
+			//WorldTransform tmpB = colliderB->GetWorldTransform();
+			//Matrix4x4 scaleMat = R_Math::MakeScaleMatrix(tmpB.scale_);
+			//scaleMat = R_Math::Inverse(scaleMat);
+			//tmpB.matWorld_ = R_Math::Multiply(tmpB.matWorld_, scaleMat);
+			colliderA->SetParent(&colliderB->GetWorldTransform());
+
+		}
+		colliderA->OnCollisionEnter(colliderB->GetObjectName());
+		colliderB->OnCollisionEnter(colliderA->GetObjectName());
+
 	}
 }
 

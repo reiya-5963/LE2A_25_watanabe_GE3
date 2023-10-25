@@ -4,6 +4,12 @@
 #include "CollisionConfig.h"
 #include "Model.h"
 
+enum class ObjName {
+	PLAYER,
+	ENEMY,
+	WORLD,
+};
+
 /// <summary>
 /// 衝突判定オブジェクト
 /// </summary>
@@ -44,7 +50,7 @@ public: // メンバ関数
 	void SetCollisionMask(uint32_t collisionMask);
 
 	// 衝突時に呼ばれる関数
-	virtual void OnCollisionEnter() = 0;
+	virtual void OnCollisionEnter(int object) = 0;
 	//virtual void OnCollisionExit() = 0;
 
 	virtual Vector3 GetWorldPosition() = 0;
@@ -54,10 +60,10 @@ public: // メンバ関数
 		parent_ = parent;
 	}
 
-	WorldTransform& GetWorldTransform() { return worldTrans_; }
+	WorldTransform& GetWorldTransform() { return objectWorldTrans_; }
 	void SetWorldTransform(WorldTransform worldTrans) {
 
-		worldTrans_ = worldTrans;
+		objectWorldTrans_ = worldTrans;
 	}
 
 	bool GetIsCollision() { return isCollision_; }
@@ -65,20 +71,22 @@ public: // メンバ関数
 	bool GetPreIsCollision() { return preIsCollision_; }
 	void SetPreIsCollision(bool isColision) { preIsCollision_ = isColision; }
 
-
+	int GetObjectName() { return objectName_; }
 protected: // メンバ変数　
 	// 衝突半径
 	Vector3 radius_ = {1.0f, 1.0f, 1.0f};
 
 	Vector3 min_;	//!< 最少点
 	Vector3 max_;	//!< 最大点
-	WorldTransform worldTransform_;
-	WorldTransform worldTrans_;
+	WorldTransform colliderWorldTransform_;
+	WorldTransform objectWorldTrans_;
 
 	// 地面
 	WorldTransform* parent_;
 
 	bool isCollision_ = false;
 	bool preIsCollision_ = false;;
+
+	int objectName_ = -1;
 };
 

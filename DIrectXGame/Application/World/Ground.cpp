@@ -4,18 +4,19 @@ void Ground::Initialize(Model* model, const Vector3& position) {
 	assert(model);
 	model_ = model;
 
-	worldTrans_.Initialize();
-	worldTrans_.translation_ = position;
+	objectWorldTrans_.Initialize();
+	objectWorldTrans_.translation_ = position;
+	objectName_ = int(ObjName::WORLD);
 
 	Collider::Initialize();
 	SetRadius({ 60.0f, 5.0f, 60.0f });
-	worldTrans_.scale_ = { 60.0f ,5.0f, 60.0f };
+	objectWorldTrans_.scale_ = { 60.0f ,5.0f, 60.0f };
 	SetCollisionAttribute(kCollisionAttributeWorld);
 	SetCollisionMask(~kCollisionAttributeWorld);
 }
 
 void Ground::Update() {
-	worldTrans_.UpdateMatrix();
+	objectWorldTrans_.UpdateMatrix();
 	SetMin(R_Math::Subtract(GetWorldPosition(), GetRadius()));
 	SetMax(R_Math::Add(GetWorldPosition(), GetRadius()));
 
@@ -23,10 +24,10 @@ void Ground::Update() {
 }
 
 void Ground::Draw(ViewProjection& viewProjection) {
-	model_->Draw(worldTrans_, viewProjection);
+	model_->Draw(objectWorldTrans_, viewProjection);
 }
 
-void Ground::OnCollisionEnter() {
+void Ground::OnCollisionEnter(int) {
 }
 
 //void Ground::OnCollisionExit()
@@ -36,8 +37,8 @@ void Ground::OnCollisionEnter() {
 Vector3 Ground::GetWorldPosition() {
 	Vector3 result{};
 
-	result.x = worldTrans_.matWorld_.m[3][0];
-	result.y = worldTrans_.matWorld_.m[3][1];
-	result.z = worldTrans_.matWorld_.m[3][2];
+	result.x = objectWorldTrans_.matWorld_.m[3][0];
+	result.y = objectWorldTrans_.matWorld_.m[3][1];
+	result.z = objectWorldTrans_.matWorld_.m[3][2];
 	return result;
 }

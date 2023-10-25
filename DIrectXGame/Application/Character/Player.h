@@ -41,7 +41,7 @@ public: // メンバ関数
 	void Draw(const ViewProjection& viewProjection) override;
 
 
-	void OnCollisionEnter() override;
+	void OnCollisionEnter(int object) override;
 	//void OnCollisionExit() override;
 
 	Vector3 GetWorldPosition() override;

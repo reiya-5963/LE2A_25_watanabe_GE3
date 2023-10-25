@@ -23,7 +23,7 @@ public:
 	void Draw(ViewProjection& viewProjection);
 
 	void SetIsMove(bool isMove);
-	void OnCollisionEnter();
+	void OnCollisionEnter(int object);
 	void OnCollisionExit();
 	Vector3 GetWorldPosition();
 private:
