@@ -87,22 +87,26 @@ void Player::Update() {
 	
 	ApplyGlobalVariavles();
 
-	if (parent_) {
+	if (parent_ != nullptr) {
 		ImGui::Text("%f, %f, %f", parent_->translation_.x, parent_->translation_.y, parent_->translation_.z);
 	}
 	else {
 		ImGui::Text("not parent");
 	}
+	worldTrans_.parent_ = nullptr;
+
 	// もしのっかっていたら
 	if (isOnGround_) {
-		worldTrans_.parent_ = parent_;
+		if (parent_ != nullptr) {
+			worldTrans_.parent_ = parent_;
+		}
 	}
-	else if (!isOnGround_) {
-		//parent_ = nullptr;
+	else if(!isOnGround_) {
+		parent_ = nullptr;
+		worldTrans_.parent_ = nullptr;
+
 		worldTrans_.translation_.y -= 1.0f;
 	}
-
-	worldTrans_.parent_ = parent_;
 
 	if (behaviorRequest_) {
 		behavior_ = behaviorRequest_.value();
@@ -165,7 +169,9 @@ void Player::Draw(const ViewProjection& viewProjection) {
 }
 
 void Player::OnCollisionEnter() {
+	if (!isOnGround_) {
 		isOnGround_ = true;
+	}
 }
 
 //void Player::OnCollisionExit(){

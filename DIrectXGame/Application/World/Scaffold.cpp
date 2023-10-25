@@ -12,21 +12,21 @@ void Scaffold::Initialize(Model* model, const Vector3& position) {
 
 	worldTrans_.Initialize();
 	worldTrans_.translation_ = position;
-	worldTrans_.scale_ = { 15.0f, 5.0f, 15.0f };
+	worldTrans_.scale_ = { 60.0f, 5.0f, 60.0f };
 	//worldTrans_.UpdateMatrix();
 
 	Collider::Initialize();
-	SetRadius({ 15.0f, 5.0f, 15.0f });
+	SetRadius({ 60.0f, 5.0f, 60.0f });
 	SetCollisionAttribute(kCollisionAttributeWorld);
 	SetCollisionMask(~kCollisionAttributeWorld);
-	isMove_ = false;
+	//isMove_ = false;
 }
 
 /// <summary>
 ///
 /// </summary>
 void Scaffold::Update() {
-	isMove_ = false;
+	//isMove_ = false;
 
 	Matrix4x4 movetrans = R_Math::MakeTranslateMatrix(worldTrans_.translation_);
 	const float speed = 0.7f;

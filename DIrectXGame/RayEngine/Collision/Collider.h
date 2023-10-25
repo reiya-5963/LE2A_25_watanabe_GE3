@@ -53,8 +53,10 @@ public: // メンバ関数
 	void SetParent(WorldTransform* parent) {
 		parent_ = parent;
 	}
+
 	WorldTransform& GetWorldTransform() { return worldTrans_; }
 	void SetWorldTransform(WorldTransform worldTrans) {
+
 		worldTrans_ = worldTrans;
 	}
 

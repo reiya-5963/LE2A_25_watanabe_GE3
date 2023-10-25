@@ -8,8 +8,8 @@ void Ground::Initialize(Model* model, const Vector3& position) {
 	worldTrans_.translation_ = position;
 
 	Collider::Initialize();
-	SetRadius({ 15.0f, 5.0f, 15.0f });
-	worldTrans_.scale_ = { 15.0f ,5.0f, 15.0f };
+	SetRadius({ 60.0f, 5.0f, 60.0f });
+	worldTrans_.scale_ = { 60.0f ,5.0f, 60.0f };
 	SetCollisionAttribute(kCollisionAttributeWorld);
 	SetCollisionMask(~kCollisionAttributeWorld);
 }

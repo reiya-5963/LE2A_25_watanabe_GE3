@@ -7,7 +7,9 @@ void BaseCharacter::Initialize(const std::vector<Model*>& models) {
 
 }
 
-void BaseCharacter::Update() { 
+void BaseCharacter::Update() {
+	UpdateWorldTransform();
+
 	worldTrans_.UpdateMatrix();
 
 }

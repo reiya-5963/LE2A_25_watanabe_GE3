@@ -32,16 +32,26 @@ void GameScene::Initialize() {
 #pragma endregion
 
 #pragma region 地面
-	groundModel_.reset(Model::CreateFlomObj("Scaffold"));
+	groundModel_.reset(Model::CreateFlomObj("cube"));
 	// 地面の生成
-	ground_ = std::make_unique<Ground>();
+	ground1_ = std::make_unique<Ground>();
 	// 地面の初期化
-	ground_->Initialize(groundModel_.get(), { 0.0f, 0.0f, 0.0f });
+	ground1_->Initialize(groundModel_.get(), { 0.0f, 0.0f, -260.0f });
+
+	// 地面の生成
+	ground2_ = std::make_unique<Ground>();
+	// 地面の初期化
+	ground2_->Initialize(groundModel_.get(), { 0.0f, 0.0f, 0.0f });
+
+	// 地面の生成
+	ground3_ = std::make_unique<Ground>();
+	// 地面の初期化
+	ground3_->Initialize(groundModel_.get(), { 260.0f, 0.0f, 0.0f });
 
 	// 地面の生成
 	moveGround_= std::make_unique<Scaffold>();
 	// 地面の初期化
-	moveGround_->Initialize(groundModel_.get(), { 0.0f, 0.0f, 30.0f });
+	moveGround_->Initialize(groundModel_.get(), { 0.0f, 0.0f, -130.0f });
 	moveGround_->SetIsMove(true);
 
 #pragma endregion
@@ -116,24 +126,32 @@ void GameScene::Finalize() {
 }
 
 void GameScene::Update() {
+
 	// コライダーリストの初期化
 	colliderManager_->ClearColliders();
 
-	// それぞれ当たり判定があるものをリストに追加
+	// それぞれ当たり判定があるものをリストに追加	
 	colliderManager_->AddColliders(player_.get());
-	colliderManager_->AddColliders(enemy_.get());
-	colliderManager_->AddColliders(ground_.get());
 	colliderManager_->AddColliders(moveGround_.get());
 
-	colliderManager_->UpdateWorldTransform();
+	//colliderManager_->AddColliders(ground1_.get());
+	//colliderManager_->AddColliders(ground2_.get());
+	//colliderManager_->AddColliders(ground3_.get());	
+
+	//colliderManager_->AddColliders(enemy_.get());
+
 
 	// 当たり判定チェック
 	colliderManager_->CheckAllCollisions();
+	colliderManager_->UpdateWorldTransform();
+
 	// プレイヤーの更新
 	player_->Update();
 
 	// 地面の更新
-	ground_->Update();
+	ground1_->Update();
+	ground2_->Update();
+	ground3_->Update();
 	moveGround_->Update();
 
 
@@ -163,7 +181,9 @@ void GameScene::Draw() {
 	// 天球の描画
 	skydome_->Draw(viewProjection_);
 	// 地面の描画
-	ground_->Draw(viewProjection_);
+	ground1_->Draw(viewProjection_);
+	ground2_->Draw(viewProjection_);
+	ground3_->Draw(viewProjection_);
 	moveGround_->Draw(viewProjection_);
 
 	// プレイヤーの描画
