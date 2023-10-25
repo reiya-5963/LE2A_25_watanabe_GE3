@@ -30,6 +30,7 @@ void GameScene::Initialize() {
 	// 天球の初期化
 	skydome_->Initialize(skydomeModel_.get(), { 0, 0, 0 });
 #pragma endregion
+	//groundModel_.reset(Model::CreateFlomObj("cube"));
 
 #pragma region 地面
 	groundModel_.reset(Model::CreateFlomObj("cube"));
@@ -59,6 +60,10 @@ void GameScene::Initialize() {
 	// 地面の初期化
 	moveGround2_->Initialize(groundModel_.get(), { 0.0f, 0.0f, 260.0f + 130.0f });
 	moveGround2_->SetIsMove(true);
+	// 地面の生成
+	goal_ = std::make_unique<Goal>();
+	// 地面の初期化
+	goal_->Initialize(groundModel_.get(), { 0.0f, 6.0f, 260.0f * 2.0f });
 
 #pragma endregion
 
@@ -143,6 +148,7 @@ void GameScene::Update() {
 	colliderManager_->AddColliders(ground2_.get());
 	colliderManager_->AddColliders(ground3_.get());	
 	colliderManager_->AddColliders(moveGround2_.get());
+	colliderManager_->AddColliders(goal_.get());
 
 	colliderManager_->AddColliders(enemy_.get());
 
@@ -165,7 +171,7 @@ void GameScene::Update() {
 	ground3_->Update();
 	moveGround1_->Update();
 	moveGround2_->Update();
-
+	goal_->Update();
 
 
 
@@ -201,7 +207,7 @@ void GameScene::Draw() {
 	// プレイヤーの描画
 	enemy_->Draw(viewProjection_);
 
-
+	goal_->Draw(viewProjection_);
 
 	Model::PostDraw();
 

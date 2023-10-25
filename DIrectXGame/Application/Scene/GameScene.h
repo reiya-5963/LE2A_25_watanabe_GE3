@@ -6,6 +6,7 @@
 #include "Ground.h"
 #include "Enemy.h"
 #include "skydome.h"
+#include "Goal.h"
 
 #include "Player.h"
 #include "FollowCamera.h"
@@ -89,6 +90,8 @@ private:
 
 	std::unique_ptr<Scaffold> moveGround1_ = nullptr;
 	std::unique_ptr<Scaffold> moveGround2_ = nullptr;
+
+	std::unique_ptr<Goal> goal_ = nullptr;
 
 	// 追従カメラ
 	std::unique_ptr<FollowCamera> followCamera_ = nullptr;

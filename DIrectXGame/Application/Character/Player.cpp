@@ -161,7 +161,12 @@ void Player::Update() {
 	SetMax(R_Math::Add(GetWorldPosition(), GetRadius()));
 	
 	isOnGround_ = false;
-
+	if (objectWorldTrans_.translation_.y <= -50.0f) {
+		objectWorldTrans_.translation_.x = 0.0f;
+		objectWorldTrans_.translation_.y = 50.0f;
+		objectWorldTrans_.translation_.z = 0.0f;
+		objectWorldTrans_.UpdateMatrix();
+	}
 }
 
 /// <summary>

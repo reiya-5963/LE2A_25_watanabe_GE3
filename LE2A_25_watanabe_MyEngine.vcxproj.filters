@@ -285,6 +285,9 @@
     <ClCompile Include="DIrectXGame\Application\World\Ground.cpp">
       <Filter>Application\ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Goal.cpp">
+      <Filter>Application\ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DIrectXGame\Application\MyGame.h">
@@ -462,6 +465,9 @@
       <Filter>Application\ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="DIrectXGame\Application\World\Ground.h">
+      <Filter>Application\ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Goal.h">
       <Filter>Application\ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
