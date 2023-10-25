@@ -119,6 +119,8 @@ private: // メンバ変数
 	// 腕ふりの振幅<m>
 	float weponAmplitude = 60.0f;
 
+	float jumpPower_ = 0.0f;
+
 	int attackCount_ = 0;
 	const int kMaxAtkCount = 40;
 

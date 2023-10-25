@@ -310,53 +310,105 @@ void Player::UpdateAttackWeponGimmick() {
 void Player::BehaviorRootUpdate() {
 	Matrix4x4 movetrans = R_Math::MakeTranslateMatrix(objectWorldTrans_.translation_);
 	Vector3 move = { 0, 0, 0 };
+	XINPUT_STATE joyState;
 
-	
-	// 速さ
-	const float speed = 0.3f;
+	// もしコントローラーでのプレイなら
+	if (Input::GetInstance()->GetJoyStickState(0, joyState)) {
+		// 速さ
+		const float speed = 0.3f;
 
-	if (input_->PushKey(DIK_W)) {
-		move.z = 1.0f;
-	}
-	if (input_->PushKey(DIK_S)) {
-		move.z = -1.0f;
-	}
-	if (input_->PushKey(DIK_A)) {
-		move.x = -1.0f;
-	}
-	if (input_->PushKey(DIK_D)) {
-		move.x = 1.0f;
-	}
-	if (input_->IsTriggerMouse(0)) {
-		behaviorRequest_ = Behavior::kAttack;
-	}
-	if (!isJump_ && input_->PushKey(DIK_SPACE)) {
-		isJump_ = true;
-	}
-	if (isJump_) {
-		move.y = 1.0f;
-		isJump_ = false;
-	}
+		// 移動量
+		move = { (float)joyState.Gamepad.sThumbLX, 0.0f, (float)joyState.Gamepad.sThumbLY };
+		
+		if (joyState.Gamepad.wButtons == XINPUT_GAMEPAD_A) {
+			behaviorRequest_ = Behavior::kAttack;
+		}
+		if (!isJump_ && joyState.Gamepad.wButtons == XINPUT_GAMEPAD_B) {
+			isJump_ = true;
+			jumpPower_ = 6.0f;
 
-	move = R_Math::Normalize(move);
-	move.x *= speed;
-	move.y *= 5.0f;
-	move.z *= speed;
+		}
 
-	Matrix4x4 moveMat = R_Math::MakeTranslateMatrix(move);
-	Matrix4x4 rotateMat = R_Math::Multiply(
-		R_Math::Multiply(
-			R_Math::MakeRotateXMatrix(viewProjection_->rotation_.x),
-			R_Math::MakeRotateYMatrix(viewProjection_->rotation_.y)),
-		R_Math::MakeRotateZMatrix(viewProjection_->rotation_.z));
+		//
+		move = R_Math::Normalize(move);
+		move.x *= speed;
+		if (jumpPower_ < 0.0f) {
+			move.y = 0.0f;
+			isJump_ = false;
+		}
+		else if (jumpPower_ >= 0.0f) {
+			jumpPower_ -= 0.4f;
 
-	moveMat = R_Math::Multiply(moveMat, rotateMat);
-	move.x = moveMat.m[3][0];
-	move.y;
-	move.z = moveMat.m[3][2];
+		}
+		move.z *= speed;
 
-	objectWorldTrans_.rotation_.y = std::atan2(move.x, move.z);
+		Matrix4x4 moveMat = R_Math::MakeTranslateMatrix(move);
+		Matrix4x4 rotateMat = R_Math::Multiply(
+			R_Math::Multiply(
+				R_Math::MakeRotateXMatrix(viewProjection_->rotation_.x),
+				R_Math::MakeRotateYMatrix(viewProjection_->rotation_.y)),
+			R_Math::MakeRotateZMatrix(viewProjection_->rotation_.z));
 
+		moveMat = R_Math::Multiply(moveMat, rotateMat);
+		move.x = moveMat.m[3][0];
+		move.y = jumpPower_;
+		move.z = moveMat.m[3][2];
+
+		objectWorldTrans_.rotation_.y = std::atan2(move.x, move.z);
+
+	}
+	else {
+
+		// 速さ
+		const float speed = 0.6f;
+
+		if (input_->PushKey(DIK_W)) {
+			move.z = 1.0f;
+		}
+		if (input_->PushKey(DIK_S)) {
+			move.z = -1.0f;
+		}
+		if (input_->PushKey(DIK_A)) {
+			move.x = -1.0f;
+		}
+		if (input_->PushKey(DIK_D)) {
+			move.x = 1.0f;
+		}
+		if (input_->IsTriggerMouse(0)) {
+			behaviorRequest_ = Behavior::kAttack;
+		}
+		if (!isJump_ && input_->TriggerKey(DIK_SPACE)) {
+			isJump_ = true;
+			jumpPower_ = 6.0f;
+
+		}
+
+		move = R_Math::Normalize(move);
+		move.x *= speed;
+		if (jumpPower_ < 0.0f) {
+			move.y = 0.0f;
+			isJump_ = false;
+		}
+		else if (jumpPower_ >= 0.0f) {
+			jumpPower_ -= 0.4f;
+
+		}
+		move.z *= speed;
+
+		Matrix4x4 moveMat = R_Math::MakeTranslateMatrix(move);
+		Matrix4x4 rotateMat = R_Math::Multiply(
+			R_Math::Multiply(
+				R_Math::MakeRotateXMatrix(viewProjection_->rotation_.x),
+				R_Math::MakeRotateYMatrix(viewProjection_->rotation_.y)),
+			R_Math::MakeRotateZMatrix(viewProjection_->rotation_.z));
+
+		moveMat = R_Math::Multiply(moveMat, rotateMat);
+		move.x = moveMat.m[3][0];
+		move.y = jumpPower_;
+		move.z = moveMat.m[3][2];
+
+		objectWorldTrans_.rotation_.y = std::atan2(move.x, move.z);
+	}
 	// 位置の移動
 	objectWorldTrans_.translation_ = R_Math::TransformCoord(move, movetrans);
 

@@ -8,48 +8,33 @@ void FollowCamera::Initialize() {
 }
 
 void FollowCamera::Update() {
+	XINPUT_STATE joyState;
+	// もしコントローラーでのプレイなら
+	if (Input::GetInstance()->GetJoyStickState(0, joyState)) {
+		//
+		float speed = 0.2f;
 
-	// 現在のマウス位置を取得
-	GetCursorPos(&mousePos_);
+		viewProjection_.rotation_.y += (float)joyState.Gamepad.sThumbRX / SHRT_MAX * speed;
+		viewProjection_.rotation_.x -= (float)joyState.Gamepad.sThumbRY / SHRT_MAX * speed;
 
-	// 初期位置から動かした距離を求める
-	//xMouseDistance = float(mousePos_.x) - float(WinApp::kWindowWidth / 2);
-	//yMouseDistance = float(mousePos_.y) - float(WinApp::kWindowHeight / 2);
+	}
+	else {
 
-	// 左右に視点を動かすなら
-	//if (xMouseDistance != 0.0f) {
-	//	viewProjection_.rotation_.y += xMouseDistance * move_mouseSpeed;
-	//}
-	// 上下に視点を動かすなら
-	//if (yMouseDistance != 0.0f) {
-	//	viewProjection_.rotation_.x += yMouseDistance * move_mouseSpeed;
-	//}
+			// 現在のマウス位置を取得
+			GetCursorPos(&mousePos_);
 
-	// カーソルを固定
-	//SetCursorPos(int(WinApp::kWindowWidth / 2), int(WinApp::kWindowHeight / 2));
+			HWND hwnd = WinApp::GetInstance()->GetHwnd();
+			ScreenToClient(hwnd, &mousePos_);
 
-	// 視点を上、もしくは下に動かしたときの上限
-	//if (viewProjection_.rotation_.x > 1.0f) {
-	//	viewProjection_.rotation_.x = 1.0f;
-	//}
-	//if (viewProjection_.rotation_.x < -1.0f) {
-	//	viewProjection_.rotation_.x = -1.0f;
-	//}
+			float speed = 0.016f;
 
-	GetCursorPos(&mousePos_);
+			float mouseDistance = float(mousePos_.x) - float(preMousePos_.x);
+			//float mouseDistancey = float(mousePos_.y) - float(preMousePos_.y);
 
-	HWND hwnd = WinApp::GetInstance()->GetHwnd();
-	ScreenToClient(hwnd, &mousePos_);
-
-	float speed = 0.003f;
-
-	float mouseDistance = float(mousePos_.x) - float(preMousePos_.x);
-	//float mouseDistancey = float(mousePos_.y) - float(preMousePos_.y);
-
-	viewProjection_.rotation_.y += mouseDistance * speed;
-	//viewProjection_.rotation_.x += mouseDistancey * speed;
-	preMousePos_ = mousePos_;
-
+			viewProjection_.rotation_.y += mouseDistance * speed;
+			//viewProjection_.rotation_.x += mouseDistancey * speed;
+			preMousePos_ = mousePos_;
+	}
 	// もし追従対象がいれば
 	if (target_) {
 		// ターゲットとカメラの距離
