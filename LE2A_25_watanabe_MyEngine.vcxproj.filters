@@ -108,10 +108,10 @@
     <ClCompile Include="DIrectXGame\RayEngine\ParticleManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="gomi\CommandListManager.cpp">
+    <ClCompile Include="notUsed\CommandListManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="gomi\CommandAllocator.cpp">
+    <ClCompile Include="notUsed\CommandAllocator.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="DIrectXGame\RayEngine\2d\Particle.cpp">
@@ -216,7 +216,7 @@
     <ClCompile Include="DIrectXGame\main.cpp">
       <Filter>Application</Filter>
     </ClCompile>
-    <ClCompile Include="gomi\CommandLIst.cpp">
+    <ClCompile Include="notUsed\CommandLIst.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="DIrectXGame\RayEngine\GlobalVariables.cpp">
@@ -338,10 +338,10 @@
     <ClInclude Include="DIrectXGame\RayEngine\ParticleManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="gomi\CommandListManager.h">
+    <ClInclude Include="notUsed\CommandListManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="gomi\CommandAllocator.h">
+    <ClInclude Include="notUsed\CommandAllocator.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="DIrectXGame\RayEngine\GlobalVariables.h">
@@ -383,7 +383,7 @@
     <ClInclude Include="DIrectXGame\Application\MyGame.h">
       <Filter>Application</Filter>
     </ClInclude>
-    <ClInclude Include="gomi\CommandLIst.h">
+    <ClInclude Include="notUsed\CommandLIst.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

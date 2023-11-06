@@ -101,9 +101,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DIrectXGame\RayEngine\GlobalVariables.cpp" />
-    <ClCompile Include="gomi\CommandAllocator.cpp" />
-    <ClCompile Include="gomi\CommandLIst.cpp" />
-    <ClCompile Include="gomi\CommandListManager.cpp" />
+    <ClCompile Include="notUsed\CommandAllocator.cpp" />
+    <ClCompile Include="notUsed\CommandLIst.cpp" />
+    <ClCompile Include="notUsed\CommandListManager.cpp" />
     <ClCompile Include="DIrectXGame\RayEngine\2d\Sprite.cpp" />
     <ClCompile Include="DIrectXGame\RayEngine\3d\DirectionalLight.cpp" />
     <ClCompile Include="DIrectXGame\RayEngine\3d\LightGroup.cpp" />
@@ -152,9 +152,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DIrectXGame\RayEngine\Math\Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="gomi\CommandAllocator.h" />
-    <ClInclude Include="gomi\CommandLIst.h" />
-    <ClInclude Include="gomi\CommandListManager.h" />
+    <ClInclude Include="notUsed\CommandAllocator.h" />
+    <ClInclude Include="notUsed\CommandLIst.h" />
+    <ClInclude Include="notUsed\CommandListManager.h" />
     <ClInclude Include="DIrectXGame\RayEngine\2d\Sprite.h" />
     <ClInclude Include="DIrectXGame\RayEngine\3d\DirectionalLight.h" />
     <ClInclude Include="DIrectXGame\RayEngine\3d\LightGroup.h" />
