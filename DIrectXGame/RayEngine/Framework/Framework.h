@@ -12,7 +12,7 @@
 #include "Sprite.h"
 #include "Triangle.h"
 #include "Model.h"
-#include "ParticleManager.h"
+//#include "ParticleManager.h"
 
 /// <summary>
 /// 骨組み
