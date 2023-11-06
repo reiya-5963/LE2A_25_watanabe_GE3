@@ -96,12 +96,6 @@
     <ClCompile Include="DIrectXGame\Application\Character\BaseCharacter.cpp">
       <Filter>Application\Character</Filter>
     </ClCompile>
-    <ClCompile Include="DIrectXGame\Application\Character\Enemy.cpp">
-      <Filter>Application\Character</Filter>
-    </ClCompile>
-    <ClCompile Include="DIrectXGame\Application\Character\Player.cpp">
-      <Filter>Application\Character</Filter>
-    </ClCompile>
     <ClCompile Include="DIrectXGame\Application\Scene\GameScene.cpp">
       <Filter>Application\Scene</Filter>
     </ClCompile>
@@ -110,12 +104,6 @@
     </ClCompile>
     <ClCompile Include="DIrectXGame\Application\Camera\FollowCamera.cpp">
       <Filter>Application\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="DIrectXGame\Application\World\Scaffold.cpp">
-      <Filter>Application\World</Filter>
-    </ClCompile>
-    <ClCompile Include="DIrectXGame\Application\World\skydome.cpp">
-      <Filter>Application\World</Filter>
     </ClCompile>
     <ClCompile Include="DIrectXGame\RayEngine\ParticleManager.cpp">
       <Filter>ソース ファイル</Filter>
@@ -230,12 +218,6 @@
     </ClCompile>
     <ClCompile Include="gomi\CommandLIst.cpp">
       <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="DIrectXGame\Goal.cpp">
-      <Filter>Application\World</Filter>
-    </ClCompile>
-    <ClCompile Include="DIrectXGame\Application\World\Ground.cpp">
-      <Filter>Application\World</Filter>
     </ClCompile>
     <ClCompile Include="DIrectXGame\RayEngine\GlobalVariables.cpp">
       <Filter>RayEngine</Filter>
@@ -392,35 +374,17 @@
     <ClInclude Include="DIrectXGame\Application\Character\BaseCharacter.h">
       <Filter>Application\Character</Filter>
     </ClInclude>
-    <ClInclude Include="DIrectXGame\Application\Character\Player.h">
-      <Filter>Application\Character</Filter>
-    </ClInclude>
-    <ClInclude Include="DIrectXGame\Application\Character\Enemy.h">
-      <Filter>Application\Character</Filter>
-    </ClInclude>
     <ClInclude Include="DIrectXGame\Application\Scene\GameScene.h">
       <Filter>Application\Scene</Filter>
     </ClInclude>
     <ClInclude Include="DIrectXGame\Application\Scene\TitleScene.h">
       <Filter>Application\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="DIrectXGame\Application\World\Scaffold.h">
-      <Filter>Application\World</Filter>
-    </ClInclude>
-    <ClInclude Include="DIrectXGame\Application\World\skydome.h">
-      <Filter>Application\World</Filter>
-    </ClInclude>
     <ClInclude Include="DIrectXGame\Application\MyGame.h">
       <Filter>Application</Filter>
     </ClInclude>
     <ClInclude Include="gomi\CommandLIst.h">
       <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="DIrectXGame\Goal.h">
-      <Filter>Application\World</Filter>
-    </ClInclude>
-    <ClInclude Include="DIrectXGame\Application\World\Ground.h">
-      <Filter>Application\World</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

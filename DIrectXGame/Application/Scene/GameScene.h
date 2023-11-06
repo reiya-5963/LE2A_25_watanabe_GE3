@@ -2,13 +2,7 @@
 #include "BaseScene.h"
 
 #include <memory>
-#include "Scaffold.h"
-#include "Ground.h"
-#include "Enemy.h"
-#include "skydome.h"
-#include "Goal.h"
 
-#include "Player.h"
 #include "FollowCamera.h"
 
 /// <summary>
@@ -50,48 +44,6 @@ private:
 
 	// ビュープロジェクション
 	ViewProjection viewProjection_;
-
-	// モデル
-	std::unique_ptr<Model> P_model_body = nullptr;
-	// モデル
-	std::unique_ptr<Model> P_model_head = nullptr;
-	// モデル
-	std::unique_ptr<Model> P_model_l_arm = nullptr;
-	// モデル
-	std::unique_ptr<Model> P_model_r_arm = nullptr;
-	//
-	std::unique_ptr<Model> P_model_wepon = nullptr;
-
-	// プレイヤー
-	std::unique_ptr<Player> player_ = nullptr;
-
-
-	// モデル
-	std::unique_ptr<Model> E_model_body = nullptr;
-	// モデル
-	std::unique_ptr<Model> E_model_I_Wepon = nullptr;
-	// モデル
-	std::unique_ptr<Model> E_model_F_Wepon = nullptr;
-	// 敵
-	std::unique_ptr<Enemy> enemy_ = nullptr;
-
-
-	// モデル
-	std::unique_ptr<Model> skydomeModel_ = nullptr;
-	// 天球
-	std::unique_ptr<Skydome> skydome_ = nullptr;
-
-	// モデル
-	std::unique_ptr<Model> groundModel_ = nullptr;
-	// 地面
-	std::unique_ptr<Ground> ground1_ = nullptr;
-	std::unique_ptr<Ground> ground2_ = nullptr;
-	std::unique_ptr<Ground> ground3_ = nullptr;
-
-	std::unique_ptr<Scaffold> moveGround1_ = nullptr;
-	std::unique_ptr<Scaffold> moveGround2_ = nullptr;
-
-	std::unique_ptr<Goal> goal_ = nullptr;
 
 	// 追従カメラ
 	std::unique_ptr<FollowCamera> followCamera_ = nullptr;
