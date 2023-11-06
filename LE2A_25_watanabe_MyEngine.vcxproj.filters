@@ -105,7 +105,7 @@
     <ClCompile Include="DIrectXGame\Application\Camera\FollowCamera.cpp">
       <Filter>Application\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="DIrectXGame\RayEngine\ParticleManager.cpp">
+    <ClCompile Include="notUsed\ParticleManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="notUsed\CommandListManager.cpp">
@@ -335,7 +335,7 @@
     <ClInclude Include="DIrectXGame\RayEngine\2d\Particle.h">
       <Filter>RayEngine\2d</Filter>
     </ClInclude>
-    <ClInclude Include="DIrectXGame\RayEngine\ParticleManager.h">
+    <ClInclude Include="notUsed\ParticleManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="notUsed\CommandListManager.h">

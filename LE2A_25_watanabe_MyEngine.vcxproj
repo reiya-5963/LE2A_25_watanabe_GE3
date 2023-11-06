@@ -143,7 +143,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DIrectXGame\Application\Scene\GameScene.cpp" />
     <ClCompile Include="DIrectXGame\Application\Scene\TitleScene.cpp" />
     <ClCompile Include="DIrectXGame\RayEngine\2d\Particle.cpp" />
-    <ClCompile Include="DIrectXGame\RayEngine\ParticleManager.cpp" />
+    <ClCompile Include="notUsed\ParticleManager.cpp" />
     <ClCompile Include="DIrectXGame\RayEngine\Math\Vector3.cpp" />
     <ClCompile Include="DIrectXGame\RayEngine\Math\Vector2.cpp" />
     <ClCompile Include="DIrectXGame\RayEngine\Math\Matrix3x3.cpp" />
@@ -199,7 +199,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="DIrectXGame\Application\Scene\GameScene.h" />
     <ClInclude Include="DIrectXGame\Application\Scene\TitleScene.h" />
     <ClInclude Include="DIrectXGame\RayEngine\2d\Particle.h" />
-    <ClInclude Include="DIrectXGame\RayEngine\ParticleManager.h" />
+    <ClInclude Include="notUsed\ParticleManager.h" />
     <ClInclude Include="DIrectXGame\RayEngine\Math\Vector3.h" />
     <ClInclude Include="DIrectXGame\RayEngine\Math\Vector2.h" />
     <ClInclude Include="DIrectXGame\RayEngine\Math\Matrix3x3.h" />
