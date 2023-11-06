@@ -20,6 +20,14 @@ class Player : public BaseCharacter {
 	enum class Behavior {
 		kRoot,		// 通常
 		kAttack,	// 攻撃
+		kDash,		// ダッシュ
+	};
+
+private:
+	// ダッシュ用ワーク
+	struct WorkDash {
+		// ダッシュ用媒介変数
+		uint32_t dashParameter_ = 0;
 	};
 
 public: // メンバ関数
@@ -50,7 +58,10 @@ public: // メンバ関数
 	/// 
 	/// </summary>
 	void SetViewProjection(const ViewProjection* viewProjection);
+	
+	void ApplyGlobalVariavles();
 
+public: // メンバ関数
 	// 浮遊ギミック初期化
 	void InitializeFloatingGimmick();
 
@@ -63,12 +74,6 @@ public: // メンバ関数
 	// 腕ふりギミック更新
 	void UpdateArmGimmick();
 
-	// 通常行動更新
-	void BehaviorRootUpdate();
-
-	// 攻撃行動更新
-	void BehaviorAttackUpdate();
-
 	void InitializeAttackArmGimmick();
 
 	void UpdateAttackArmGimmick();
@@ -77,11 +82,26 @@ public: // メンバ関数
 
 	void UpdateAttackWeponGimmick();
 
+public: // メンバ関数	
 	void BehaviorRootInitialize();
 
+	// 通常行動更新
+	void BehaviorRootUpdate();
+
+public: // メンバ関数	
 	void BehaviorAttackInitialize();
 
-	void ApplyGlobalVariavles();
+	// 攻撃行動更新
+	void BehaviorAttackUpdate();
+public: // メンバ関数	
+	void BehaviorDashInitialize();
+
+	// 攻撃行動更新
+	void BehaviorDashUpdate();
+
+
+
+
 
 private: // メンバ変数
 	// ワールド変換データ
@@ -120,7 +140,7 @@ private: // メンバ変数
 	float weponAmplitude = 60.0f;
 
 	float jumpPower_ = 0.0f;
-
+	float dash_ = 1.0f;
 	int attackCount_ = 0;
 	const int kMaxAtkCount = 40;
 
@@ -133,4 +153,6 @@ private: // メンバ変数
 
 	bool isJump_ = false;
 	bool isOnGround_ = false;
+
+	WorkDash workDash_;
 };

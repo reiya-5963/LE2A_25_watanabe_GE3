@@ -100,7 +100,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Goal.cpp" />
+    <ClCompile Include="DIrectXGame\Goal.cpp" />
+    <ClCompile Include="DIrectXGame\RayEngine\GlobalVariables.cpp" />
     <ClCompile Include="gomi\CommandAllocator.cpp" />
     <ClCompile Include="gomi\CommandLIst.cpp" />
     <ClCompile Include="gomi\CommandListManager.cpp" />
@@ -136,7 +137,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Externals\imgui\imgui_widgets.cpp" />
     <ClCompile Include="DIrectXGame\Application\Camera\FollowCamera.cpp" />
     <ClCompile Include="DIrectXGame\RayEngine\Framework\Framework.cpp" />
-    <ClCompile Include="DIrectXGame\RayEngine\GlobalVariables.cpp" />
     <ClCompile Include="DIrectXGame\Application\World\Scaffold.cpp" />
     <ClCompile Include="DIrectXGame\RayEngine\Input\Input.cpp" />
     <ClCompile Include="DIrectXGame\main.cpp" />
@@ -158,7 +158,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DIrectXGame\RayEngine\Math\Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Goal.h" />
+    <ClInclude Include="DIrectXGame\Goal.h" />
     <ClInclude Include="gomi\CommandAllocator.h" />
     <ClInclude Include="gomi\CommandLIst.h" />
     <ClInclude Include="gomi\CommandListManager.h" />

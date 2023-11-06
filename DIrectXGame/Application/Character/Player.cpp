@@ -66,22 +66,6 @@ void Player::Initialize(const std::vector<Model*>& models) {
 
 }
 
-void Player::BehaviorRootInitialize() {
-	// 各ギミックの初期化
-	InitializeFloatingGimmick();
-	InitializeArmGimmick();
-	objectWorldTrans_.rotation_.y = std::atan2(objectWorldTrans_.rotation_.x, objectWorldTrans_.rotation_.z);
-}
-
-void Player::BehaviorAttackInitialize() {
-	attackCount_ = 0;
-	isAttack_ = false;
-	isAtkFinish_ = false;
-	InitializeAttackArmGimmick();
-	InitializeAttackWeponGimmick();
-}
-
-
 /// <summary>
 /// 更新
 /// </summary>
@@ -223,6 +207,20 @@ void Player::SetViewProjection(const ViewProjection* viewProjection) {
 	viewProjection_ = viewProjection;
 }
 
+void Player::ApplyGlobalVariavles() {
+	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
+	const char* groupName = "Player";
+	worldTransform_head_.translation_ =
+		globalVariables->GetVector3Value(groupName, "Head Translation");
+	worldTransform_l_arm_.translation_ =
+		globalVariables->GetVector3Value(groupName, "ArmL Translation");
+	worldTransform_r_arm_.translation_ =
+		globalVariables->GetVector3Value(groupName, "ArmR Translation");
+	floatingPeriod_ = globalVariables->GetFloatValue(groupName, "floatingCycle");
+	floatingAmplitude = globalVariables->GetFloatValue(groupName, "floatingAmplitude");
+}
+
+#pragma region ギミック
 void Player::InitializeFloatingGimmick() {
 	floatingParameter_ = 0.0f;
 
@@ -307,6 +305,17 @@ void Player::UpdateAttackWeponGimmick() {
 	}
 }
 
+#pragma endregion
+
+#pragma region 通常
+
+void Player::BehaviorRootInitialize() {
+	// 各ギミックの初期化
+	InitializeFloatingGimmick();
+	InitializeArmGimmick();
+	objectWorldTrans_.rotation_.y = std::atan2(objectWorldTrans_.rotation_.x, objectWorldTrans_.rotation_.z);
+}
+
 void Player::BehaviorRootUpdate() {
 	Matrix4x4 movetrans = R_Math::MakeTranslateMatrix(objectWorldTrans_.translation_);
 	Vector3 move = { 0, 0, 0 };
@@ -319,7 +328,7 @@ void Player::BehaviorRootUpdate() {
 
 		// 移動量
 		move = { (float)joyState.Gamepad.sThumbLX, 0.0f, (float)joyState.Gamepad.sThumbLY };
-		
+
 		if (joyState.Gamepad.wButtons == XINPUT_GAMEPAD_A) {
 			behaviorRequest_ = Behavior::kAttack;
 		}
@@ -374,6 +383,12 @@ void Player::BehaviorRootUpdate() {
 		if (input_->PushKey(DIK_D)) {
 			move.x = 1.0f;
 		}
+		if (input_->PushKey(DIK_LSHIFT)) {
+			dash_ = 2.5f;
+		}
+		else {
+			dash_ = 1.0f;
+		}
 		if (input_->IsTriggerMouse(0)) {
 			behaviorRequest_ = Behavior::kAttack;
 		}
@@ -385,6 +400,8 @@ void Player::BehaviorRootUpdate() {
 
 		move = R_Math::Normalize(move);
 		move.x *= speed;
+		move.x *= dash_;
+		move.z *= dash_;
 		if (jumpPower_ < 0.0f) {
 			move.y = 0.0f;
 			isJump_ = false;
@@ -418,20 +435,36 @@ void Player::BehaviorRootUpdate() {
 
 }
 
+#pragma endregion
+
+#pragma region 攻撃
+
+void Player::BehaviorAttackInitialize() {
+	attackCount_ = 0;
+	isAttack_ = false;
+	isAtkFinish_ = false;
+	InitializeAttackArmGimmick();
+	InitializeAttackWeponGimmick();
+}
+
 void Player::BehaviorAttackUpdate() {
 	UpdateAttackArmGimmick();
 	UpdateAttackWeponGimmick();
 }
 
-void Player::ApplyGlobalVariavles() {
-	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
-	const char* groupName = "Player";
-	worldTransform_head_.translation_ =
-		globalVariables->GetVector3Value(groupName, "Head Translation");
-	worldTransform_l_arm_.translation_ =
-		globalVariables->GetVector3Value(groupName, "ArmL Translation");
-	worldTransform_r_arm_.translation_ =
-		globalVariables->GetVector3Value(groupName, "ArmR Translation");
-	floatingPeriod_ = globalVariables->GetFloatValue(groupName, "floatingCycle");
-	floatingAmplitude = globalVariables->GetFloatValue(groupName, "floatingAmplitude");
+#pragma endregion
+
+#pragma region ダッシュ
+
+void Player::BehaviorDashInitialize() {
+	workDash_.dashParameter_ = 0;
+	
 }
+
+void Player::BehaviorDashUpdate() {
+	
+}
+
+#pragma endregion
+
+

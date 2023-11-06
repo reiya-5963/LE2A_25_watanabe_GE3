@@ -48,28 +48,7 @@ private:
 	// 移動量を加算するためのやつ
 	POINT preMousePos_;
 
-	// 1フレームごとの移動量のためのやつ
-	//float xMouseDistance = 0.0f;
-	//float yMouseDistance = 0.0f;
-
-	// キーマウ、コントローラーそれぞれの移動速度
-	//float move_mouseSpeed = 0.002f;
-	//float move_padSpeed = 5.0f;
-
 	Vector3 offset_ = { 0.0f, 5.0f, 0.0f };
-
-	//bool isDamage_ = false;
-
-	//Vector3 playerRotation_{};
-
-	// 浮遊動作の媒介変数
-	//float damagingParameter_ = 0.0f;
-
-	// 浮遊動作のサイクル
-	//float damagingPeriod_ = 60.0f;
-
-	// 浮遊動作の振れ幅
-	//float damagingAmplitude_ = 60.0f;
 
 	//
 	bool isFps_ = false;

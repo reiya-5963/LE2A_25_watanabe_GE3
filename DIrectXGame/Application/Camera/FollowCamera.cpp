@@ -35,6 +35,8 @@ void FollowCamera::Update() {
 			//viewProjection_.rotation_.x += mouseDistancey * speed;
 			preMousePos_ = mousePos_;
 	}
+
+
 	// もし追従対象がいれば
 	if (target_) {
 		// ターゲットとカメラの距離
