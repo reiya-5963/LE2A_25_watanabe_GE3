@@ -1,5 +1,5 @@
 #include "MyGame.h"
-// GEチェックのためmasterにマージ
+
 // ウィンドウズアプリのエントリーポイント
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// ゲームクラスの生成
