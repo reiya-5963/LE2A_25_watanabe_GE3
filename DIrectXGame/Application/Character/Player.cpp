@@ -9,12 +9,12 @@
 /// </summary>
 /// <param name="model">モデル</param>
 /// <param name="textureHandle">テクスチャハンドル</param>
-void Player::Initialize(const std::vector<Model*>& models) {
+void Player::Initialize(const std::vector<Model*>& models, const std::vector<Model*>& weponModels) {
 	// NULLチェック
 	assert(models[ModelIndexR_Arm]);
 	objectName_ = int(ObjName::PLAYER);
 	// インプット系の初期化
-	input_ = Input::GetInstance();
+	//input_ = Input::GetInstance();
 
 	// ベース部分の初期化
 	BaseCharacter::Initialize(models);
@@ -22,27 +22,11 @@ void Player::Initialize(const std::vector<Model*>& models) {
 	objectWorldTrans_.translation_.y = 50.0f;
 	objectWorldTrans_.translation_.z = 0.0f;
 
-	// 各部位のワールドトランスフォーム初期化
-	worldTransform_body_.Initialize();
-	worldTransform_head_.Initialize();
-	worldTransform_l_arm_.Initialize();
-	worldTransform_r_arm_.Initialize();
-	worldTransform_wepon_.Initialize();
+	wepon_ = std::make_unique<Wepon>();
 
-	// 各部位の位置初期化 //
-	worldTransform_body_.parent_ = &objectWorldTrans_;
-	worldTransform_head_.parent_ = &worldTransform_body_;
-	worldTransform_head_.translation_.y += 4.3f;
+	WorldTransformInitialize();
 
-	worldTransform_l_arm_.parent_ = &worldTransform_body_;
-	worldTransform_l_arm_.translation_.y += 4.0f;
-	worldTransform_l_arm_.translation_.x -= 1.0f;
-
-	worldTransform_r_arm_.parent_ = &worldTransform_body_;
-	worldTransform_r_arm_.translation_.y += 4.0f;
-	worldTransform_r_arm_.translation_.x += 1.0f;
-
-	worldTransform_wepon_.parent_ = &worldTransform_body_;
+	wepon_->Initialize(weponModels, &worldTransform_body_);
 	//****************//
 	// 各ギミックの初期化
 	InitializeFloatingGimmick();
@@ -53,17 +37,7 @@ void Player::Initialize(const std::vector<Model*>& models) {
 	SetCollisionAttribute(kCollisionAttributePlayer);
 	SetCollisionMask(~kCollisionAttributePlayer);
 
-	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
-	globalVariables;
-	const char* groupName = "Player";
-	//
-	GlobalVariables::GetInstance()->CreateGroup(groupName);
-	globalVariables->AddItem(groupName, "Head Translation", worldTransform_head_.translation_);
-	globalVariables->AddItem(groupName, "ArmL Translation", worldTransform_l_arm_.translation_);
-	globalVariables->AddItem(groupName, "ArmR Translation", worldTransform_r_arm_.translation_);
-	globalVariables->AddItem(groupName, "floatingCycle", floatingPeriod_);
-	globalVariables->AddItem(groupName, "floatingAmplitude", floatingAmplitude);
-
+	InitializeGlovalVariables();
 }
 
 /// <summary>
@@ -72,6 +46,14 @@ void Player::Initialize(const std::vector<Model*>& models) {
 void Player::Update() {
 	
 	ApplyGlobalVariavles();
+
+	if (isRespown_) {
+		objectWorldTrans_.translation_.x = 0.0f;
+		objectWorldTrans_.translation_.y = 50.0f;
+		objectWorldTrans_.translation_.z = 0.0f;
+		objectWorldTrans_.UpdateMatrix();
+		isRespown_ = false;
+	}
 
 	if (parent_ != nullptr) {
 		ImGui::Text("%f, %f, %f", parent_->translation_.x, parent_->translation_.y, parent_->translation_.z);
@@ -90,6 +72,9 @@ void Player::Update() {
 		case Behavior::kAttack:
 			BehaviorAttackInitialize();
 			break;
+		case Behavior::kDash:
+			BehaviorDashInitialize();
+			break;
 
 		}
 
@@ -103,6 +88,9 @@ void Player::Update() {
 		break;
 	case Behavior::kAttack:
 		BehaviorAttackUpdate();
+		break;
+	case Behavior::kDash:
+		BehaviorDashUpdate();
 		break;
 	}
 
@@ -139,7 +127,10 @@ void Player::Update() {
 	worldTransform_head_.UpdateMatrix();
 	worldTransform_l_arm_.UpdateMatrix();
 	worldTransform_r_arm_.UpdateMatrix();
-	worldTransform_wepon_.UpdateMatrix();
+	//worldTransform_wepon_.UpdateMatrix();
+	wepon_->SetPlayerPos(GetWorldPosition());
+	wepon_->SetPlayerRotate(objectWorldTrans_.rotation_);
+	wepon_->Update();
 
 	SetMin(R_Math::Subtract(GetWorldPosition(), GetRadius()));
 	SetMax(R_Math::Add(GetWorldPosition(), GetRadius()));
@@ -164,8 +155,8 @@ void Player::Draw(const ViewProjection& viewProjection) {
 	models_[ModelIndexL_Arm]->Draw(worldTransform_l_arm_, viewProjection);
 	models_[ModelIndexR_Arm]->Draw(worldTransform_r_arm_, viewProjection);
 	if (behavior_ == Behavior::kAttack) {
-		models_[ModelIndexWepon]->Draw(worldTransform_wepon_, viewProjection);
-
+		//models_[ModelIndexWepon]->Draw(worldTransform_wepon_, viewProjection);
+		wepon_->Draw(viewProjection);
 	}
 }
 
@@ -177,21 +168,9 @@ void Player::OnCollisionEnter(int object) {
 		}
 	}
 	else if (object == int(ObjName::ENEMY)) {
-		objectWorldTrans_.translation_.x = 0.0f;
-		objectWorldTrans_.translation_.y = 50.0f;
-		objectWorldTrans_.translation_.z = 0.0f;
-		objectWorldTrans_.UpdateMatrix();
-
+		isRespown_ = true;
 	}
-
 }
-
-//void Player::OnCollisionExit(){
-//	if (isOnGround_) {
-//		isOnGround_ = false;
-//	}
-//	worldTransform_.parent_ = nullptr;
-//}
 
 Vector3 Player::GetWorldPosition() {
 	Vector3 result{};
@@ -218,6 +197,45 @@ void Player::ApplyGlobalVariavles() {
 		globalVariables->GetVector3Value(groupName, "ArmR Translation");
 	floatingPeriod_ = globalVariables->GetFloatValue(groupName, "floatingCycle");
 	floatingAmplitude = globalVariables->GetFloatValue(groupName, "floatingAmplitude");
+}
+
+void Player::InitializeGlovalVariables() {
+	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
+	globalVariables;
+	const char* groupName = "Player";
+	//
+	GlobalVariables::GetInstance()->CreateGroup(groupName);
+	globalVariables->AddItem(groupName, "Head Translation", worldTransform_head_.translation_);
+	globalVariables->AddItem(groupName, "ArmL Translation", worldTransform_l_arm_.translation_);
+	globalVariables->AddItem(groupName, "ArmR Translation", worldTransform_r_arm_.translation_);
+	globalVariables->AddItem(groupName, "floatingCycle", floatingPeriod_);
+	globalVariables->AddItem(groupName, "floatingAmplitude", floatingAmplitude);
+
+}
+
+void Player::WorldTransformInitialize() {
+
+	// 各部位のワールドトランスフォーム初期化
+	worldTransform_body_.Initialize();
+	worldTransform_head_.Initialize();
+	worldTransform_l_arm_.Initialize();
+	worldTransform_r_arm_.Initialize();
+	//worldTransform_wepon_.Initialize();
+
+	// 各部位の位置初期化 //
+	worldTransform_body_.parent_ = &objectWorldTrans_;
+	worldTransform_head_.parent_ = &worldTransform_body_;
+	worldTransform_head_.translation_.y += 4.3f;
+
+	worldTransform_l_arm_.parent_ = &worldTransform_body_;
+	worldTransform_l_arm_.translation_.y += 4.0f;
+	worldTransform_l_arm_.translation_.x -= 1.0f;
+
+	worldTransform_r_arm_.parent_ = &worldTransform_body_;
+	worldTransform_r_arm_.translation_.y += 4.0f;
+	worldTransform_r_arm_.translation_.x += 1.0f;
+
+
 }
 
 #pragma region ギミック
@@ -292,15 +310,23 @@ void Player::UpdateAttackArmGimmick() {
 }
 
 void Player::InitializeAttackWeponGimmick() {
-	worldTransform_wepon_.rotation_.x = 0.0f;
-	worldTransform_wepon_.rotation_.x = 0.0f;
+	wepon_->SetRotation({ 0.0f, 0.0f, 0.0f });
+
+	//worldTransform_wepon_.rotation_.x = 0.0f;
+	//worldTransform_wepon_.rotation_.x = 0.0f;
 }
 
 void Player::UpdateAttackWeponGimmick() {
 	if (!isAttack_) {
-		if (worldTransform_wepon_.rotation_.x < 1.0f) {
+		/*if (worldTransform_wepon_.rotation_.x < 1.0f) {
 			worldTransform_wepon_.rotation_.x += 0.2f;
 			worldTransform_wepon_.rotation_.x += 0.2f;
+		}*/
+		if (wepon_->GetRotation().x < 1.2f) {
+			Vector3 tmpRotate = wepon_->GetRotation();
+			tmpRotate.x += 0.4f;
+			
+			wepon_->SetRotation(tmpRotate);
 		}
 	}
 }
@@ -314,6 +340,8 @@ void Player::BehaviorRootInitialize() {
 	InitializeFloatingGimmick();
 	InitializeArmGimmick();
 	objectWorldTrans_.rotation_.y = std::atan2(objectWorldTrans_.rotation_.x, objectWorldTrans_.rotation_.z);
+	isAttack_ = true;
+	isAtkFinish_ = true;
 }
 
 void Player::BehaviorRootUpdate() {
@@ -362,6 +390,8 @@ void Player::BehaviorRootUpdate() {
 		move.x = moveMat.m[3][0];
 		move.y = jumpPower_;
 		move.z = moveMat.m[3][2];
+		// 位置の移動
+		objectWorldTrans_.translation_ = R_Math::TransformCoord(move, movetrans);
 
 		objectWorldTrans_.rotation_.y = std::atan2(move.x, move.z);
 
@@ -384,11 +414,9 @@ void Player::BehaviorRootUpdate() {
 			move.x = 1.0f;
 		}
 		if (input_->PushKey(DIK_LSHIFT)) {
-			dash_ = 2.5f;
+			behaviorRequest_ = Behavior::kDash;
 		}
-		else {
-			dash_ = 1.0f;
-		}
+		
 		if (input_->IsTriggerMouse(0)) {
 			behaviorRequest_ = Behavior::kAttack;
 		}
@@ -400,8 +428,10 @@ void Player::BehaviorRootUpdate() {
 
 		move = R_Math::Normalize(move);
 		move.x *= speed;
-		move.x *= dash_;
-		move.z *= dash_;
+		move.z *= speed;
+
+		/*move.x *= dash_;
+		move.z *= dash_;*/
 		if (jumpPower_ < 0.0f) {
 			move.y = 0.0f;
 			isJump_ = false;
@@ -410,7 +440,6 @@ void Player::BehaviorRootUpdate() {
 			jumpPower_ -= 0.4f;
 
 		}
-		move.z *= speed;
 
 		Matrix4x4 moveMat = R_Math::MakeTranslateMatrix(move);
 		Matrix4x4 rotateMat = R_Math::Multiply(
@@ -425,9 +454,11 @@ void Player::BehaviorRootUpdate() {
 		move.z = moveMat.m[3][2];
 
 		objectWorldTrans_.rotation_.y = std::atan2(move.x, move.z);
-	}
-	// 位置の移動
-	objectWorldTrans_.translation_ = R_Math::TransformCoord(move, movetrans);
+	
+		// 位置の移動
+		objectWorldTrans_.translation_ = R_Math::TransformCoord(move, movetrans);
+
+}
 
 	// 各ギミックの更新処理
 	UpdateFloatingGimmick();
@@ -462,7 +493,31 @@ void Player::BehaviorDashInitialize() {
 }
 
 void Player::BehaviorDashUpdate() {
-	
+	Matrix4x4 movetrans = R_Math::MakeTranslateMatrix(objectWorldTrans_.translation_);
+
+	Vector3 direction = {0.0f, 0.0f, 1.0f};
+	const float speed = 10.0f;
+	direction.z *= speed;
+
+	Matrix4x4 moveMat = R_Math::MakeTranslateMatrix(direction);
+
+	Matrix4x4 rotateMat = R_Math::Multiply(
+		R_Math::Multiply(
+			R_Math::MakeRotateXMatrix(objectWorldTrans_.rotation_.x),
+			R_Math::MakeRotateYMatrix(objectWorldTrans_.rotation_.y)),
+		R_Math::MakeRotateZMatrix(objectWorldTrans_.rotation_.z));
+
+	moveMat = R_Math::Multiply(moveMat, rotateMat);
+	direction.x = moveMat.m[3][0];
+	direction.y = 0.0f;
+	direction.z = moveMat.m[3][2];
+
+	objectWorldTrans_.translation_ = R_Math::TransformCoord(direction, movetrans);
+
+	const uint32_t behaviorDashTime = 3;
+	if (++workDash_.dashParameter_ >= behaviorDashTime) {
+		behaviorRequest_ = Behavior::kRoot;
+	}
 }
 
 #pragma endregion

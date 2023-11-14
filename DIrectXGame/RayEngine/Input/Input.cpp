@@ -319,6 +319,8 @@ void Input::Initialize() {
 		DEVICE_NOTIFY_WINDOW_HANDLE | DEVICE_NOTIFY_ALL_INTERFACE_CLASSES);
 	assert(!!notifyResult);
 
+	notifyResult;
+
 	SetWindowsHookExW(
 		WH_CALLWNDPROC, (HOOKPROC)&SubWndProc, GetModuleHandleW(NULL), GetCurrentThreadId());
 

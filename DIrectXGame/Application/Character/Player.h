@@ -1,7 +1,12 @@
 #pragma once
-#include "BaseCharacter.h"
+
+//#include <memory>
 #include <optional>
+
+#include "BaseCharacter.h"
+
 #include "input/Input.h"
+#include "Wepon.h"
 
 /// <summary>
 /// プレイヤー
@@ -35,7 +40,7 @@ public: // メンバ関数
 	/// 初期化
 	/// </summary>
 	/// <param name="model">モデル</param>
-	void Initialize(const std::vector<Model*>& models) override;
+	void Initialize(const std::vector<Model*>& models, const std::vector<Model*>& weponModels);
 
 	/// <summary>
 	/// 更新
@@ -60,6 +65,21 @@ public: // メンバ関数
 	void SetViewProjection(const ViewProjection* viewProjection);
 	
 	void ApplyGlobalVariavles();
+
+	void InitializeGlovalVariables();
+
+	void WorldTransformInitialize();
+
+	Wepon* GetWeponCollider() {
+		if (behaviorRequest_ == Behavior::kAttack || !isAtkFinish_) {
+			return wepon_.get();
+		}
+		else {
+			return nullptr;
+		}
+	}
+
+	bool IsRespown() { return isRespown_; }
 
 public: // メンバ関数
 	// 浮遊ギミック初期化
@@ -93,15 +113,12 @@ public: // メンバ関数
 
 	// 攻撃行動更新
 	void BehaviorAttackUpdate();
+
 public: // メンバ関数	
 	void BehaviorDashInitialize();
 
 	// 攻撃行動更新
 	void BehaviorDashUpdate();
-
-
-
-
 
 private: // メンバ変数
 	// ワールド変換データ
@@ -110,10 +127,11 @@ private: // メンバ変数
 	WorldTransform worldTransform_head_;
 	WorldTransform worldTransform_l_arm_;
 	WorldTransform worldTransform_r_arm_;
-	WorldTransform worldTransform_wepon_;
+	std::unique_ptr<Wepon> wepon_;
+	//WorldTransform worldTransform_wepon_;
 
 	// キーボード入力
-	Input* input_ = nullptr;
+	Input* input_ = Input::GetInstance();;
 
 	// ビュープロジェクション
 	const ViewProjection* viewProjection_ = nullptr;
@@ -155,4 +173,6 @@ private: // メンバ変数
 	bool isOnGround_ = false;
 
 	WorkDash workDash_;
+
+	bool isRespown_ = false;
 };

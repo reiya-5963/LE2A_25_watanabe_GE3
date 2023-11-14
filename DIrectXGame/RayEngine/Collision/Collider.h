@@ -6,6 +6,7 @@
 
 enum class ObjName {
 	PLAYER,
+	WEPON,
 	ENEMY,
 	WORLD,
 };

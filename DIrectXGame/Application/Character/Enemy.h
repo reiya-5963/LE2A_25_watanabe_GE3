@@ -32,8 +32,8 @@ public: // メンバ関数
 	Vector3 GetWorldPosition() override;
 
 	void SetVelocity(Vector3 velo) { velocity_ = velo; }
-
-
+	
+	bool IsDead() { return isDead_; }
 private: // メンバ変数
 	//
 	WorldTransform worldTransform_body_;
@@ -44,4 +44,8 @@ private: // メンバ変数
 	Vector3 velocity_;
 	// 移動速度
 	float kMoveSpeed = 0.8f;
+
+
+	bool isDead_ = false;
+
 };

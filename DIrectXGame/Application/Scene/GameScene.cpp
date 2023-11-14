@@ -84,11 +84,12 @@ void GameScene::Initialize() {
 		P_model_body.get(),
 		P_model_head.get(),
 		P_model_l_arm.get(),
-		P_model_r_arm.get(),
-		P_model_wepon.get() };
+		P_model_r_arm.get() };
 
+	std::vector<Model*> weponModels = {
+		P_model_wepon.get()};
 	// プレイヤーの初期化
-	player_->Initialize(playerModels);
+	player_->Initialize(playerModels, weponModels);
 #pragma endregion
 
 #pragma region 追従カメラ
@@ -138,28 +139,10 @@ void GameScene::Finalize() {
 
 void GameScene::Update() {
 
-	// コライダーリストの初期化
-	colliderManager_->ClearColliders();
-
-	// それぞれ当たり判定があるものをリストに追加	
-	colliderManager_->AddColliders(moveGround1_.get());
-	colliderManager_->AddColliders(ground1_.get());
-	colliderManager_->AddColliders(player_.get());
-	colliderManager_->AddColliders(ground2_.get());
-	colliderManager_->AddColliders(ground3_.get());	
-	colliderManager_->AddColliders(moveGround2_.get());
-	colliderManager_->AddColliders(goal_.get());
-
-	colliderManager_->AddColliders(enemy_.get());
-
-
-	// 当たり判定チェック
-	colliderManager_->CheckAllCollisions();
-	colliderManager_->UpdateWorldTransform();
-
 	// プレイヤーの更新
 	player_->Update();
 	// 追従カメラの更新
+	followCamera_->SetIsRespown(player_->IsRespown());
 	followCamera_->Update();
 	viewProjection_.matView = followCamera_->GetViewProjection().matView;
 	viewProjection_.matProjection = followCamera_->GetViewProjection().matProjection;
@@ -174,9 +157,40 @@ void GameScene::Update() {
 	goal_->Update();
 
 
+	if (enemy_) {
+		// 敵の更新
+		enemy_->Update();
+		if (enemy_->IsDead()) {
+			enemy_.release();
+			enemy_ = nullptr;
+		}
+	}
 
-	// 敵の更新
-	enemy_->Update();
+
+	// コライダーリストの初期化
+	colliderManager_->ClearColliders();
+
+	// それぞれ当たり判定があるものをリストに追加	
+	colliderManager_->AddColliders(moveGround1_.get());
+	colliderManager_->AddColliders(ground1_.get());
+	colliderManager_->AddColliders(player_.get());
+	colliderManager_->AddColliders(ground2_.get());
+	colliderManager_->AddColliders(ground3_.get());
+	colliderManager_->AddColliders(moveGround2_.get());
+	colliderManager_->AddColliders(goal_.get());
+	if (player_->GetWeponCollider()) {
+		colliderManager_->AddColliders(player_->GetWeponCollider());
+	}
+
+	if (enemy_) {
+		colliderManager_->AddColliders(enemy_.get());
+	}
+
+
+	// 当たり判定チェック
+	colliderManager_->CheckAllCollisions();
+	colliderManager_->UpdateWorldTransform();
+
 }
 
 void GameScene::Draw() {
@@ -204,8 +218,10 @@ void GameScene::Draw() {
 	player_->Draw(viewProjection_);
 
 	colliderManager_->Draw(viewProjection_);
-	// プレイヤーの描画
-	enemy_->Draw(viewProjection_);
+	if (enemy_) {
+		// プレイヤーの描画
+		enemy_->Draw(viewProjection_);
+	}
 
 	goal_->Draw(viewProjection_);
 

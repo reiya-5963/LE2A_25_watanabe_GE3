@@ -1,29 +1,44 @@
 #include "CollisionManager.h"
 #include <iterator>
+#include "GlobalVariables.h"
 
 #include "R_Math.h"
 
 void CollisionManager::Initialize() {
 	model_.reset(Model::CreateFlomObj("BaseElipse"));
+	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
+	globalVariables;
+	const char* groupName = "CollisionManager";
+	//
+	GlobalVariables::GetInstance()->CreateGroup(groupName);
+	globalVariables->AddItem(groupName, "isDrawModel", int32_t(isDebugModel_));
 
 }
 
 void CollisionManager::UpdateWorldTransform() {
+	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
+	const char* groupName = "CollisionManager";
+	isDebugModel_ =
+		globalVariables->GetIntValue(groupName, "isDrawModel");
+
+
 	for (Collider* collider : colliders_) {
 		collider->UpdateWorldTransform();
 	}
 }
 
-void CollisionManager::Draw(const ViewProjection&) {
-	//for (Collider* collider : colliders_) {
-		//collider->Draw(model_.get(), viewProjection);
-//	}
+void CollisionManager::Draw(const ViewProjection& viewProjection) {
+	if (isDebugModel_) {
+		for (Collider* collider : colliders_) {
+			collider->Draw(model_.get(), viewProjection);
+		}
+	}
 }
 
 void CollisionManager::CheckAllCollisions() {
 	// リスト内のペアを総当たり
 	std::list<Collider*>::iterator itrA = colliders_.begin();
-	
+
 	for (Collider* coll : colliders_) {
 		coll->SetParent(nullptr);
 	}
@@ -64,7 +79,7 @@ void CollisionManager::CheckCollisionPair(Collider* colliderA, Collider* collide
 		((colliderA->GetCollisionAttribute() & colliderB->GetCollisionMask()) == 0u) ||
 		((colliderB->GetCollisionAttribute() & colliderA->GetCollisionMask()) == 0u)) {
 		return;
-	}	
+	}
 
 
 	// もし当たってたら

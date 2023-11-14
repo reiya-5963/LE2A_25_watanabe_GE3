@@ -25,12 +25,19 @@ public:
 	/// <param name="target">追従対象</param>
 	void SetTarget(const WorldTransform* target);
 
+	void SetIsRespown(bool isRespown) {
+		isRespown_ = isRespown;
+	}
+
 	/// <summary>
 	/// ビュープロジェクションの取得
 	/// </summary>
 	/// <returns>ビュープロジェクション</returns>
 	ViewProjection& GetViewProjection();
 
+	void Reset();
+
+	Vector3 CalcOffset() const;
 private:
 	// ビュープロジェクション
 	ViewProjection viewProjection_;
@@ -50,7 +57,12 @@ private:
 
 	Vector3 offset_ = { 0.0f, 5.0f, 0.0f };
 
+	Vector3 interTarget_ = {};
+
+
+	bool isRespown_ = false;
 	//
 	bool isFps_ = false;
-
+	float t_ = 0.1f;
+	float destinationAngleY_ = 0.0f;
 };

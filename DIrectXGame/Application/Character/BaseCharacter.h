@@ -1,6 +1,6 @@
 #pragma once
 
-#include <vector>
+//#include <vector>
 #include "Model.h"
 #include "WorldTransform.h"
 #include "ViewProjection.h"
@@ -33,7 +33,7 @@ public:
 	/// ワールド変換データを取得
 	/// </summary>
 	/// <returns>ワールド変換データ</returns>
-	const WorldTransform& GetWorldTransform() { 
+	const WorldTransform& GetWorldTransform() {
 		return colliderWorldTransform_;
 	}
 

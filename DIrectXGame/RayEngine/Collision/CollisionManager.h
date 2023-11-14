@@ -61,5 +61,7 @@ private: // メンバ変数
 	std::list<Collider*> colliders_;
 
 	std::unique_ptr<Model> model_;
+
+	bool isDebugModel_ = true;
 };
 

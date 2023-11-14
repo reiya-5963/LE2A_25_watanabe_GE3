@@ -231,7 +231,7 @@
     <ClCompile Include="gomi\CommandLIst.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="DIrectXGame\Goal.cpp">
+    <ClCompile Include="DIrectXGame\Application\World\Goal.cpp">
       <Filter>Application\World</Filter>
     </ClCompile>
     <ClCompile Include="DIrectXGame\Application\World\Ground.cpp">
@@ -239,6 +239,9 @@
     </ClCompile>
     <ClCompile Include="DIrectXGame\RayEngine\GlobalVariables.cpp">
       <Filter>RayEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="Wepon.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -416,11 +419,14 @@
     <ClInclude Include="gomi\CommandLIst.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="DIrectXGame\Goal.h">
+    <ClInclude Include="DIrectXGame\Application\Goal.h">
       <Filter>Application\World</Filter>
     </ClInclude>
     <ClInclude Include="DIrectXGame\Application\World\Ground.h">
       <Filter>Application\World</Filter>
+    </ClInclude>
+    <ClInclude Include="Wepon.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

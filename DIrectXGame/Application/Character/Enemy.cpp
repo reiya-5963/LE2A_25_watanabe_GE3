@@ -28,17 +28,21 @@ void Enemy::Initialize(const std::vector<Model*>& models) {
 	worldTransform_i_weapon_.parent_ = &worldTransform_body_;
 	worldTransform_i_weapon_.translation_.y += 1.5f;
 	worldTransform_i_weapon_.translation_.x += 1.5f;
+	isDead_ = false;
 }
 
 void Enemy::Update() { 
-	objectWorldTrans_.rotation_.y += 0.08f;
-	Vector3 tmpVelocity{0.0f, 0.0f, kMoveSpeed};
+	if (!isDead_) {
+		objectWorldTrans_.rotation_.y += 0.08f;
+		Vector3 tmpVelocity{ 0.0f, 0.0f, kMoveSpeed };
 
-	velocity_ = R_Math::TransformNormal(tmpVelocity, objectWorldTrans_.matWorld_);
+		velocity_ = R_Math::TransformNormal(tmpVelocity, objectWorldTrans_.matWorld_);
 
-	objectWorldTrans_.translation_.x += velocity_.x;
-	objectWorldTrans_.translation_.y += velocity_.y;
-	objectWorldTrans_.translation_.z += velocity_.z;
+		objectWorldTrans_.translation_.x += velocity_.x;
+		objectWorldTrans_.translation_.y += velocity_.y;
+		objectWorldTrans_.translation_.z += velocity_.z;
+	}
+	
 
 
 
@@ -49,7 +53,6 @@ void Enemy::Update() {
 
 	SetMin(R_Math::Subtract(GetWorldPosition(), GetRadius()));
 	SetMax(R_Math::Add(GetWorldPosition(), GetRadius()));
-
 }
 
 void Enemy::Draw(const ViewProjection& viewProjection) { 
@@ -60,7 +63,10 @@ void Enemy::Draw(const ViewProjection& viewProjection) {
 
 }
 
-void Enemy::OnCollisionEnter(int) {
+void Enemy::OnCollisionEnter(int object) {
+	if (object == int(ObjName::WEPON) && !isDead_ ) {
+		isDead_ = true;
+	}
 }
 
 //void Enemy::OnCollisionExit()
