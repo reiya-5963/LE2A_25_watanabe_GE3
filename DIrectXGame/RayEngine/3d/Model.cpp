@@ -579,6 +579,9 @@ void Model::LoadMaterial(const std::string& directoryPath, const std::string& fi
 		if (key == "Ks") {
 			line_stream >> material->specular_.x >> material->specular_.y >> material->specular_.z;
 		}
+		if (key == "d") {
+			line_stream >> material->alpha_;
+		}
 		// 先頭文字列がmap_Kdならテクスチャファイル名
 		if (key == "map_Kd") {
 			// テクスチャのファイル名読み込み

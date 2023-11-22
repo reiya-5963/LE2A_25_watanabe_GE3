@@ -300,6 +300,10 @@ void Player::UpdateArmGimmick() {
 }
 
 void Player::InitializeAttackArmGimmick() {
+	attackCount_ = 0;
+	isAttack_ = false;
+	isAtkFinish_ = false;
+
 	worldTransform_l_arm_.rotation_.x = 3.14f;
 	worldTransform_r_arm_.rotation_.x = 3.14f;
 }
@@ -493,11 +497,6 @@ void Player::BehaviorRootUpdate() {
 
 void Player::BehaviorAttackInitialize() {
 	workAttack_.attackParamater_ = 0;
-	attackCount_ = 0;
-	isAttack_ = false;
-	isAtkFinish_ = false;
-	InitializeAttackArmGimmick();
-	InitializeAttackWeponGimmick();
 }
 
 void Player::BehaviorAttackUpdate() {
@@ -536,6 +535,8 @@ void Player::BehaviorAttackUpdate() {
 			workAttack_.comboNext = false;
 
 			// 攻撃用の変数などを初期化
+			InitializeAttackArmGimmick();
+			InitializeAttackWeponGimmick();
 
 			// コンボ切り替わりの瞬間だけ入力を受け付ける
 
@@ -555,11 +556,19 @@ void Player::BehaviorAttackUpdate() {
 
 		// コンボ0用
 		break;
-	case 1:
+	case 1:		
+		UpdateAttackArmGimmick();
+		UpdateAttackWeponGimmick();
+
+
 		// コンボ1用
 		break;
 	case 2:
 	default:
+		UpdateAttackArmGimmick();
+		UpdateAttackWeponGimmick();
+
+
 		// コンボ2用
 		break;
 

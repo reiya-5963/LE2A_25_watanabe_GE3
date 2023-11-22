@@ -3,9 +3,15 @@
 #include "MyD3D12Create.h"
 #include <cassert>
 
+//LightGroup* LightGroup::GetInstance() {
+//	// 3Dオブジェクトのインスタンスを生成
+//	static LightGroup instance;
+//	return &instance;
+//}
+
 LightGroup* LightGroup::Create() {
 	// 3Dオブジェクトのインスタンスを生成
-	LightGroup* instance = new LightGroup();
+	LightGroup* instance = new LightGroup;
 
 	// 初期化
 	instance->Initialize();
@@ -73,15 +79,15 @@ void LightGroup::TransferConstBuffer() {
 void LightGroup::DefaultLightSetting() {
 	directLights_[0].SetActive(true);
 	directLights_[0].SetLightColor({ 1.0f, 1.0f, 1.0f });
-	directLights_[0].SetLightDir({ 0.0f, -1.0f, 0.0f });
+	directLights_[0].SetLightDir({ 0.0f, 1.0f, 1.0f });
 
-	directLights_[1].SetActive(true);
-	directLights_[1].SetLightColor({ 1.0f, 1.0f, 1.0f });
-	directLights_[1].SetLightDir({ +0.5f, -0.1f, +0.2f });
+	//directLights_[1].SetActive(true);
+	//directLights_[1].SetLightColor({ 1.0f, 0.0f, 1.0f });
+	//directLights_[1].SetLightDir({ +0.5f, -0.1f, +0.2f });
 
-	directLights_[2].SetActive(true);
-	directLights_[2].SetLightColor({ 1.0f, 1.0f, 1.0f });
-	directLights_[2].SetLightDir({ -0.5f, +0.1f, -0.2f });
+	//directLights_[2].SetActive(true);
+	//directLights_[2].SetLightColor({ 1.0f, 1.0f, 0.0f });
+	//directLights_[2].SetLightDir({ -0.5f, +0.1f, -0.2f });
 
 }
 

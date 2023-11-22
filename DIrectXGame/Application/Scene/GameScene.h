@@ -73,7 +73,7 @@ private:
 	// モデル
 	std::unique_ptr<Model> E_model_F_Wepon = nullptr;
 	// 敵
-	std::unique_ptr<Enemy> enemy_ = nullptr;
+	std::unique_ptr<Enemy> enemy_[5];
 
 
 	// モデル

@@ -138,6 +138,28 @@ void GameScene::Finalize() {
 }
 
 void GameScene::Update() {
+	//Vector3 ambientColor = LightGroup::GetInstance()->GetAmbientColor();
+	//Vector3 lightDir = LightGroup::GetInstance()->GetDirectLightDir(0);
+	//
+	//ImGui::Begin("light");
+	//ImGui::DragFloat3("ambientCol", &ambientColor.x, 0.2f, 0.0f, 1.0f);
+	//ImGui::DragFloat3("lightDir", &lightDir.x, 0.2f, -100.0f, 100.0f);
+	//ImGui::End();
+
+	//if (ambientColor.x != LightGroup::GetInstance()->GetAmbientColor().x ||
+	//	ambientColor.y != LightGroup::GetInstance()->GetAmbientColor().y ||
+	//	ambientColor.z != LightGroup::GetInstance()->GetAmbientColor().z) {
+	//	LightGroup::GetInstance()->SetAmbientColor(ambientColor);
+	//}	
+	//if (lightDir.x != LightGroup::GetInstance()->GetDirectLightDir(0).x ||
+	//	lightDir.y != LightGroup::GetInstance()->GetDirectLightDir(0).y ||
+	//	lightDir.z != LightGroup::GetInstance()->GetDirectLightDir(0).z) {
+	//	LightGroup::GetInstance()->SetDirectLightDir(0, lightDir);
+	//}
+
+	////LightGroup::GetInstance()->SetDirectLightDir(0, lightDir);
+
+	//LightGroup::GetInstance()->Update();
 
 	// プレイヤーの更新
 	player_->Update();
