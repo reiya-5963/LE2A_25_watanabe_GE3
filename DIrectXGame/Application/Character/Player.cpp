@@ -75,6 +75,9 @@ void Player::Update() {
 		case Behavior::kDash:
 			BehaviorDashInitialize();
 			break;
+		case Behavior::kJump:
+			BehaviorJumpInitialize();
+			break;
 
 		}
 
@@ -91,6 +94,9 @@ void Player::Update() {
 		break;
 	case Behavior::kDash:
 		BehaviorDashUpdate();
+		break; 
+	case Behavior::kJump:
+		BehaviorJumpUpdate();
 		break;
 	}
 
@@ -142,6 +148,10 @@ void Player::Update() {
 		objectWorldTrans_.translation_.z = 0.0f;
 		objectWorldTrans_.UpdateMatrix();
 	}
+
+	ImGui::Text("%f, %f, %f", objectWorldTrans_.translation_.x, objectWorldTrans_.translation_.y, objectWorldTrans_.translation_.z);
+
+
 }
 
 /// <summary>
@@ -346,7 +356,7 @@ void Player::BehaviorRootInitialize() {
 
 void Player::BehaviorRootUpdate() {
 	Matrix4x4 movetrans = R_Math::MakeTranslateMatrix(objectWorldTrans_.translation_);
-	Vector3 move = { 0, 0, 0 };
+	 velocity_ = { 0, 0, 0 };
 	XINPUT_STATE joyState;
 
 	// もしコントローラーでのプレイなら
@@ -355,31 +365,31 @@ void Player::BehaviorRootUpdate() {
 		const float speed = 0.3f;
 
 		// 移動量
-		move = { (float)joyState.Gamepad.sThumbLX, 0.0f, (float)joyState.Gamepad.sThumbLY };
+		velocity_ = { (float)joyState.Gamepad.sThumbLX, 0.0f, (float)joyState.Gamepad.sThumbLY };
 
 		if (joyState.Gamepad.wButtons == XINPUT_GAMEPAD_A) {
 			behaviorRequest_ = Behavior::kAttack;
 		}
-		if (!isJump_ && joyState.Gamepad.wButtons == XINPUT_GAMEPAD_B) {
-			isJump_ = true;
-			jumpPower_ = 6.0f;
-
+		if (joyState.Gamepad.wButtons == XINPUT_GAMEPAD_B) {
+			behaviorRequest_ = Behavior::kJump;
+			/*isJump_ = true;
+			jumpPower_ = 6.0f;*/
 		}
 
 		//
-		move = R_Math::Normalize(move);
-		move.x *= speed;
-		if (jumpPower_ < 0.0f) {
+		velocity_ = R_Math::Normalize(velocity_);
+		velocity_.x *= speed;
+		/*if (jumpPower_ < 0.0f) {
 			move.y = 0.0f;
 			isJump_ = false;
 		}
 		else if (jumpPower_ >= 0.0f) {
 			jumpPower_ -= 0.4f;
 
-		}
-		move.z *= speed;
+		}*/
+		velocity_.z *= speed;
 
-		Matrix4x4 moveMat = R_Math::MakeTranslateMatrix(move);
+		Matrix4x4 moveMat = R_Math::MakeTranslateMatrix(velocity_);
 		Matrix4x4 rotateMat = R_Math::Multiply(
 			R_Math::Multiply(
 				R_Math::MakeRotateXMatrix(viewProjection_->rotation_.x),
@@ -387,13 +397,13 @@ void Player::BehaviorRootUpdate() {
 			R_Math::MakeRotateZMatrix(viewProjection_->rotation_.z));
 
 		moveMat = R_Math::Multiply(moveMat, rotateMat);
-		move.x = moveMat.m[3][0];
-		move.y = jumpPower_;
-		move.z = moveMat.m[3][2];
+		velocity_.x = moveMat.m[3][0];
+		velocity_.y = jumpPower_;
+		velocity_.z = moveMat.m[3][2];
 		// 位置の移動
-		objectWorldTrans_.translation_ = R_Math::TransformCoord(move, movetrans);
+		objectWorldTrans_.translation_ = R_Math::TransformCoord(velocity_, movetrans);
 
-		objectWorldTrans_.rotation_.y = std::atan2(move.x, move.z);
+		objectWorldTrans_.rotation_.y = std::atan2(velocity_.x, velocity_.z);
 
 	}
 	else {
@@ -402,16 +412,16 @@ void Player::BehaviorRootUpdate() {
 		const float speed = 0.6f;
 
 		if (input_->PushKey(DIK_W)) {
-			move.z = 1.0f;
+			velocity_.z = 1.0f;
 		}
 		if (input_->PushKey(DIK_S)) {
-			move.z = -1.0f;
+			velocity_.z = -1.0f;
 		}
 		if (input_->PushKey(DIK_A)) {
-			move.x = -1.0f;
+			velocity_.x = -1.0f;
 		}
 		if (input_->PushKey(DIK_D)) {
-			move.x = 1.0f;
+			velocity_.x = 1.0f;
 		}
 		if (input_->PushKey(DIK_LSHIFT)) {
 			behaviorRequest_ = Behavior::kDash;
@@ -420,28 +430,30 @@ void Player::BehaviorRootUpdate() {
 		if (input_->IsTriggerMouse(0)) {
 			behaviorRequest_ = Behavior::kAttack;
 		}
-		if (!isJump_ && input_->TriggerKey(DIK_SPACE)) {
-			isJump_ = true;
-			jumpPower_ = 6.0f;
+		if (input_->TriggerKey(DIK_SPACE)) {
+			behaviorRequest_ = Behavior::kJump; 
+			
+			/*isJump_ = true;
+			jumpPower_ = 6.0f;*/
 
 		}
 
-		move = R_Math::Normalize(move);
-		move.x *= speed;
-		move.z *= speed;
+		velocity_ = R_Math::Normalize(velocity_);
+		velocity_.x *= speed;
+		velocity_.z *= speed;
 
 		/*move.x *= dash_;
 		move.z *= dash_;*/
-		if (jumpPower_ < 0.0f) {
+		/*if (jumpPower_ < 0.0f) {
 			move.y = 0.0f;
 			isJump_ = false;
 		}
 		else if (jumpPower_ >= 0.0f) {
 			jumpPower_ -= 0.4f;
 
-		}
+		}*/
 
-		Matrix4x4 moveMat = R_Math::MakeTranslateMatrix(move);
+		Matrix4x4 moveMat = R_Math::MakeTranslateMatrix(velocity_);
 		Matrix4x4 rotateMat = R_Math::Multiply(
 			R_Math::Multiply(
 				R_Math::MakeRotateXMatrix(viewProjection_->rotation_.x),
@@ -449,14 +461,14 @@ void Player::BehaviorRootUpdate() {
 			R_Math::MakeRotateZMatrix(viewProjection_->rotation_.z));
 
 		moveMat = R_Math::Multiply(moveMat, rotateMat);
-		move.x = moveMat.m[3][0];
-		move.y = jumpPower_;
-		move.z = moveMat.m[3][2];
+		velocity_.x = moveMat.m[3][0];
+		velocity_.y = jumpPower_;
+		velocity_.z = moveMat.m[3][2];
 
-		objectWorldTrans_.rotation_.y = std::atan2(move.x, move.z);
+		objectWorldTrans_.rotation_.y = std::atan2(velocity_.x, velocity_.z);
 	
 		// 位置の移動
-		objectWorldTrans_.translation_ = R_Math::TransformCoord(move, movetrans);
+		objectWorldTrans_.translation_ = R_Math::TransformCoord(velocity_, movetrans);
 
 }
 
@@ -516,6 +528,43 @@ void Player::BehaviorDashUpdate() {
 
 	const uint32_t behaviorDashTime = 3;
 	if (++workDash_.dashParameter_ >= behaviorDashTime) {
+		behaviorRequest_ = Behavior::kRoot;
+	}
+}
+#pragma endregion
+
+#pragma region ジャンプ
+void Player::BehaviorJumpInitialize() {
+	worldTransform_body_.translation_.y = 0.0f;
+	worldTransform_l_arm_.rotation_.x = 0.0f;
+	worldTransform_r_arm_.rotation_.x = 0.0f;
+
+	// ジャンプ初速
+	const float kJumpFirstSpeed = 2.0f;
+	// ジャンプ初速を与える
+	velocity_.y = kJumpFirstSpeed;
+}
+
+void Player::BehaviorJumpUpdate() {
+	// 移動
+	objectWorldTrans_.translation_.x += velocity_.x;
+	objectWorldTrans_.translation_.y += velocity_.y;
+	objectWorldTrans_.translation_.z += velocity_.z;
+
+	// 重力加速度
+	const float kGravityAcceleration = 0.05f;
+	// 加速度ベクトル
+	Vector3 accelerationVector = { 0.0f, -kGravityAcceleration, 0.0f };
+	// 加速する
+	velocity_.x += accelerationVector.x;
+	velocity_.y += accelerationVector.y;
+	velocity_.z += accelerationVector.z;
+
+
+	// 着地
+	if (objectWorldTrans_.translation_.y <= 5.1f) {
+		objectWorldTrans_.translation_.y = 5.1f;
+		// ジャンプ終了
 		behaviorRequest_ = Behavior::kRoot;
 	}
 }

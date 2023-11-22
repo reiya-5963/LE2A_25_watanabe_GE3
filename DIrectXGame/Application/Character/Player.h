@@ -26,6 +26,7 @@ class Player : public BaseCharacter {
 		kRoot,		// 通常
 		kAttack,	// 攻撃
 		kDash,		// ダッシュ
+		kJump,		// ジャンプ中
 	};
 
 private:
@@ -102,23 +103,28 @@ public: // メンバ関数
 
 	void UpdateAttackWeponGimmick();
 
-public: // メンバ関数	
+public: // 通常状態
 	void BehaviorRootInitialize();
 
 	// 通常行動更新
 	void BehaviorRootUpdate();
 
-public: // メンバ関数	
+public: // 攻撃状態	
 	void BehaviorAttackInitialize();
 
 	// 攻撃行動更新
 	void BehaviorAttackUpdate();
 
-public: // メンバ関数	
+public: // ダッシュ状態	
 	void BehaviorDashInitialize();
 
 	// 攻撃行動更新
 	void BehaviorDashUpdate();
+public: // ダッシュ状態	
+		void BehaviorJumpInitialize();
+
+		// 攻撃行動更新
+		void BehaviorJumpUpdate();
 
 private: // メンバ変数
 	// ワールド変換データ
@@ -169,10 +175,13 @@ private: // メンバ変数
 	//
 	std::optional<Behavior> behaviorRequest_ = std::nullopt;
 
-	bool isJump_ = false;
+
+	//bool isJump_ = false;
 	bool isOnGround_ = false;
 
 	WorkDash workDash_;
 
 	bool isRespown_ = false;
+
+	Vector3 velocity_ = {};
 };
