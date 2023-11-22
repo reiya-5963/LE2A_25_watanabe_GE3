@@ -191,6 +191,23 @@ void GameScene::Update() {
 	colliderManager_->CheckAllCollisions();
 	colliderManager_->UpdateWorldTransform();
 
+	//////
+	// MT4_01_01
+
+	Vector3 axis = R_Math::Normalize({ 1.0f, 1.0f, 1.0f });
+	float angle = 0.44f;
+	Matrix4x4 rotateMatrix = R_Math::MakeRotateAxisAngle(axis, angle);
+
+	ImGui::Begin("debug");
+	for (uint32_t i = 0; i < 4; i++) {
+		ImGui::Text("rotateMatrix\n");
+		ImGui::Text("%.3f, %.3f, %.3f, %.3f\n", rotateMatrix.m[i][0], rotateMatrix.m[i][1], rotateMatrix.m[i][2], rotateMatrix.m[i][3]);
+	}
+	ImGui::End();
+
+
+	//////
+
 }
 
 void GameScene::Draw() {

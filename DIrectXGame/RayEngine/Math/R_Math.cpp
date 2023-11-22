@@ -556,6 +556,44 @@ Matrix4x4 R_Math::MakeIdentity4x4() {
 	return result;
 }
 
+Matrix4x4 R_Math::MakeRotateAxisAngle(const Vector3& axis, float angle) {
+	Matrix4x4 R{};
+	Matrix4x4 S{};
+	Matrix4x4 P{};
+	Matrix4x4 C{};
+
+	S.m[0][0] = std::cos(angle);
+	S.m[1][1] = std::cos(angle);
+	S.m[2][2] = std::cos(angle);
+
+	P.m[0][0] = axis.x * axis.x;
+	P.m[0][1] = axis.x * axis.y;
+	P.m[0][2] = axis.x * axis.z;
+
+	P.m[1][0] = axis.y * axis.x;
+	P.m[1][1] = axis.y * axis.y;
+	P.m[1][2] = axis.y * axis.z;
+
+	P.m[2][0] = axis.z * axis.x;
+	P.m[2][1] = axis.z * axis.y;
+	P.m[2][2] = axis.z * axis.z;
+
+	C.m[0][1] = -axis.z;
+	C.m[0][2] = axis.y;
+	C.m[1][0] = axis.z;
+	C.m[1][2] = -axis.x;
+	C.m[2][0] = -axis.y;
+	C.m[2][1] = axis.x;
+
+	for (uint32_t i = 0; i < 3; i++) {
+		for (uint32_t j = 0; j < 3; j++) {
+			R.m[i][j] = P.m[i][j] * (1 - std::cos(angle)) + S.m[i][j] + -(std::sin(angle)) * C.m[i][j];
+		}
+	}
+	R.m[3][3] = 1.0f;
+	return R;
+}
+
 
 // 衝突判定
 //bool R_Math::IsCollision(const Sphere& s1, const Sphere& s2) {

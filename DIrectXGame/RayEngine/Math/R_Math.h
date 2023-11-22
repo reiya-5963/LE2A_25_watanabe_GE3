@@ -214,6 +214,8 @@ public:
 	/// <returns></returns>
 	static Matrix4x4 MakeIdentity4x4();
 
+	static Matrix4x4 MakeRotateAxisAngle(const Vector3& axis, float angle);
+
 #pragma region lerp
 	static float lerp(float t, float start, float end);
 
