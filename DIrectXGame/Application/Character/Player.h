@@ -36,6 +36,33 @@ private:
 		uint32_t dashParameter_ = 0;
 	};
 
+	//
+	struct WorkAttack {
+		// 攻撃ギミックの媒介変数
+		uint32_t attackParamater_ = 0;
+		int32_t comboIndex = 0;
+		int32_t inComboNext = 0;
+		bool comboNext = false;
+	};
+
+	// 攻撃用定数
+	struct ConstAttack {
+		// 振りかぶりの字間<frame>
+		uint32_t anticipationTime;
+		// ための字間<frame>
+		uint32_t changeTime;
+		// 攻撃振りの字間<frame>
+		uint32_t swingtime;
+		// 硬直字間<frame>
+		uint32_t recoveryTime;
+		// 振りかぶりの移動速さ
+		float anticipationSpeed;
+		// ための移動速さ
+		float changeSpeed;
+		// 攻撃振りの移動速さ
+		float swingSpeed;
+	};
+	
 public: // メンバ関数
 	/// <summary>
 	/// 初期化
@@ -125,8 +152,14 @@ public: // ダッシュ状態
 
 		// 攻撃行動更新
 		void BehaviorJumpUpdate();
+public:
+	// コンボの数
+	static const int ComboNum = 3;
 
 private: // メンバ変数
+	// コンボ定数表
+	static const std::array<ConstAttack, ComboNum> kConstAttacks_;
+
 	// ワールド変換データ
 	//WorldTransform worldTransform_;
 	WorldTransform worldTransform_body_;
@@ -180,6 +213,9 @@ private: // メンバ変数
 	bool isOnGround_ = false;
 
 	WorkDash workDash_;
+
+	WorkAttack workAttack_;
+	
 
 	bool isRespown_ = false;
 

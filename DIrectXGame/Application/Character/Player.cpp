@@ -4,6 +4,15 @@
 #include "GlobalVariables.h"
 #include <cassert>
 
+const std::array<Player::ConstAttack, Player::ComboNum>
+Player::kConstAttacks_ = {
+	{
+		{0, 0, 20, 0, 0.0f, 0.0f, 0.15f},
+		{15, 10, 15, 0, 0.2f, 0.0f, 0.0f},
+		{15, 10, 15, 30, 0.2f, 0.0f, 0.0f},
+	}
+};
+
 /// <summary>
 /// 初期化
 /// </summary>
@@ -483,6 +492,7 @@ void Player::BehaviorRootUpdate() {
 #pragma region 攻撃
 
 void Player::BehaviorAttackInitialize() {
+	workAttack_.attackParamater_ = 0;
 	attackCount_ = 0;
 	isAttack_ = false;
 	isAtkFinish_ = false;
@@ -491,8 +501,71 @@ void Player::BehaviorAttackInitialize() {
 }
 
 void Player::BehaviorAttackUpdate() {
-	UpdateAttackArmGimmick();
-	UpdateAttackWeponGimmick();
+	// 予備動作の時間
+	//uint32_t anticipationTime = kConstAttacks_[workAttack_.comboIndex].anticipationTime;
+
+	// コントローラー
+	XINPUT_STATE joyState;
+	XINPUT_STATE joyStatePre;
+
+	// コンボ上限に達していない
+	if (ComboNum > workAttack_.comboIndex) {
+		if (Input::GetInstance()->GetJoyStickState(0, joyState) && 
+			Input::GetInstance()->GetJoyStickStatePrevious(0, joyStatePre)) {
+			
+			// 攻撃ボタンをトリガーしたら
+			if (joyState.Gamepad.wButtons == XINPUT_GAMEPAD_A) {
+				// コンボ有効
+				workAttack_.comboNext = true;
+			}
+			
+		}
+	}
+
+	// 1コンボの合計時間
+	uint32_t samTime = kConstAttacks_[workAttack_.comboIndex].anticipationTime +
+		kConstAttacks_[workAttack_.comboIndex].changeTime +
+		kConstAttacks_[workAttack_.comboIndex].recoveryTime +
+		kConstAttacks_[workAttack_.comboIndex].swingtime;
+
+	// 既定の時間経過で通常行動に戻る
+	if (++workAttack_.attackParamater_ >= samTime) {
+		// コンボ継続なら次のコンボに進む
+		if (workAttack_.comboNext) {
+			// コンボ継続フラグをリセット
+			workAttack_.comboNext = false;
+
+			// 攻撃用の変数などを初期化
+
+			// コンボ切り替わりの瞬間だけ入力を受け付ける
+
+			// 各パーツの角度などの初期化
+
+		}
+		// コンボ継続でないなら攻撃を終了して通常状態に戻る
+		else {
+			behaviorRequest_ = Behavior::kRoot;
+		}
+	}
+
+	switch (workAttack_.comboIndex) {
+	case 0:
+		UpdateAttackArmGimmick();
+		UpdateAttackWeponGimmick();
+
+		// コンボ0用
+		break;
+	case 1:
+		// コンボ1用
+		break;
+	case 2:
+	default:
+		// コンボ2用
+		break;
+
+	}
+
+
 }
 
 #pragma endregion
