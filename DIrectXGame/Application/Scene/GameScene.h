@@ -10,7 +10,7 @@
 
 #include "Player.h"
 #include "FollowCamera.h"
-
+#include "LockOn.h"
 /// <summary>
 /// ゲームシーン
 /// </summary>
@@ -73,7 +73,7 @@ private:
 	// モデル
 	std::unique_ptr<Model> E_model_F_Wepon = nullptr;
 	// 敵
-	std::unique_ptr<Enemy> enemy_[5];
+	std::list<std::unique_ptr<Enemy>> enemies_;
 
 
 	// モデル
@@ -97,4 +97,6 @@ private:
 	std::unique_ptr<FollowCamera> followCamera_ = nullptr;
 
 	std::unique_ptr<CollisionManager> colliderManager_ = nullptr;
+
+	std::unique_ptr<LockOn> lockOn_;
 };

@@ -240,7 +240,10 @@
     <ClCompile Include="DIrectXGame\RayEngine\GlobalVariables.cpp">
       <Filter>RayEngine</Filter>
     </ClCompile>
-    <ClCompile Include="Wepon.cpp">
+    <ClCompile Include="DIrectXGame\Application\Wepon.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="DIrectXGame\Application\LockOn.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -419,13 +422,16 @@
     <ClInclude Include="gomi\CommandLIst.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="DIrectXGame\Application\Goal.h">
+    <ClInclude Include="DIrectXGame\Application\World\Goal.h">
       <Filter>Application\World</Filter>
     </ClInclude>
     <ClInclude Include="DIrectXGame\Application\World\Ground.h">
       <Filter>Application\World</Filter>
     </ClInclude>
-    <ClInclude Include="Wepon.h">
+    <ClInclude Include="DIrectXGame\Application\Wepon.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\Application\LockOn.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

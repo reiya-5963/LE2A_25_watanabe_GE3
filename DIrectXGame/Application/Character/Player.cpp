@@ -3,11 +3,12 @@
 #include "R_Math.h"
 #include "GlobalVariables.h"
 #include <cassert>
+#include "LockOn.h"
 
 const std::array<Player::ConstAttack, Player::ComboNum>
 Player::kConstAttacks_ = {
 	{
-		{0, 0, 20, 0, 0.0f, 0.0f, 0.15f},
+		{0, 0, 60, 0, 0.0f, 0.0f, 0.15f},
 		{15, 10, 15, 0, 0.2f, 0.0f, 0.0f},
 		{15, 10, 15, 30, 0.2f, 0.0f, 0.0f},
 	}
@@ -18,7 +19,7 @@ Player::kConstAttacks_ = {
 /// </summary>
 /// <param name="model">モデル</param>
 /// <param name="textureHandle">テクスチャハンドル</param>
-void Player::Initialize(const std::vector<Model*>& models, const std::vector<Model*>& weponModels) {
+void Player::Initialize(const std::vector<Model*>& models, const std::vector<Model*>& weponModels, Vector3& pos) {
 	// NULLチェック
 	assert(models[ModelIndexR_Arm]);
 	objectName_ = int(ObjName::PLAYER);
@@ -26,10 +27,10 @@ void Player::Initialize(const std::vector<Model*>& models, const std::vector<Mod
 	//input_ = Input::GetInstance();
 
 	// ベース部分の初期化
-	BaseCharacter::Initialize(models);
-	objectWorldTrans_.translation_.x = 0.0f;
-	objectWorldTrans_.translation_.y = 50.0f;
-	objectWorldTrans_.translation_.z = 0.0f;
+	BaseCharacter::Initialize(models, pos);
+//	objectWorldTrans_.translation_.x = 0.0f;
+	//objectWorldTrans_.translation_.y = 50.0f;
+	//objectWorldTrans_.translation_.z = 0.0f;
 
 	wepon_ = std::make_unique<Wepon>();
 
@@ -159,7 +160,7 @@ void Player::Update() {
 	}
 
 	ImGui::Text("%f, %f, %f", objectWorldTrans_.translation_.x, objectWorldTrans_.translation_.y, objectWorldTrans_.translation_.z);
-
+	ImGui::Text("param : %d, index : %d", workAttack_.attackParamater_, workAttack_.comboIndex);
 
 }
 
@@ -191,7 +192,7 @@ void Player::OnCollisionEnter(int object) {
 	}
 }
 
-Vector3 Player::GetWorldPosition() {
+Vector3  Player::GetWorldPosition() const {
 	Vector3 result{};
 
 	Vector3 offset = { 0.0f, 3.0f, 0.0f };
@@ -371,119 +372,133 @@ void Player::BehaviorRootUpdate() {
 	Matrix4x4 movetrans = R_Math::MakeTranslateMatrix(objectWorldTrans_.translation_);
 	 velocity_ = { 0, 0, 0 };
 	XINPUT_STATE joyState;
+	Input::GetInstance()->GetJoyStickState(0, joyState);
+	
+	if ((Input::GetInstance()->GetJoyStickState(0, joyState) && ((float)joyState.Gamepad.sThumbLX != 0.0f || (float)joyState.Gamepad.sThumbLY != 0.0f)) ||
+		Input::GetInstance()->PushKey(DIK_W) || Input::GetInstance()->PushKey(DIK_S) || 
+		Input::GetInstance()->PushKey(DIK_A) || Input::GetInstance()->PushKey(DIK_D)) {
+		
+		// もしコントローラーでのプレイなら
+		if (Input::GetInstance()->GetJoyStickState(0, joyState)) {
+			// 速さ
+			const float speed = 0.3f;
 
-	// もしコントローラーでのプレイなら
-	if (Input::GetInstance()->GetJoyStickState(0, joyState)) {
-		// 速さ
-		const float speed = 0.3f;
+			// 移動量
+			velocity_ = { (float)joyState.Gamepad.sThumbLX, 0.0f, (float)joyState.Gamepad.sThumbLY };
 
-		// 移動量
-		velocity_ = { (float)joyState.Gamepad.sThumbLX, 0.0f, (float)joyState.Gamepad.sThumbLY };
+			if (joyState.Gamepad.wButtons == XINPUT_GAMEPAD_A) {
+				behaviorRequest_ = Behavior::kAttack;
+			}
+			if (joyState.Gamepad.wButtons == XINPUT_GAMEPAD_B) {
+				behaviorRequest_ = Behavior::kJump;
+				/*isJump_ = true;
+				jumpPower_ = 6.0f;*/
+			}
 
-		if (joyState.Gamepad.wButtons == XINPUT_GAMEPAD_A) {
-			behaviorRequest_ = Behavior::kAttack;
+			//
+			velocity_ = R_Math::Normalize(velocity_);
+			velocity_.x *= speed;
+			/*if (jumpPower_ < 0.0f) {
+				move.y = 0.0f;
+				isJump_ = false;
+			}
+			else if (jumpPower_ >= 0.0f) {
+				jumpPower_ -= 0.4f;
+
+			}*/
+			velocity_.z *= speed;
+
+			Matrix4x4 moveMat = R_Math::MakeTranslateMatrix(velocity_);
+			Matrix4x4 rotateMat = R_Math::Multiply(
+				R_Math::Multiply(
+					R_Math::MakeRotateXMatrix(viewProjection_->rotation_.x),
+					R_Math::MakeRotateYMatrix(viewProjection_->rotation_.y)),
+				R_Math::MakeRotateZMatrix(viewProjection_->rotation_.z));
+
+			moveMat = R_Math::Multiply(moveMat, rotateMat);
+			velocity_.x = moveMat.m[3][0];
+			velocity_.y = jumpPower_;
+			velocity_.z = moveMat.m[3][2];
+			// 位置の移動
+			objectWorldTrans_.translation_ = R_Math::TransformCoord(velocity_, movetrans);
+
+			objectWorldTrans_.rotation_.y = std::atan2(velocity_.x, velocity_.z);
+
 		}
-		if (joyState.Gamepad.wButtons == XINPUT_GAMEPAD_B) {
-			behaviorRequest_ = Behavior::kJump;
-			/*isJump_ = true;
-			jumpPower_ = 6.0f;*/
+		else {
+
+			// 速さ
+			const float speed = 0.6f;
+
+			if (Input::GetInstance()->PushKey(DIK_W)) {
+				velocity_.z = 1.0f;
+			}
+			if (Input::GetInstance()->PushKey(DIK_S)) {
+				velocity_.z = -1.0f;
+			}
+			if (Input::GetInstance()->PushKey(DIK_A)) {
+				velocity_.x = -1.0f;
+			}
+			if (Input::GetInstance()->PushKey(DIK_D)) {
+				velocity_.x = 1.0f;
+			}
+			if (input_->PushKey(DIK_LSHIFT)) {
+				behaviorRequest_ = Behavior::kDash;
+			}
+
+			if (input_->IsTriggerMouse(0)) {
+				behaviorRequest_ = Behavior::kAttack;
+			}
+			if (input_->TriggerKey(DIK_SPACE)) {
+				behaviorRequest_ = Behavior::kJump;
+
+				/*isJump_ = true;
+				jumpPower_ = 6.0f;*/
+
+			}
+
+			velocity_ = R_Math::Normalize(velocity_);
+			velocity_.x *= speed;
+			velocity_.z *= speed;
+
+			/*move.x *= dash_;
+			move.z *= dash_;*/
+			/*if (jumpPower_ < 0.0f) {
+				move.y = 0.0f;
+				isJump_ = false;
+			}
+			else if (jumpPower_ >= 0.0f) {
+				jumpPower_ -= 0.4f;
+
+			}*/
+
+			Matrix4x4 moveMat = R_Math::MakeTranslateMatrix(velocity_);
+			Matrix4x4 rotateMat = R_Math::Multiply(
+				R_Math::Multiply(
+					R_Math::MakeRotateXMatrix(viewProjection_->rotation_.x),
+					R_Math::MakeRotateYMatrix(viewProjection_->rotation_.y)),
+				R_Math::MakeRotateZMatrix(viewProjection_->rotation_.z));
+
+			moveMat = R_Math::Multiply(moveMat, rotateMat);
+			velocity_.x = moveMat.m[3][0];
+			velocity_.y = jumpPower_;
+			velocity_.z = moveMat.m[3][2];
+
+			objectWorldTrans_.rotation_.y = std::atan2(velocity_.x, velocity_.z);
+
+			// 位置の移動
+			objectWorldTrans_.translation_ = R_Math::TransformCoord(velocity_, movetrans);
+
 		}
-
-		//
-		velocity_ = R_Math::Normalize(velocity_);
-		velocity_.x *= speed;
-		/*if (jumpPower_ < 0.0f) {
-			move.y = 0.0f;
-			isJump_ = false;
-		}
-		else if (jumpPower_ >= 0.0f) {
-			jumpPower_ -= 0.4f;
-
-		}*/
-		velocity_.z *= speed;
-
-		Matrix4x4 moveMat = R_Math::MakeTranslateMatrix(velocity_);
-		Matrix4x4 rotateMat = R_Math::Multiply(
-			R_Math::Multiply(
-				R_Math::MakeRotateXMatrix(viewProjection_->rotation_.x),
-				R_Math::MakeRotateYMatrix(viewProjection_->rotation_.y)),
-			R_Math::MakeRotateZMatrix(viewProjection_->rotation_.z));
-
-		moveMat = R_Math::Multiply(moveMat, rotateMat);
-		velocity_.x = moveMat.m[3][0];
-		velocity_.y = jumpPower_;
-		velocity_.z = moveMat.m[3][2];
-		// 位置の移動
-		objectWorldTrans_.translation_ = R_Math::TransformCoord(velocity_, movetrans);
-
-		objectWorldTrans_.rotation_.y = std::atan2(velocity_.x, velocity_.z);
 
 	}
-	else {
+	else if (lockOn_ && lockOn_->ExistTarget()) {
+		Vector3 lockOnPos = lockOn_->GetTargetPosition();
 
-		// 速さ
-		const float speed = 0.6f;
+		Vector3 sub = lockOnPos - objectWorldTrans_.translation_;
 
-		if (input_->PushKey(DIK_W)) {
-			velocity_.z = 1.0f;
-		}
-		if (input_->PushKey(DIK_S)) {
-			velocity_.z = -1.0f;
-		}
-		if (input_->PushKey(DIK_A)) {
-			velocity_.x = -1.0f;
-		}
-		if (input_->PushKey(DIK_D)) {
-			velocity_.x = 1.0f;
-		}
-		if (input_->PushKey(DIK_LSHIFT)) {
-			behaviorRequest_ = Behavior::kDash;
-		}
-		
-		if (input_->IsTriggerMouse(0)) {
-			behaviorRequest_ = Behavior::kAttack;
-		}
-		if (input_->TriggerKey(DIK_SPACE)) {
-			behaviorRequest_ = Behavior::kJump; 
-			
-			/*isJump_ = true;
-			jumpPower_ = 6.0f;*/
-
-		}
-
-		velocity_ = R_Math::Normalize(velocity_);
-		velocity_.x *= speed;
-		velocity_.z *= speed;
-
-		/*move.x *= dash_;
-		move.z *= dash_;*/
-		/*if (jumpPower_ < 0.0f) {
-			move.y = 0.0f;
-			isJump_ = false;
-		}
-		else if (jumpPower_ >= 0.0f) {
-			jumpPower_ -= 0.4f;
-
-		}*/
-
-		Matrix4x4 moveMat = R_Math::MakeTranslateMatrix(velocity_);
-		Matrix4x4 rotateMat = R_Math::Multiply(
-			R_Math::Multiply(
-				R_Math::MakeRotateXMatrix(viewProjection_->rotation_.x),
-				R_Math::MakeRotateYMatrix(viewProjection_->rotation_.y)),
-			R_Math::MakeRotateZMatrix(viewProjection_->rotation_.z));
-
-		moveMat = R_Math::Multiply(moveMat, rotateMat);
-		velocity_.x = moveMat.m[3][0];
-		velocity_.y = jumpPower_;
-		velocity_.z = moveMat.m[3][2];
-
-		objectWorldTrans_.rotation_.y = std::atan2(velocity_.x, velocity_.z);
-	
-		// 位置の移動
-		objectWorldTrans_.translation_ = R_Math::TransformCoord(velocity_, movetrans);
-
-}
+		objectWorldTrans_.rotation_.y = std::atan2(sub.x, sub.z);
+	}
 
 	// 各ギミックの更新処理
 	UpdateFloatingGimmick();
@@ -502,6 +517,7 @@ void Player::BehaviorAttackInitialize() {
 void Player::BehaviorAttackUpdate() {
 	// 予備動作の時間
 	//uint32_t anticipationTime = kConstAttacks_[workAttack_.comboIndex].anticipationTime;
+
 
 	// コントローラー
 	XINPUT_STATE joyState;
@@ -541,10 +557,10 @@ void Player::BehaviorAttackUpdate() {
 			// コンボ切り替わりの瞬間だけ入力を受け付ける
 
 			// 各パーツの角度などの初期化
-
 		}
 		// コンボ継続でないなら攻撃を終了して通常状態に戻る
 		else {
+			workAttack_.comboIndex = 0;
 			behaviorRequest_ = Behavior::kRoot;
 		}
 	}

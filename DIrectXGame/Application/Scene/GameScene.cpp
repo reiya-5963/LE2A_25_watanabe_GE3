@@ -87,9 +87,10 @@ void GameScene::Initialize() {
 		P_model_r_arm.get() };
 
 	std::vector<Model*> weponModels = {
-		P_model_wepon.get()};
+		P_model_wepon.get() };
 	// プレイヤーの初期化
-	player_->Initialize(playerModels, weponModels);
+	Vector3 pos = { 0.0f, 50.0f, 0.0f };
+	player_->Initialize(playerModels, weponModels, pos);
 #pragma endregion
 
 #pragma region 追従カメラ
@@ -108,17 +109,42 @@ void GameScene::Initialize() {
 	E_model_F_Wepon.reset(Model::CreateFlomObj("EnemyTest_F_Wepon"));
 	E_model_I_Wepon.reset(Model::CreateFlomObj("EnemyTest_I_Wepon"));
 
-	// 敵の生成
-	enemy_ = std::make_unique<Enemy>();
 	// 敵の初期化
 	std::vector<Model*> enemyModels = {
 		E_model_body.get(),
 		E_model_F_Wepon.get(),
 		E_model_I_Wepon.get() };
-	// 敵の初期化
-	enemy_->Initialize(enemyModels);
-	enemy_->SetVelocity({ 0, 0, 1 });
+
+	Vector3 enemyPos[5];
+	enemyPos[0] = { -30.0f, 6.0f, 240.0f };
+	enemyPos[1] = { -25.0f, 6.0f, 270.0f };
+	enemyPos[2] = { -20.0f, 6.0f, 265.0f };
+	enemyPos[3] = { -15.0f, 6.0f, 260.0f };
+	enemyPos[4] = { -35.0f, 6.0f, 255.0f };
+
+	//-30.0f;
+	//objectWorldTrans_.translation_.y = 6.0f;
+	//objectWorldTrans_.translation_.z = 260.0f;
+	for (uint32_t i = 0; i < 5; i++) {
+		// 敵の生成
+		enemies_.push_back(std::unique_ptr<Enemy>(new Enemy()));
+	}
+	uint32_t i = 0;
+	std::list<unique_ptr<Enemy>>::iterator it;
+	for (it = enemies_.begin(); it != enemies_.end(); it++) {
+		// 敵の初期化
+		(*it)->Initialize(enemyModels, enemyPos[i]);
+		(*it)->SetVelocity({ 0, 0, 1 });
+		i++;
+	}
+
+
 #pragma endregion
+
+	lockOn_ = std::make_unique<LockOn>();
+	lockOn_->Initialize();
+	followCamera_->SetLockOn(lockOn_.get());
+	player_->SetLockOn(lockOn_.get());
 
 	colliderManager_ = std::make_unique<CollisionManager>();
 	colliderManager_->Initialize();
@@ -163,12 +189,6 @@ void GameScene::Update() {
 
 	// プレイヤーの更新
 	player_->Update();
-	// 追従カメラの更新
-	followCamera_->SetIsRespown(player_->IsRespown());
-	followCamera_->Update();
-	viewProjection_.matView = followCamera_->GetViewProjection().matView;
-	viewProjection_.matProjection = followCamera_->GetViewProjection().matProjection;
-	viewProjection_.TransferMatrix();
 
 	// 地面の更新
 	ground1_->Update();
@@ -177,17 +197,17 @@ void GameScene::Update() {
 	moveGround1_->Update();
 	moveGround2_->Update();
 	goal_->Update();
-
-
-	if (enemy_) {
-		// 敵の更新
-		enemy_->Update();
-		if (enemy_->IsDead()) {
-			enemy_.release();
-			enemy_ = nullptr;
+	std::list<unique_ptr<Enemy>>::iterator it;
+	for (it = enemies_.begin(); it != enemies_.end();it++) {
+		if ((*it)) {
+			// 敵の更新
+			(*it)->Update();
+			if ((*it)->IsDead()) {
+				(*it).release();
+				(*it) = nullptr;
+			}
 		}
 	}
-
 
 	// コライダーリストの初期化
 	colliderManager_->ClearColliders();
@@ -204,14 +224,53 @@ void GameScene::Update() {
 		colliderManager_->AddColliders(player_->GetWeponCollider());
 	}
 
-	if (enemy_) {
-		colliderManager_->AddColliders(enemy_.get());
+	for (it = enemies_.begin(); it != enemies_.end(); it++) {
+		if ((*it)) {
+			colliderManager_->AddColliders((*it).get());
+		}
 	}
 
 
 	// 当たり判定チェック
 	colliderManager_->CheckAllCollisions();
 	colliderManager_->UpdateWorldTransform();
+
+
+	if (player_->IsRespown()) {
+		Vector3 enemyPos[5];
+		enemyPos[0] = { -30.0f, 6.0f, 240.0f };
+		enemyPos[1] = { -25.0f, 6.0f, 270.0f };
+		enemyPos[2] = { -20.0f, 6.0f, 265.0f };
+		enemyPos[3] = { -15.0f, 6.0f, 260.0f };
+		enemyPos[4] = { -35.0f, 6.0f, 255.0f };
+
+		// 敵の初期化
+		std::vector<Model*> enemyModels = {
+			E_model_body.get(),
+			E_model_F_Wepon.get(),
+			E_model_I_Wepon.get() };
+
+		int i = 0;
+		for (it = enemies_.begin(); it != enemies_.end(); it++) {
+			if((*it) == nullptr) {
+				// 敵の生成
+				(*it) = std::make_unique<Enemy>();
+				// 敵の初期化
+				(*it)->Initialize(enemyModels, enemyPos[i]);
+				(*it)->SetVelocity({ 0, 0, 1 });
+			}
+			i++;
+		}
+	}
+
+	lockOn_->Update(enemies_, viewProjection_);
+
+	// 追従カメラの更新
+	followCamera_->SetIsRespown(player_->IsRespown());
+	followCamera_->Update();
+	viewProjection_.matView = followCamera_->GetViewProjection().matView;
+	viewProjection_.matProjection = followCamera_->GetViewProjection().matProjection;
+	viewProjection_.TransferMatrix();
 
 }
 
@@ -240,9 +299,12 @@ void GameScene::Draw() {
 	player_->Draw(viewProjection_);
 
 	colliderManager_->Draw(viewProjection_);
-	if (enemy_) {
-		// プレイヤーの描画
-		enemy_->Draw(viewProjection_);
+	std::list<unique_ptr<Enemy>>::iterator it;
+	for (it = enemies_.begin(); it != enemies_.end(); it++) {
+		if ((*it)) {
+			// プレイヤーの描画
+			(*it)->Draw(viewProjection_);
+		}
 	}
 
 	goal_->Draw(viewProjection_);
@@ -252,7 +314,7 @@ void GameScene::Draw() {
 	Sprite::PreDraw(commandList);
 	//
 
-
+	lockOn_->Draw();
 
 
 

@@ -54,7 +54,7 @@ public: // メンバ関数
 	virtual void OnCollisionEnter(int object) = 0;
 	//virtual void OnCollisionExit() = 0;
 
-	virtual Vector3 GetWorldPosition() = 0;
+	virtual Vector3 GetWorldPosition() const = 0;
 	
 	WorldTransform* GetParent() { return parent_; }
 	void SetParent(WorldTransform* parent) {

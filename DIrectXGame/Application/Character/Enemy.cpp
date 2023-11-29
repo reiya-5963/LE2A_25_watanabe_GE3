@@ -2,19 +2,23 @@
 #include "R_Math.h"
 #include <cassert>
 
-void Enemy::Initialize(const std::vector<Model*>& models) {
+void Enemy::Initialize(const std::vector<Model*>& models, Vector3& pos) {
 	//
 	assert(models[ModelIndexIceWeapon]);
 	objectName_ = int(ObjName::ENEMY);
 
 	//
-	BaseCharacter::Initialize(models);
+	BaseCharacter::Initialize(models, pos);
 	SetRadius({ 3.0f, 3.0f, 3.0f });
 	SetCollisionAttribute(kCollisionAttributeEnemy);
 	SetCollisionMask(~kCollisionAttributeEnemy);
-	objectWorldTrans_.translation_.x = -30.0f;
-	objectWorldTrans_.translation_.y = 6.0f;
-	objectWorldTrans_.translation_.z = 260.0f;
+	//objectWorldTrans_.translation_.x = -30.0f;
+	//objectWorldTrans_.translation_.y = 6.0f;
+	//objectWorldTrans_.translation_.z = 260.0f;
+		
+	//objectWorldTrans_.translation_.x = pos.x;
+	//objectWorldTrans_.translation_.y = pos.y;
+	//objectWorldTrans_.translation_.z = pos.z;
 
 	//
 	worldTransform_body_.Initialize();
@@ -73,7 +77,7 @@ void Enemy::OnCollisionEnter(int object) {
 //{
 //}
 
-Vector3 Enemy::GetWorldPosition() {
+Vector3  Enemy::GetWorldPosition() const {
 	Vector3 result{};
 	result.x = objectWorldTrans_.matWorld_.m[3][0];
 	result.y = objectWorldTrans_.matWorld_.m[3][1];

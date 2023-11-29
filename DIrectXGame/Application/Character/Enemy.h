@@ -13,7 +13,7 @@ public: // メンバ関数
 	/// 初期化
 	/// </summary>
 	/// <param name="models">モデル</param>
-	void Initialize(const std::vector<Model*>& models) override;
+	void Initialize(const std::vector<Model*>& models, Vector3& pos) override;
 
 	/// <summary>
 	/// 更新
@@ -29,7 +29,7 @@ public: // メンバ関数
 	void OnCollisionEnter(int object) override;
 	//void OnCollisionExit() override;
 
-	Vector3 GetWorldPosition() override;
+	 Vector3 GetWorldPosition() const override;
 
 	void SetVelocity(Vector3 velo) { velocity_ = velo; }
 	

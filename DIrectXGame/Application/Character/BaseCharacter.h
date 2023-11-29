@@ -16,7 +16,7 @@ public:
 	/// 初期化
 	/// </summary>
 	/// <param name="models">モデルデータ配列</param>
-	virtual void Initialize(const std::vector<Model*>& models);
+	virtual void Initialize(const std::vector<Model*>& models, Vector3& pos);
 	
 	/// <summary>
 	/// 更新
@@ -37,7 +37,7 @@ public:
 		return colliderWorldTransform_;
 	}
 
-	virtual Vector3 GetWorldPosition() override;
+	virtual  Vector3 GetWorldPosition() const override;
 
 protected:
 	// モデルデータ配列

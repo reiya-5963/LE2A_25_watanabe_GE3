@@ -17,7 +17,7 @@ public:
 
 	void OnCollisionEnter(int object) override;
 
-	Vector3 GetWorldPosition() override;
+	Vector3  GetWorldPosition() const override;
 
 	void SetPlayerPos(Vector3 playerPos) { playerPos_ = playerPos; }
 

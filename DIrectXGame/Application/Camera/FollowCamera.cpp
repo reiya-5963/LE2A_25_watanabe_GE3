@@ -2,6 +2,8 @@
 #include "R_Math.h"
 #include "input/Input.h"
 #include "GlobalVariables.h"
+#include "LockOn.h"
+#include <cmath>
 
 void FollowCamera::Initialize() {
 	//ビュープロジェクションの初期化
@@ -27,23 +29,35 @@ void FollowCamera::Update() {
 	const char* groupName = "FollowCamera";
 	t_ = globalVariables->GetFloatValue(groupName, "t_");
 
-
-	// もしコントローラーでのプレイなら
-	if (Input::GetInstance()->GetJoyStickState(0, joyState)) {
-		//
-		float speed = 0.2f;
-
-		/*viewProjection_.rotation_.y += (float)joyState.Gamepad.sThumbRX / SHRT_MAX * speed;
-		viewProjection_.rotation_.x -= (float)joyState.Gamepad.sThumbRY / SHRT_MAX * speed;*/
-
-		destinationAngleY_ += (float)joyState.Gamepad.sThumbRX / SHRT_MAX * speed;
+	if (lockOn_->ExistTarget()) {
+		// ロックオン座標
+		Vector3 lockOnTargetPosition = lockOn_->GetTargetPosition();
 		
-		if (joyState.Gamepad.wButtons == XINPUT_GAMEPAD_LEFT_THUMB) {
-			destinationAngleY_ = 0.0f;
-		}
+		Vector3 TargetWorldPosition = { target_->matWorld_.m[3][0],target_->matWorld_.m[3][1],target_->matWorld_.m[3][2] };
+		
+		// 追従対象からロックオン対象へのベクトル
+		Vector3 sub = TargetWorldPosition - lockOnTargetPosition;
 
+		// y軸周りの角度
+		viewProjection_.rotation_.y = std::atan2(sub.x, sub.z);
 	}
 	else {
+		// もしコントローラーでのプレイなら
+		if (Input::GetInstance()->GetJoyStickState(0, joyState)) {
+			//
+			float speed = 0.2f;
+
+			/*viewProjection_.rotation_.y += (float)joyState.Gamepad.sThumbRX / SHRT_MAX * speed;
+			viewProjection_.rotation_.x -= (float)joyState.Gamepad.sThumbRY / SHRT_MAX * speed;*/
+
+			destinationAngleY_ += (float)joyState.Gamepad.sThumbRX / SHRT_MAX * speed;
+
+			if (joyState.Gamepad.wButtons == XINPUT_GAMEPAD_LEFT_THUMB) {
+				destinationAngleY_ = 0.0f;
+			}
+
+		}
+		else {
 
 			// 現在のマウス位置を取得
 			GetCursorPos(&mousePos_);
@@ -57,12 +71,13 @@ void FollowCamera::Update() {
 			//float mouseDistancey = float(mousePos_.y) - float(preMousePos_.y);
 
 			destinationAngleY_ += mouseDistance * speed;
-			
+
 			if (Input::GetInstance()->PushKey(DIK_RETURN)) {
 				destinationAngleY_ = 0.0f;
 			}
 
 			preMousePos_ = mousePos_;
+		}
 	}
 
 	viewProjection_.rotation_.y = R_Math::lerp(t_, viewProjection_.rotation_.y, destinationAngleY_);

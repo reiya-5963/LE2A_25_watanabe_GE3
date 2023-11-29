@@ -73,7 +73,7 @@ void Wepon::Draw(const ViewProjection& viewProjection) {
 void Wepon::OnCollisionEnter(int ) {
 }
 
-Vector3 Wepon::GetWorldPosition() {
+Vector3  Wepon::GetWorldPosition() const {
 	Vector3 result{};
 	result.x = objectWorldTrans_.matWorld_.m[3][0];
 	result.y = objectWorldTrans_.matWorld_.m[3][1];

@@ -34,7 +34,7 @@ void Ground::OnCollisionEnter(int) {
 //{
 //}
 
-Vector3 Ground::GetWorldPosition() {
+Vector3  Ground::GetWorldPosition()const {
 	Vector3 result{};
 
 	result.x = objectWorldTrans_.matWorld_.m[3][0];

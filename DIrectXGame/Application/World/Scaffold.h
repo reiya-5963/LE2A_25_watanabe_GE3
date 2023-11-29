@@ -25,7 +25,7 @@ public:
 	void SetIsMove(bool isMove);
 	void OnCollisionEnter(int object);
 	void OnCollisionExit();
-	Vector3 GetWorldPosition();
+	Vector3  GetWorldPosition() const;
 private:
 	// ワールド変換データ
 	//WorldTransform worldTrans_;

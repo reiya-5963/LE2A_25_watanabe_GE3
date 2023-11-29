@@ -106,7 +106,7 @@ void Scaffold::OnCollisionExit()
 {
 }
 
-Vector3 Scaffold::GetWorldPosition() {
+Vector3  Scaffold::GetWorldPosition() const {
 	Vector3 result{};
 
 	result.x = objectWorldTrans_.matWorld_.m[3][0];

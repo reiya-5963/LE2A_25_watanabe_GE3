@@ -156,10 +156,11 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DIrectXGame\RayEngine\Math\Vector4.cpp" />
     <ClCompile Include="DIrectXGame\Application\World\Ground.cpp" />
     <ClCompile Include="DIrectXGame\RayEngine\Math\Transform.cpp" />
-    <ClCompile Include="Wepon.cpp" />
+    <ClCompile Include="DIrectXGame\Application\LockOn.cpp" />
+    <ClCompile Include="DIrectXGame\Application\Wepon.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DIrectXGame\Application\Goal.h" />
+    <ClInclude Include="DIrectXGame\Application\World\Goal.h" />
     <ClInclude Include="gomi\CommandAllocator.h" />
     <ClInclude Include="gomi\CommandLIst.h" />
     <ClInclude Include="gomi\CommandListManager.h" />
@@ -219,7 +220,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="DIrectXGame\RayEngine\Math\Vector4.h" />
     <ClInclude Include="DIrectXGame\Application\World\Ground.h" />
     <ClInclude Include="DIrectXGame\RayEngine\Math\Transform.h" />
-    <ClInclude Include="Wepon.h" />
+    <ClInclude Include="DIrectXGame\Application\LockOn.h" />
+    <ClInclude Include="DIrectXGame\Application\Wepon.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Obj.hlsli" />

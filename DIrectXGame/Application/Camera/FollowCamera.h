@@ -3,6 +3,8 @@
 #include "WorldTransform.h"
 #include "WinApp.h"
 
+class LockOn;
+
 /// <summary>
 /// 追従カメラ
 /// </summary>
@@ -38,6 +40,8 @@ public:
 	void Reset();
 
 	Vector3 CalcOffset() const;
+
+	void SetLockOn(LockOn* lockOn) { lockOn_ = lockOn; }
 private:
 	// ビュープロジェクション
 	ViewProjection viewProjection_;
@@ -65,4 +69,6 @@ private:
 	bool isFps_ = false;
 	float t_ = 0.1f;
 	float destinationAngleY_ = 0.0f;
+
+	const LockOn* lockOn_ = nullptr;
 };

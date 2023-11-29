@@ -8,6 +8,9 @@
 #include "input/Input.h"
 #include "Wepon.h"
 
+class LockOn;
+
+
 /// <summary>
 /// プレイヤー
 /// </summary>
@@ -68,7 +71,7 @@ public: // メンバ関数
 	/// 初期化
 	/// </summary>
 	/// <param name="model">モデル</param>
-	void Initialize(const std::vector<Model*>& models, const std::vector<Model*>& weponModels);
+	void Initialize(const std::vector<Model*>& models, const std::vector<Model*>& weponModels, Vector3& pos);
 
 	/// <summary>
 	/// 更新
@@ -85,7 +88,7 @@ public: // メンバ関数
 	void OnCollisionEnter(int object) override;
 	//void OnCollisionExit() override;
 
-	Vector3 GetWorldPosition() override;
+	Vector3  GetWorldPosition() const override;
 	
 	/// <summary>
 	/// 
@@ -108,6 +111,7 @@ public: // メンバ関数
 	}
 
 	bool IsRespown() { return isRespown_; }
+	void SetLockOn(LockOn* lockOn) { lockOn_ = lockOn; }
 
 public: // メンバ関数
 	// 浮遊ギミック初期化
@@ -220,4 +224,7 @@ private: // メンバ変数
 	bool isRespown_ = false;
 
 	Vector3 velocity_ = {};
+
+	const LockOn* lockOn_ = nullptr;
+
 };
