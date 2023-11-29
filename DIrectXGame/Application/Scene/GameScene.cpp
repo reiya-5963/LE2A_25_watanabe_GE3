@@ -194,14 +194,32 @@ void GameScene::Update() {
 	//////
 	// MT4_01_01
 
-	Vector3 axis = R_Math::Normalize({ 1.0f, 1.0f, 1.0f });
-	float angle = 0.44f;
-	Matrix4x4 rotateMatrix = R_Math::MakeRotateAxisAngle(axis, angle);
+	Vector3 from0 = R_Math::Normalize({ 1.0f, 0.7f, 0.5f });
+	Vector3 to0 = {-from0.x,-from0.y,-from0.z };
+	Vector3 from1 = R_Math::Normalize({ -0.6f, 0.9f, 0.2f });
+	Vector3 to1 = R_Math::Normalize({ 0.4f, 0.7f, -0.5f });
+	Matrix4x4 rotateMatrix0 = R_Math::DirectionToDirection(
+		R_Math::Normalize({ 1.0f, 0.0f, 0.0f }), R_Math::Normalize({ -1.0f, 0.0f, 0.0f })
+	);
 
-	ImGui::Begin("debug");
+	Matrix4x4 rotateMatrix1 = R_Math::DirectionToDirection(from0, to0);
+	Matrix4x4 rotateMatrix2 = R_Math::DirectionToDirection(from1, to1);
+
+
+	ImGui::Begin("debug");		
+	ImGui::Text("rotateMatrix0\n");
 	for (uint32_t i = 0; i < 4; i++) {
-		ImGui::Text("rotateMatrix\n");
-		ImGui::Text("%.3f, %.3f, %.3f, %.3f\n", rotateMatrix.m[i][0], rotateMatrix.m[i][1], rotateMatrix.m[i][2], rotateMatrix.m[i][3]);
+		ImGui::Text("%.3f, %.3f, %.3f, %.3f\n", rotateMatrix0.m[i][0], rotateMatrix0.m[i][1], rotateMatrix0.m[i][2], rotateMatrix0.m[i][3]);
+	}
+
+	ImGui::Text("rotateMatrix1\n");
+	for (uint32_t i = 0; i < 4; i++) {
+		ImGui::Text("%.3f, %.3f, %.3f, %.3f\n", rotateMatrix1.m[i][0], rotateMatrix1.m[i][1], rotateMatrix1.m[i][2], rotateMatrix1.m[i][3]);
+	}
+
+	ImGui::Text("rotateMatrix2\n");
+	for (uint32_t i = 0; i < 4; i++) {
+		ImGui::Text("%.3f, %.3f, %.3f, %.3f\n", rotateMatrix2.m[i][0], rotateMatrix2.m[i][1], rotateMatrix2.m[i][2], rotateMatrix2.m[i][3]);
 	}
 	ImGui::End();
 

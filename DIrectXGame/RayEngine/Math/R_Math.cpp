@@ -594,6 +594,61 @@ Matrix4x4 R_Math::MakeRotateAxisAngle(const Vector3& axis, float angle) {
 	return R;
 }
 
+Matrix4x4 R_Math::DirectionToDirection(const Vector3& from, const Vector3& to)
+{
+	Vector3 minusFrom = { -from.x, -from.y, -from.z };
+	Vector3 n = Normalize(Cross(from, to));
+	if (minusFrom.x == to.x && minusFrom.y == to.y&& minusFrom.z == to.z) {
+		if (from.x != 0.0f || from.y != 0.0f) {
+			n = { from.y, -from.x, 0.0f };
+		}
+		else if (from.x != 0.0f || from.z != 0.0f) {
+			n = { from.z, 0.0f, -from.x };
+		}
+	}
+
+
+
+	float cos0 = Dot(from, to);
+	float sin0 = Length(Cross(from, to));
+
+	Matrix4x4 R{};
+	Matrix4x4 S{};
+	Matrix4x4 P{};
+	Matrix4x4 C{};
+
+	S.m[0][0] = cos0;
+	S.m[1][1] = cos0;
+	S.m[2][2] = cos0;
+
+	P.m[0][0] = n.x * n.x;
+	P.m[0][1] = n.x * n.y;
+	P.m[0][2] = n.x * n.z;
+
+	P.m[1][0] = n.y * n.x;
+	P.m[1][1] = n.y * n.y;
+	P.m[1][2] = n.y * n.z;
+
+	P.m[2][0] = n.z * n.x;
+	P.m[2][1] = n.z * n.y;
+	P.m[2][2] = n.z * n.z;
+
+	C.m[0][1] = -n.z;
+	C.m[0][2] = n.y;
+	C.m[1][0] = n.z;
+	C.m[1][2] = -n.x;
+	C.m[2][0] = -n.y;
+	C.m[2][1] = n.x;
+
+	for (uint32_t i = 0; i < 3; i++) {
+		for (uint32_t j = 0; j < 3; j++) {
+			R.m[i][j] = P.m[i][j] * (1 - cos0) + S.m[i][j] + -sin0 * C.m[i][j];
+		}
+	}
+	R.m[3][3] = 1.0f;
+	return R;
+}
+
 
 // 衝突判定
 //bool R_Math::IsCollision(const Sphere& s1, const Sphere& s2) {

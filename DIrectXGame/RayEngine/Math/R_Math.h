@@ -216,6 +216,8 @@ public:
 
 	static Matrix4x4 MakeRotateAxisAngle(const Vector3& axis, float angle);
 
+	static Matrix4x4 DirectionToDirection(const Vector3& from, const Vector3& to);
+
 #pragma region lerp
 	static float lerp(float t, float start, float end);
 
